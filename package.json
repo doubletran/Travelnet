@@ -1,0 +1,16 @@
+{
+    "name": "portfolio-project",
+    "version": "1.0.0",
+    "description": "This is the portfolio project for the course CS340 from Oregon State University, by group 18",
+    "main": "app.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Tongxin Sun & Tran Tran",
+    "license": "ISC",
+    "dependencies": {
+      "express": "^4.18.2",
+      "forever": "^4.0.3",
+      "mysql": "^2.18.1"
+    }
+  }
