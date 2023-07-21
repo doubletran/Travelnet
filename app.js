@@ -19,8 +19,13 @@ app.set('view engine', '.hbs');
     ROUTES
 */
 app.get('/', function(req, res)
-    {
-        res.render('index');                    // Note the call to render() and not send(). Using render() ensures the templating engine
+    {  
+        let query1 = "SELECT * FROM Users;";               // Define our query
+
+        db.pool.query(query1, function(error, rows, fields){    // Execute the query
+
+            res.render('index', {data: rows});                  // Render the index.hbs file, and also send the renderer
+        })                                                      // an object where 'data' is equal to the 'rows' we
     }); 
 
 /*
