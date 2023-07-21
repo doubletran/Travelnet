@@ -20,13 +20,12 @@ app.set('view engine', '.hbs');
 */
 app.get('/', function(req, res)
     {  
-        let query1 = "SELECT * FROM Users;";               // Define our query
-
-        db.pool.query(query1, function(error, rows, fields){    // Execute the query
-
-            res.render('index', {data: rows});                  // Render the index.hbs file, and also send the renderer
-        })                                                      // an object where 'data' is equal to the 'rows' we
-    }); 
+        res.render('index');                                                     // an object where 'data' is equal to the 'rows' we
+    });  
+app.get('/users', function (req, res)
+    {
+        res.render('users');
+    });
 
 /*
     LISTENER
