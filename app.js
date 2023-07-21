@@ -15,6 +15,10 @@ var exphbs = require('express-handlebars');     // Import express-handlebars
 app.engine('.hbs', engine({extname: ".hbs"}));  // Create an instance of the handlebars engine to process templates
 app.set('view engine', '.hbs');  
 
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
+app.use(express.static(__dirname + '/public'));
+
 /*
     ROUTES
 */
@@ -25,6 +29,30 @@ app.get('/', function(req, res)
 app.get('/users', function (req, res)
     {
         res.render('users');
+    });
+app.get('/friendships', function (req, res)
+    {
+        res.render('friendships');
+    });
+app.get('/posts', function (req, res)
+    {
+        res.render('posts');
+    });
+app.get('/locations', function (req, res)
+    {
+        res.render('locations');
+    });
+app.get('/posts-friendships', function (req, res)
+    {
+        res.render('posts-friendships');
+    });
+app.get('/posts-locations', function (req, res)
+    {
+        res.render('posts-locations');
+    });
+app.get('/users-locations', function (req, res)
+    {
+        res.render('users-locations');
     });
 
 /*

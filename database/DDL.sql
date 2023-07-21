@@ -144,10 +144,10 @@ CREATE OR REPLACE TABLE `Users_has_Locations` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-INSERT INTO `Users` (`user_name`, `email`, `password`) VALUES ('mary563', 'mary563@gmailcom', '1937@#fadf');
-INSERT INTO `Users` (`user_name`, `email`, `password`) VALUES ('toub8294', 'toub8294@gmailcom', 'hfkd0)jf!');
-INSERT INTO `Users` (`user_name`, `email`, `password`) VALUES ('pwune0921', 'pwune0921@gmailcom', '9384**&fafd');
-INSERT INTO `Users` (`user_name`, `email`, `password`) VALUES ('jimmyt801', 'jimmyt801@outlookcom', '8394*fhfkd');
+INSERT INTO `Users` (`user_name`, `email`, `password`) VALUES ('mary563', 'mary563@gmail.com', '1937@#fadf');
+INSERT INTO `Users` (`user_name`, `email`, `password`) VALUES ('toub8294', 'toub8294@gmail.com', 'hfkd0)jf!');
+INSERT INTO `Users` (`user_name`, `email`, `password`) VALUES ('pwune0921', 'pwune0921@gmail.com', '9384**&fafd');
+INSERT INTO `Users` (`user_name`, `email`, `password`) VALUES ('jimmyt801', 'jimmyt801@outlook.com', '8394*fhfkd');
 
 INSERT INTO `Friendships` (`start_date`, `mutual_friend_ct`, `user_id`, `friend_user_id`) VALUES ('2019-01-09', '0', '1', '2');
 INSERT INTO `Friendships` (`start_date`, `mutual_friend_ct`, `user_id`, `friend_user_id`) VALUES ('2009-11-19', '0', '1', '3');

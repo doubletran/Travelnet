@@ -5,6 +5,9 @@
 <head>
     <meta charset="utf-8">
     <title>Example App</title>
+    {{#each css}}
+        <link rel="stylesheet" href="/css/{{this}}">
+    {{/each}}
 </head>
 <body>
 
