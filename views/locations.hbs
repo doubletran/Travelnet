@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Locations</title>
+<script language="JavaScript">
+		function showform(dowhat) {
+			/*
+			* four DIVS: browse, insert, update, delete
+			* this function sets one visible the others not
+			*/
+			if (dowhat == 'insert'){
+				document.getElementById('browse').style.display = 'none';
+				document.getElementById('insert').style.display = 'block';
+				document.getElementById('update').style.display = 'none';
+				document.getElementById('delete').style.display = 'none';
+			}
+			else if (dowhat == 'update'){
+				document.getElementById('browse').style.display = 'none';
+				document.getElementById('insert').style.display = 'none';
+				document.getElementById('update').style.display = 'block';
+				document.getElementById('delete').style.display = 'none';
+			}
+			else if (dowhat == 'delete'){
+				document.getElementById('browse').style.display = 'none';
+				document.getElementById('insert').style.display = 'none';
+				document.getElementById('update').style.display = 'none';
+				document.getElementById('delete').style.display = 'block';
+			}
+      else if (dowhat == 'all'){
+				document.getElementById('browse').style.display = 'block';
+				document.getElementById('insert').style.display = 'block';
+				document.getElementById('update').style.display = 'block';
+				document.getElementById('delete').style.display = 'block';
+			}
+			else { //by default display browse
+				document.getElementById('browse').style.display = 'block';
+				document.getElementById('insert').style.display = 'block';
+				document.getElementById('update').style.display = 'none';
+				document.getElementById('delete').style.display = 'none';
+			}
+		}
+    function newLocation() { showform('insert'); }
+    function updateLocation(pid) { showform('update'); }
+    function deleteLocation(pid) { showform ('delete'); }
+    function browseLocations() { showform ('browse'); }
+    function showAll() { showform ('all'); }
+</script>
+<link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body onload="browseLocations()">
+<h1>Locations</h1>
+
+[ <a href="/">Home</a> | <a href="/users">Users</a> | <a href="/friendships">Friendships</a> | <a href="/posts">Posts</a> | <a href="/locations">Locations</a> | <a href="/posts-friendships">Posts_has_Friendships</a>]
+
+<div id="browse">
+<p><a href="#" onClick="showAll()">Display all forms</a> </p>
+<table border="1" cellpadding="5">
+  <tr>
+    <th>Edit</th>
+    <th>Delete</th>
+    <th>Location ID</th>
+    <th>Address Line</th>
+    <th>City</th>
+    <th>State</th>
+    <th>Zip Code</th>
+    <th>Country</th>
+  </tr>
+  <tr>
+    <td><a href="#" onClick="updateLocation('this.LocationID')">Edit</a></td>
+    <td><a href="#" onclick="deleteLocation('this.LocationID')">Delete</a></td>
+    <td align="right" >1</td>
+    <td >57434 Paucek Meadow, Suite 978</td>
+    <td >Efrainchester</td>
+    <td>Missouri</td>
+    <td>99566-5220</td>
+    <td>United States</td>
+  </tr>
+  <tr>
+    <td><a href="#" onClick="updateLocation('this.LocationID')">Edit</a></td>
+    <td><a href="#" onclick="deleteLocation('this.LocationID')">Delete</a></td>
+    <td align="right" >2</td>
+    <td >9088 Shanahan Groves, Suite 697</td>
+    <td >Pfannerstillhaven</td>
+    <td>Wisconsin</td>
+    <td>97929</td>
+    <td>United States</td>
+  </tr>
+  <tr>
+    <td><a href="#" onClick="updateLocation('this.LocationID')">Edit</a></td>
+    <td><a href="#" onclick="deleteLocation('this.LocationID')">Delete</a></td>
+    <td align="right" >3</td>
+    <td >Kpg Connor no 96, Apt 119</td>
+    <td >Batu</td>
+    <td>DKI Jakarta</td>
+    <td>11840</td>
+    <td>Indonesia</td>
+  </tr>
+  <tr>
+    <td><a href="#" onClick="updateLocation('this.LocationID')">Edit</a></td>
+    <td><a href="#" onclick="deleteLocation('this.LocationID')">Delete</a></td>
+    <td align="right" >4</td>
+    <td >Strada Caterina 779, Appartamento 61</td>
+    <td >Santarelli veneto</td>
+    <td>Lucca</td>
+    <td>43917</td>
+    <td>Italy</td>
+  </tr>
+  <tr>
+    <td><a href="#" onClick="updateLocation('this.LocationID')">Edit</a></td>
+    <td><a href="#" onclick="deleteLocation('this.LocationID')">Delete</a></td>
+    <td align="right" >5</td>
+    <td >76941 Vũ Inlet, Suite 164</td>
+    <td >Cao Bằng</td>
+    <td>Missouri</td>
+    <td>86668</td>
+    <td>Vietnam</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+</div> <!-- browse -->
+<div id="insert">
+    <form method="Location" id="addLocation">
+        <legend><strong>Add Location</strong></legend>
+          <fieldset class="fields">
+            <label> Address Line </label> <input type="text" name="address">
+            <label> City </label> <input type="text" name="city">
+            <label> State </label> <input type="text" name="state">
+            <label> Zip Code </label> <input type="text" name = "zip_code">
+            <label> Country </label><input type="text" name="country">
+      </fieldset>
+          <input class="btn" type="submit" id="addLocation" value="Add Location">
+          <input class="btn" type="button" value="cancel" onClick="browseLocations()">
+	</form> 
+</div><!-- insert -->
+<p>&nbsp;</p>
+<div id="update">
+    <form method="Location" id="UpdateLocation">
+        <legend><strong>Update Location</strong></legend>
+          <fieldset class="fields">
+          <input type="hidden" name="Location_id" id="updateLocationID" value="1">
+          <label> ID: </label> 1
+          <label> Address Line </label> <input name="address" value="57434 Paucek Meadow, Suite 978">
+          <label>City</label> <input name="city" value="Efrainchester">
+          <label>State</label><input name="state" value="Missouri">
+          <label>Zip Code</label><input name="zip_code" value="99566-5220">
+          <label>Country</label><input name="country" value="United States">
+          </fieldset>
+          <input class="btn" type="submit" id="UpdateSaveLocation" value="Save Update Location">
+          <input class="btn" type="button" value="cancel" onClick="browseLocations()">
+	</form> 
+</div><!-- update -->
+
+<p>&nbsp;</p>
+<div id="delete">
+  <form method="Location" id="deleteLocation">
+      <legend><strong>Delete Location</strong></legend>
+        <fieldset class="fields">
+        <p>Are you sure you wish to delete the following?</p>
+        <input type="hidden" name="LocationID" id="deleteLocationID" value="1">
+        <label><strong>ID:</strong></label> 1
+            <label> <strong>Address Line: </strong> </label> 57434 Paucek Meadow, Suite 978
+            <label> <strong>City: </strong> </label> Efrainchester
+            <label> <strong>State: </strong> </label> Missouri
+            <label> <strong>Zip Code: </strong> </label>99566-5220
+            <label><strong>Country: </strong></label>United States	
+        </fieldset>
+    <input class="btn" type="submit" id="DeleteLocation" value="Delete Location">
+    <input class="btn" type="button" value="cancel" onClick="browseLocations()">
+  </form> 
+</div><!-- delete -->
+</body>
+</html>

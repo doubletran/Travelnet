@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Posts_has_Friendshipss</title>
+<script language="JavaScript">
+		function showform(dowhat) {
+			/*
+			* four DIVS: browse, insert, update, delete
+			* this function sets one visible the others not
+			*/
+			if (dowhat == 'insert'){
+				document.getElementById('browse').style.display = 'none';
+				document.getElementById('insert').style.display = 'block';
+				document.getElementById('update').style.display = 'none';
+				document.getElementById('delete').style.display = 'none';
+			}
+			else if (dowhat == 'update'){
+				document.getElementById('browse').style.display = 'none';
+				document.getElementById('insert').style.display = 'none';
+				document.getElementById('update').style.display = 'block';
+				document.getElementById('delete').style.display = 'none';
+			}
+			else if (dowhat == 'delete'){
+				document.getElementById('browse').style.display = 'none';
+				document.getElementById('insert').style.display = 'none';
+				document.getElementById('update').style.display = 'none';
+				document.getElementById('delete').style.display = 'block';
+			}
+      else if (dowhat == 'all'){
+				document.getElementById('browse').style.display = 'block';
+				document.getElementById('insert').style.display = 'block';
+				document.getElementById('update').style.display = 'block';
+				document.getElementById('delete').style.display = 'block';
+			}
+			else { //by default display browse
+				document.getElementById('browse').style.display = 'block';
+				document.getElementById('insert').style.display = 'block';
+				document.getElementById('update').style.display = 'none';
+				document.getElementById('delete').style.display = 'none';
+			}
+		}
+    function newPosts_has_Friendships() { showform('insert'); }
+    function updatePosts_has_Friendships(pid) { showform('update'); }
+    function deletePosts_has_Friendships(pid) { showform ('delete'); }
+    function browsePosts_has_Friendshipss() { showform ('browse'); }
+    function showAll() { showform ('all'); }
+</script>
+<link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body onload="browsePosts_has_Friendshipss()">
+<h1>Posts_has_Friendshipss</h1>
+
+[ <a href="/">Home</a> | <a href="/users">Users</a> | <a href="/friendships">Friendships</a> | <a href="/posts">Posts</a> | <a href="/locations">Locations</a> | <a href="/posts-friendships">Posts_has_Friendships</a>]
+
+<div id="browse">
+<p><a href="#" onClick="showAll()">Display all forms</a> </p>
+<table border="1" cellpadding="5">
+  <tr>
+    <th>Edit</th>
+    <th>Delete</th>
+    <th>Posts_Friendships ID</th>
+    <th>Post ID</th>
+    <th>Post Content</th>
+    <th>Friendship ID</th>
+    <th>User</th>
+    <th>Friend</th>
+  </tr>
+  <tr>
+    <td><a href="#" onClick="updatePosts_has_Friendships('Posts_has_FriendshipsID')">Edit</a></td>
+    <td><a href="#" onclick="deletePosts_has_Friendships('this.Posts_has_FriendshipsID')">Delete</a></td>
+    <td>1</td>
+    <td align="right" >1</td>
+    <td >I love the city!</td>
+    <td align="right" >1</td>
+    <td>mary563</td>
+    <td>toub8294</td>
+  </tr>
+  <tr>
+    <td><a href="#" onClick="updatePosts_has_Friendships('Posts_has_FriendshipsID')">Edit</a></td>
+    <td><a href="#" onclick="deletePosts_has_Friendships('this.Posts_has_FriendshipsID')">Delete</a></td>
+    <td>2</td>
+    <td align="right" >1</td>
+    <td >I love the city!</td>
+    <td align="right" >2</td>
+    <td>mary563</td>
+    <td>pwune0921</td>
+  </tr>
+  <tr>
+    <td><a href="#" onClick="updatePosts_has_Friendships('Posts_has_FriendshipsID')">Edit</a></td>
+    <td><a href="#" onclick="deletePosts_has_Friendships('this.Posts_has_FriendshipsID')">Delete</a></td>
+    <td>3</td>
+    <td align="right" >2</td>
+    <td >I like the place! Look at it!!!</td>
+    <td align="right" >2</td>
+    <td>mary563</td>
+    <td>pwune0921</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+</div> <!-- browse -->
+<div id="insert">
+    <form method="POST" id="addPosts_has_Friendships">
+        <legend><strong>Add Posts_has_Friendships</strong></legend>
+          <fieldset class="fields">
+              <label> Post </label> <select name="post">
+            	<option value="0">&nbsp;</option>
+                <option value="1" selected>I love the city!</option>
+                <option value="2">I like the place! Look at it!!!</option>
+                <option value="3">Don't come! It's not worth the time!</option>
+                <option value="3">Great park!</option>
+                <option value="3">Wow!!!!!</option>
+                </select>
+            <label> Friendship </label> <select name="friend">
+            	<option value="0">&nbsp;</option>
+                <option value="1" selected>mary563 - toub8294</option>
+                <option value="2">mary563 - pwune0921</option>
+                </select>
+            
+      </fieldset>
+          <input class="btn" type="submit" id="addPosts_has_Friendships" value="Add Posts_has_Friendships">
+          <input class="btn" type="button" value="cancel" onClick="browsePosts_has_Friendshipss()">
+	</form> 
+</div><!-- insert -->
+
+<div id="update">
+    <form method="POST" id="UpdatePosts_has_Friendships">
+        <legend><strong>Update Posts_has_Friendships</strong></legend>
+          <fieldset class="fields">
+          <input type="hidden" name="Post_id" id="updatePostID" value="1">
+          <label> ID: </label> 1
+          <label> Post </label> <select name="post">
+            	<option value="0">&nbsp;</option>
+                <option value="1" selected>I love the city!</option>
+                <option value="2">I like the place! Look at it!!!</option>
+                <option value="3">Don't come! It's not worth the time!</option>
+                <option value="3">Great park!</option>
+                <option value="3">Wow!!!!!</option>
+                </select>
+            <label> Friendship </label> <select name="friend">
+            	<option value="0">&nbsp;</option>
+                <option value="1" selected>mary563 - toub8294</option>
+                <option value="2">mary563 - pwune0921</option>
+                </select>
+          </fieldset>
+          <input class="btn" type="submit" id="UpdateSavePost" value="Save Update Post">
+          <input class="btn" type="button" value="cancel" onClick="browsePosts_has_Friendshipss()">
+	</form> 
+</div><!-- update -->
+
+<p>&nbsp;</p>
+<div id="delete">
+  <form method="POST" id="deletePosts_has_Friendships">
+      <legend><strong>Delete Posts_has_Friendships</strong></legend>
+        <fieldset class="fields">
+        <p>Are you sure you wish to delete the following?</p>
+        <input type="hidden" name="personID" id="deletePosts_has_FriendshipsID" value="1">
+        <label><strong>Post ID:</strong></label> 1
+            <label> <strong>Friendship ID: </strong> </label> 1
+            <label><strong>Post Content: </strong></label> I love the city!
+            <label><strong>Friendship: </strong></label> mary563 - toub8294
+        </fieldset>
+    <input class="btn" type="submit" id="DeletePosts_has_Friendships" value="Delete Posts_has_Friendships">
+    <input class="btn" type="button" value="cancel" onClick="browsePosts_has_Friendshipss()">
+  </form> 
+</div><!-- delete -->
+
+</body>
+</html>

@@ -8,10 +8,12 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 SET FOREIGN_KEY_CHECKS=0;
 SET AUTOCOMMIT = 0;
 
+DROP TABLES Users, Locations, Posts, Friendships, Posts_has_Friendships;
+
 -- -----------------------------------------------------
 -- Table `Locations`
 -- -----------------------------------------------------
-CREATE OR REPLACE TABLE `Locations` (
+CREATE TABLE IF NOT EXISTS `Locations` (
   `location_id` INT NOT NULL AUTO_INCREMENT,
   `address` VARCHAR(255) NOT NULL,
   `city` VARCHAR(255) NOT NULL,
@@ -38,110 +40,71 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `Posts`
 -- -----------------------------------------------------
-CREATE OR REPLACE TABLE `Posts` (
+CREATE TABLE IF NOT EXISTS `Posts` (
   `post_id` INT NOT NULL AUTO_INCREMENT,
-  `content` MEDIUMTEXT NULL,
+  `content` MEDIUMTEXT NOT NULL,
   `access` ENUM('Public', 'Public to friends', 'Private') NOT NULL,
   `user_id` INT NOT NULL,
+  `location_id` INT NULL,
   PRIMARY KEY (`post_id`),
-  UNIQUE INDEX `post_id_UNIQUE` (`post_id` ASC) VISIBLE,
   INDEX `fk_Posts_Users1_idx` (`user_id` ASC) VISIBLE,
+  INDEX `fk_Posts_Locations1_idx` (`location_id` ASC) VISIBLE,
   CONSTRAINT `fk_Posts_Users1`
     FOREIGN KEY (`user_id`)
     REFERENCES `Users` (`user_id`)
     ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Posts_Locations1`
+    FOREIGN KEY (`location_id`)
+    REFERENCES `Locations` (`location_id`)
+    ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
 
 -- -----------------------------------------------------
 -- Table `Friendships`
 -- -----------------------------------------------------
-CREATE OR REPLACE TABLE `Friendships` (
+CREATE TABLE IF NOT EXISTS `Friendships` (
   `friendship_id` INT NOT NULL AUTO_INCREMENT,
   `start_date` DATE NOT NULL,
-  `mutual_friend_ct` INT UNSIGNED NOT NULL,
+  `mutual_friend_ct` INT NOT NULL,
   `user_id` INT NOT NULL,
   `friend_user_id` INT NOT NULL,
   PRIMARY KEY (`friendship_id`),
-  INDEX `fk_Friendships_Users1_idx` (`user_id` ASC) VISIBLE,
-  INDEX `fk_Friendships_Users2_idx` (`friend_user_id` ASC) VISIBLE,
-  CONSTRAINT `fk_Friendships_Users1`
+  INDEX `fk_Friendships_Users_idx` (`user_id` ASC) VISIBLE,
+  INDEX `fk_Friendships_Users1_idx` (`friend_user_id` ASC) VISIBLE,
+  CONSTRAINT `fk_Friendships_Users`
     FOREIGN KEY (`user_id`)
     REFERENCES `Users` (`user_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Friendships_Users2`
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_Friendships_Users1`
     FOREIGN KEY (`friend_user_id`)
     REFERENCES `Users` (`user_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `Posts_has_Locations`
--- -----------------------------------------------------
-CREATE OR REPLACE TABLE `Posts_has_Locations` (
-  `location_id` INT NOT NULL,
-  `post_id` INT NOT NULL,
-  PRIMARY KEY (`location_id`, `post_id`),
-  INDEX `fk_Locations_has_Posts_Posts1_idx` (`post_id` ASC) VISIBLE,
-  INDEX `fk_Locations_has_Posts_Locations1_idx` (`location_id` ASC) VISIBLE,
-  CONSTRAINT `fk_Locations_has_Posts_Locations1`
-    FOREIGN KEY (`location_id`)
-    REFERENCES `Locations` (`location_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Locations_has_Posts_Posts1`
-    FOREIGN KEY (`post_id`)
-    REFERENCES `Posts` (`post_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
 
 -- -----------------------------------------------------
 -- Table `Posts_has_Friendships`
 -- -----------------------------------------------------
-CREATE OR REPLACE TABLE `Posts_has_Friendships` (
+CREATE TABLE IF NOT EXISTS `Posts_has_Friendships` (
+  `posts_friendships_id` INT NOT NULL AUTO_INCREMENT,
   `post_id` INT NOT NULL,
   `friendship_id` INT NOT NULL,
-  PRIMARY KEY (`post_id`, `friendship_id`),
-  INDEX `fk_Posts_has_Friendship_Friendship1_idx` (`friendship_id` ASC) VISIBLE,
-  INDEX `fk_Posts_has_Friendship_Posts1_idx` (`post_id` ASC) VISIBLE,
-  CONSTRAINT `fk_Posts_has_Friendship_Posts1`
+  INDEX `fk_Posts_has_Friendships_Friendships1_idx` (`friendship_id` ASC) VISIBLE,
+  INDEX `fk_Posts_has_Friendships_Posts1_idx` (`post_id` ASC) VISIBLE,
+  PRIMARY KEY (`posts_friendships_id`),
+  CONSTRAINT `fk_Posts_has_Friendships_Posts1`
     FOREIGN KEY (`post_id`)
     REFERENCES `Posts` (`post_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Posts_has_Friendship_Friendship1`
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_Posts_has_Friendships_Friendships1`
     FOREIGN KEY (`friendship_id`)
     REFERENCES `Friendships` (`friendship_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `Users_has_Locations`
--- -----------------------------------------------------
-CREATE OR REPLACE TABLE `Users_has_Locations` (
-  `user_id` INT NOT NULL,
-  `location_id` INT NOT NULL,
-  PRIMARY KEY (`user_id`, `location_id`),
-  INDEX `fk_Users_has_Locations_Locations1_idx` (`location_id` ASC) VISIBLE,
-  INDEX `fk_Users_has_Locations_Users1_idx` (`user_id` ASC) VISIBLE,
-  CONSTRAINT `fk_Users_has_Locations_Users1`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `Users` (`user_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Users_has_Locations_Locations1`
-    FOREIGN KEY (`location_id`)
-    REFERENCES `Locations` (`location_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 INSERT INTO `Users` (`user_name`, `email`, `password`) VALUES ('mary563', 'mary563@gmail.com', '1937@#fadf');
@@ -159,35 +122,16 @@ INSERT INTO `Locations` (`address`, `city`, `state`, `zip_code`, `country`) VALU
 INSERT INTO `Locations` (`address`, `city`, `state`, `zip_code`, `country`) VALUES ('Strada Caterina 779, Appartamento 61', 'Santarelli veneto', 'Lucca', '43917', 'Italy');
 INSERT INTO `Locations` (`address`, `city`, `state`, `zip_code`, `country`) VALUES ('76941 Vũ Inlet, Suite 164', 'Cao Bằng', 'Missouri', '86668', 'Vietnam');
 
-INSERT INTO `Posts` (`content`, `access`, `user_id`) VALUES ('I love the city!', 'Public', '1');
-INSERT INTO `Posts` (`content`, `access`, `user_id`) VALUES ('I like the place! Look at it!!!', 'Public to friends', '1');
-INSERT INTO `Posts` (`content`, `access`, `user_id`) VALUES ("Don't come! It's not worth the time!", 'Private', '4');
-INSERT INTO `Posts` (`content`, `access`, `user_id`) VALUES ('Great park!', 'Public', '2');
-INSERT INTO `Posts` (`content`, `access`, `user_id`) VALUES ('Wow!!!!!', 'Public to friends', '4');
+INSERT INTO `Posts` (`content`, `access`, `user_id`, `location_id`) VALUES ('I love the city!', 'Public', '1', '1');
+INSERT INTO `Posts` (`content`, `access`, `user_id`, `location_id`) VALUES ('I like the place! Look at it!!!', 'Public to friends', '1', NULL);
+INSERT INTO `Posts` (`content`, `access`, `user_id`, `location_id`) VALUES ("Don't come! It's not worth the time!", 'Private', '4', '1');
+INSERT INTO `Posts` (`content`, `access`, `user_id`, `location_id`) VALUES ('Great park!', 'Public', '2', '2');
+INSERT INTO `Posts` (`content`, `access`, `user_id`, `location_id`) VALUES ('Wow!!!!!', 'Public to friends', '4', '3');
 
 INSERT INTO `Posts_has_Friendships` (`post_id`, `friendship_id`) VALUES ('1', '1');
 INSERT INTO `Posts_has_Friendships` (`post_id`, `friendship_id`) VALUES ('1', '2');
 INSERT INTO `Posts_has_Friendships` (`post_id`, `friendship_id`) VALUES ('2', '2');
 
-INSERT INTO `Posts_has_Locations` (`location_id`, `post_id`) VALUES ('1', '1');
-INSERT INTO `Posts_has_Locations` (`location_id`, `post_id`) VALUES ('1', '2');
-INSERT INTO `Posts_has_Locations` (`location_id`, `post_id`) VALUES ('2', '2');
-INSERT INTO `Posts_has_Locations` (`location_id`, `post_id`) VALUES ('3', '2');
-
-INSERT INTO `Users_has_Locations` (`user_id`, `location_id`) VALUES ('1', '1');
-INSERT INTO `Users_has_Locations` (`user_id`, `location_id`) VALUES ('1', '2');
-INSERT INTO `Users_has_Locations` (`user_id`, `location_id`) VALUES ('2', '1');
-INSERT INTO `Users_has_Locations` (`user_id`, `location_id`) VALUES ('3', '3');
-
-/*
-SELECT * FROM Posts;
-SELECT * FROM Friendships;
-SELECT * FROM Users;
-SELECT * FROM Locations;
-SELECT * FROM Posts_has_Friendships;
-SELECT * FROM Posts_has_Locations;
-SELECT * FROM Users_has_Locations;
-*/
 
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;

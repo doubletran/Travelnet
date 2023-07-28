@@ -1,6 +1,9 @@
 # group18-cs340-project
-This project can be run by following command:
+Getting a stable version of node to run without the weird errors:
 ```bash
-npm install
-npm start
+nvm install v16.15.0
+
+nvm use v16.15.0
 ```
+
+"All code is based on the CS 340 starter code, with the exception of..."
