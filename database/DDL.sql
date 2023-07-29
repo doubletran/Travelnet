@@ -106,16 +106,36 @@ CREATE TABLE IF NOT EXISTS `Posts_has_Friendships` (
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
+
+
+CREATE FUNCTION calMulCt (id1 int, id2 int)
+    RETURNS int
+    RETURN (
+      SELECT COUNT(*) 
+      FROM (
+        (SELECT friend_user_id AS "user id" 
+        FROM ((select Friendships.friend_user_id from Users 
+    INNER JOIN Friendships ON Users.user_id = Friendships.user_id WHERE Friendships.user_id = id1)
+    UNION (select Friendships.user_id from Users 
+    INNER JOIN Friendships ON Users.user_id = Friendships.friend_user_id WHERE Friendships.friend_user_id = id1
+    )) AS a)
+    intersect 
+    (SELECT friend_user_id AS "user id" FROM ((select Friendships.friend_user_id from Users 
+    INNER JOIN Friendships ON Users.user_id = Friendships.user_id WHERE Friendships.user_id = id2)
+    UNION (select Friendships.user_id from Users 
+    INNER JOIN Friendships ON Users.user_id = Friendships.friend_user_id WHERE Friendships.friend_user_id = id2
+    )) AS b)
+          ) as t);
+
 INSERT INTO `Users` (`user_name`, `email`, `password`) VALUES ('mary563', 'mary563@gmail.com', '1937@#fadf');
 INSERT INTO `Users` (`user_name`, `email`, `password`) VALUES ('toub8294', 'toub8294@gmail.com', 'hfkd0)jf!');
 INSERT INTO `Users` (`user_name`, `email`, `password`) VALUES ('pwune0921', 'pwune0921@gmail.com', '9384**&fafd');
 INSERT INTO `Users` (`user_name`, `email`, `password`) VALUES ('jimmyt801', 'jimmyt801@outlook.com', '8394*fhfkd');
 
-INSERT INTO `Friendships` (`start_date`, `mutual_friend_ct`, `user_id`, `friend_user_id`) VALUES ('2019-01-09',1 ,
- '1', '2');
-
-INSERT INTO `Friendships` (`start_date`, `mutual_friend_ct`, `user_id`, `friend_user_id`) VALUES ('2009-11-19', 2, '1', '3');
-INSERT INTO `Friendships` (`start_date`, `mutual_friend_ct`, `user_id`, `friend_user_id`) VALUES ('2023-08-29', 0, '2', '3');
+INSERT INTO `Friendships` (`start_date`, `mutual_friend_ct`, `user_id`, `friend_user_id`) VALUES ('2019-01-09', calMulCt(1, 2), '1', '2');
+INSERT INTO `Friendships` (`start_date`, `mutual_friend_ct`, `user_id`, `friend_user_id`) VALUES ('2009-11-19', calMulCt(1, 3), '1', '3');
+INSERT INTO `Friendships` (`start_date`, `mutual_friend_ct`, `user_id`, `friend_user_id`) VALUES ('2023-08-29', calMulCt(2, 3), '2', '3');
+INSERT INTO `Friendships` (`start_date`, `mutual_friend_ct`, `user_id`, `friend_user_id`) VALUES ('2023-08-29', calMulCt(1, 4), '1', '4');
 
 INSERT INTO `Locations` (`address`, `city`, `state`, `zip_code`, `country`) VALUES ('57434 Paucek Meadow, Suite 978', 'Efrainchester', 'Missouri', '99566-5220', 'United States');
 INSERT INTO `Locations` (`address`, `city`, `state`, `zip_code`, `country`) VALUES ('9088 Shanahan Groves, Suite 697', 'Pfannerstillhaven', 'Wisconsin', '97929', 'United States');

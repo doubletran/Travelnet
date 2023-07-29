@@ -2,11 +2,32 @@
 -- Tongxin Sun, & Tran Tran
 
 CREATE FUNCTION calMulCt (id1 int, id2 int)
-    RETURNS int DETERMINISTIC
-    RETURN (SELECT COUNT(*) FROM ((select Friendships.friend_user_id from Users 
+    RETURNS int
+    RETURN (
+      SELECT COUNT(*) 
+      FROM (
+        (SELECT friend_user_id AS "user id" 
+        FROM ((select Friendships.friend_user_id from Users 
     INNER JOIN Friendships ON Users.user_id = Friendships.user_id WHERE Friendships.user_id = id1)
+    UNION (select Friendships.user_id from Users 
+    INNER JOIN Friendships ON Users.user_id = Friendships.friend_user_id WHERE Friendships.friend_user_id = id1
+    )) AS a)
+    intersect 
+    (SELECT friend_user_id AS "user id" FROM ((select Friendships.friend_user_id from Users 
+    INNER JOIN Friendships ON Users.user_id = Friendships.user_id WHERE Friendships.user_id = id2)
+    UNION (select Friendships.user_id from Users 
+    INNER JOIN Friendships ON Users.user_id = Friendships.friend_user_id WHERE Friendships.friend_user_id = id2
+    )) AS b)
+          ) as t);
+            
+        /*SELECT COUNT(*) FROM ((select Friendships.friend_user_id from Users 
+    INNER JOIN Friendships ON Users.user_id = Friendships.user_id WHERE Friendships.user_id = 1)
+    UNION (select Friendships.user_id from Users 
+    INNER JOIN Friendships ON Users.user_id = Friendships.friend_user_id WHERE Friendships.friend_user_id = 1
+    )
     intersect (select Friendships.friend_user_id from Users 
-    INNER JOIN Friendships ON Users.user_id = Friendships.user_id WHERE Friendships.user_id = id2)) as t);
+    INNER JOIN Friendships ON Users.user_id = Friendships.user_id WHERE Friendships.user_id = id2)) as t*/
+    );
 
 -- The following 5 SELECT queries populate each table on each page with data------------------
 ----------------------------------------------------------------------------------------------
@@ -19,7 +40,7 @@ FROM Users;
 -- The table on the friendships.html page displays Friendship ID, Start Date, Mutual Friends 
 -- Count, User and Friend columns. 
 SELECT Friendships.friendship_id AS "Friendship ID", Friendships.start_date AS "Start Date", 
-calMulCt(Friendships.user_id, Friendships.friend_user_id) AS "Mutual Friends Count", Friendships.user_id AS "User ID", 
+Friendships.mutual_friend_ct AS "Mutual Friends Count", Friendships.user_id AS "User ID", 
 user.user_name AS "User Name", Friendships.friend_user_id AS "Friend User ID",  friend.user_name 
 AS "Friend User Name" 
 FROM Friendships 
@@ -91,12 +112,7 @@ INSERT INTO Users (user_name, email, password) VALUES (:user_name_input, :email_
 
 -- Add new row to the Friendships table
 INSERT INTO Friendships (start_date, mutual_friend_ct, user_id, friend_user_id) VALUES (:start_date_input, 
-(
-    SELECT COUNT(*) FROM ((select Friendships.friend_user_id from Users 
-    INNER JOIN Friendships ON Users.user_id = Friendships.user_id WHERE Friendships.user_id = :user_id_selected_from_drop_down)
-    intersect (select Friendships.friend_user_id from Users 
-    INNER JOIN Friendships ON Users.user_id = Friendships.user_id WHERE Friendships.user_id = :friend_user_id_selected_from_dropdown)) as t
-), :user_id_selected_from_dropdown, :friend_user_id_from_dropdown);
+calMulCt(:user_id_selected_from_dropdown, :friend_user_id_from_dropdown), :user_id_selected_from_dropdown, :friend_user_id_from_dropdown);
 
 -- Add new row to the Posts table
 INSERT INTO Posts (content, access, user_id) VALUES (:content_input, :access_input, :user_id_input);
