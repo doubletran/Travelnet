@@ -19,15 +19,6 @@ CREATE FUNCTION calMulCt (id1 int, id2 int)
     INNER JOIN Friendships ON Users.user_id = Friendships.friend_user_id WHERE Friendships.friend_user_id = id2
     )) AS b)
           ) as t);
-            
-        /*SELECT COUNT(*) FROM ((select Friendships.friend_user_id from Users 
-    INNER JOIN Friendships ON Users.user_id = Friendships.user_id WHERE Friendships.user_id = 1)
-    UNION (select Friendships.user_id from Users 
-    INNER JOIN Friendships ON Users.user_id = Friendships.friend_user_id WHERE Friendships.friend_user_id = 1
-    )
-    intersect (select Friendships.friend_user_id from Users 
-    INNER JOIN Friendships ON Users.user_id = Friendships.user_id WHERE Friendships.user_id = id2)) as t*/
-    );
 
 -- The following 5 SELECT queries populate each table on each page with data------------------
 ----------------------------------------------------------------------------------------------
