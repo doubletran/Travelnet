@@ -92,10 +92,19 @@ INSERT INTO Users (user_name, email, password) VALUES (:user_name_input, :email_
 -- Add new row to the Friendships table
 INSERT INTO Friendships (start_date, mutual_friend_ct, user_id, friend_user_id) VALUES (:start_date_input, 
 (
-    SELECT COUNT(*) FROM ((select Friendships.friend_user_id from Users 
-    INNER JOIN Friendships ON Users.user_id = Friendships.user_id WHERE Friendships.user_id = :user_id_selected_from_drop_down)
-    intersect (select Friendships.friend_user_id from Users 
-    INNER JOIN Friendships ON Users.user_id = Friendships.user_id WHERE Friendships.user_id = :friend_user_id_selected_from_dropdown)) as t
+SELECT a.friend_user_id FROM 
+(
+    (SELECT friend_user_id  from Friendships WHERE user_id = :user_id1)
+    UNION
+    (SELECT user_id as friend_user_id from Friendships
+    WHERE friend_user_id = :user_id1) 
+) as a JOIN
+(
+    (SELECT friend_user_id from Friendships WHERE user_id = :user_id2)
+    UNION
+    (SELECT user_id as friend_user_id from Friendships WHERE friend_user_id = :user_id2) 
+) as b
+where a.friend_user_id = b.friend_user_id;
 ), :user_id_selected_from_dropdown, :friend_user_id_from_dropdown);
 
 -- Add new row to the Posts table
@@ -123,30 +132,7 @@ SELECT friendship_id, start_date, mutual_friend_ct, user_id, friend_user_id
 FROM Friendships
 WHERE friendship_id = :friendship_id_selected_from_browse_friendship_page;
 SELECT * from Friendships;
-SELECT a.friend FROM 
-(
-(SELECT friend_user_id as friend from Friendships
-WHERE user_id = 1)
-UNION
-(SELECT user_id as friend from Friendships
-WHERE friend_user_id = 1) 
-ORDER BY friend
-) as a
-JOIN
-(
-(SELECT friend_user_id as friend from Friendships
-WHERE user_id = 4)
-UNION
-(SELECT user_id as friend from Friendships
-WHERE friend_user_id = 4) 
-ORDER BY friend
-) as b
-where a.friend = b.friend;
 
-SELECT friend_user_id from Friendships
-WHERE user_id = 2;
-SELECT user_id as friend_user_id from Friendships
-WHERE friend_user_id = 2;
 
 
 -- Get a single post's data for the Update Post form
