@@ -204,3 +204,10 @@ AND friend_user_id = :friend_user_id_selected_from_friend_user_name_dropdown_lis
 -- Delete a given user based on a user_id
 DELETE FROM Users WHERE user_id = :user_id_input;
 DELETE FROM Users WHERE user_id = :user_id_input;
+<<<<<<< HEAD
+=======
+SELECT Users WHERE user_id = user_id;
+
+SELECT friend_user_id FROM Friendships 
+JOIN Users WHERE Users.user_id = Friendships.friend_user_id;
+>>>>>>> main
