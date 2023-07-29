@@ -52,12 +52,12 @@ CREATE TABLE IF NOT EXISTS `Posts` (
   CONSTRAINT `fk_Posts_Users1`
     FOREIGN KEY (`user_id`)
     REFERENCES `Users` (`user_id`)
-    ON DELETE NO ACTION
+    ON DELETE SET NULL
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Posts_Locations1`
     FOREIGN KEY (`location_id`)
     REFERENCES `Locations` (`location_id`)
-    ON DELETE NO ACTION
+    ON DELETE SET NULL
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
