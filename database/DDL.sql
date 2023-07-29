@@ -8,7 +8,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 SET FOREIGN_KEY_CHECKS=0;
 SET AUTOCOMMIT = 0;
 
-DROP TABLES Users, Locations, Posts, Friendships, Posts_has_Friendships;
+DROP TABLE IF EXISTS Users, Locations, Posts, Friendships, Posts_has_Friendships;
 
 -- -----------------------------------------------------
 -- Table `Locations`
