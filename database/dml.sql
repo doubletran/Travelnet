@@ -138,6 +138,9 @@ SELECT user_id, user_name, email, password FROM Users WHERE user_id = :user_id_s
 SELECT friendship_id, start_date, mutual_friend_ct, user_id, friend_user_id 
 FROM Friendships
 WHERE friendship_id = :friendship_id_selected_from_browse_friendship_page;
+SELECT * from Friendships;
+
+
 
 -- Get a single post's data for the Update Post form
 SELECT post_id, content, access, user_id 
