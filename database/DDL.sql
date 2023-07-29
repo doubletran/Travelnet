@@ -135,7 +135,6 @@ INSERT INTO `Users` (`user_name`, `email`, `password`) VALUES ('jimmyt801', 'jim
 INSERT INTO `Friendships` (`start_date`, `mutual_friend_ct`, `user_id`, `friend_user_id`) VALUES ('2019-01-09', calMulCt(1, 2), '1', '2');
 INSERT INTO `Friendships` (`start_date`, `mutual_friend_ct`, `user_id`, `friend_user_id`) VALUES ('2009-11-19', calMulCt(1, 3), '1', '3');
 INSERT INTO `Friendships` (`start_date`, `mutual_friend_ct`, `user_id`, `friend_user_id`) VALUES ('2023-08-29', calMulCt(2, 3), '2', '3');
-INSERT INTO `Friendships` (`start_date`, `mutual_friend_ct`, `user_id`, `friend_user_id`) VALUES ('2023-08-29', calMulCt(1, 4), '1', '4');
 
 INSERT INTO `Locations` (`address`, `city`, `state`, `zip_code`, `country`) VALUES ('57434 Paucek Meadow, Suite 978', 'Efrainchester', 'Missouri', '99566-5220', 'United States');
 INSERT INTO `Locations` (`address`, `city`, `state`, `zip_code`, `country`) VALUES ('9088 Shanahan Groves, Suite 697', 'Pfannerstillhaven', 'Wisconsin', '97929', 'United States');

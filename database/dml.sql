@@ -31,9 +31,8 @@ FROM Users;
 -- The table on the friendships.html page displays Friendship ID, Start Date, Mutual Friends 
 -- Count, User and Friend columns. 
 SELECT Friendships.friendship_id AS "Friendship ID", Friendships.start_date AS "Start Date", 
-Friendships.mutual_friend_ct AS "Mutual Friends Count", Friendships.user_id AS "User ID", 
-user.user_name AS "User Name", Friendships.friend_user_id AS "Friend User ID",  friend.user_name 
-AS "Friend User Name" 
+Friendships.mutual_friend_ct AS "Mutual Friends Count", user.user_name AS "User 1 Name", 
+friend.user_name AS "User 2 Name" 
 FROM Friendships 
 INNER JOIN Users user ON Friendships.user_id = user.user_id
 INNER JOIN Users friend ON Friendships.friend_user_id = friend.user_id;
@@ -78,6 +77,18 @@ SELECT user_id, user_name FROM Users;
 -- Get all User IDs and User Names to populate the Friend User Name dropdown based on a given User.
 SELECT user_id, user_name FROM Users
 WHERE user_id != :user_id_selected_from_user_name_dropdown_list;
+
+-- Get all User IDS and User Names to populate the Friends mentioned dropdown list on the Posts page
+SELECT *
+FROM ((select Friendships.friend_user_id, friend.user_name AS "friends" from Users 
+INNER JOIN Friendships ON Users.user_id = Friendships.user_id 
+INNER JOIN Users friend ON Friendships.friend_user_id = friend.user_id
+WHERE Friendships.user_id = 1)
+UNION (select Friendships.user_id, friend.user_name AS "friends" from Users 
+INNER JOIN Friendships ON Users.user_id = Friendships.friend_user_id 
+INNER JOIN Users friend ON Friendships.friend_user_id = friend.user_id
+WHERE Friendships.friend_user_id = 1
+)) as t;
 
 -- Get all Post IDs and Post Contents to populate the Post dropdown. 
 SELECT post_id, content FROM Posts;
@@ -211,13 +222,3 @@ FROM Users user
 INNER JOIN Friendships ON user.user_id = Friendships.user_id
 INNER JOIN Users friend ON Friends.user_id = Friendships.friend_user_id
 WHERE user.user_id = :user_idInput;
-
-
-
-DELETE FROM Friendships WHERE user_id = :user_id_selected_from_user_id_dropdown_list 
-AND friend_user_id = :friend_user_id_selected_from_friend_user_name_dropdown_list;
-
--- Delete a given user based on a user_id
-DELETE FROM Users WHERE user_id = :user_id_input;
-
-SELECT Users WHERE user_id = user_id;
