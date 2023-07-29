@@ -67,7 +67,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `Friendships` (
   `friendship_id` INT NOT NULL AUTO_INCREMENT,
   `start_date` DATE NOT NULL,
-  `mutual_friend_ct` INT NOT NULL,
+  `mutual_friend_ct` INT NOT NULL DEFAULT 0,
   `user_id` INT NOT NULL,
   `friend_user_id` INT NOT NULL,
   PRIMARY KEY (`friendship_id`),
