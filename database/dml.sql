@@ -13,7 +13,7 @@ FROM Users;
 -- The table on the friendships.html page displays Friendship ID, Start Date, Mutual Friends 
 -- Count, User and Friend columns. 
 SELECT Friendships.friendship_id AS "Friendship ID", Friendships.start_date AS "Start Date", 
-Friendships.mutual_friend_ct AS "Mutual Friends Count", Friendships.user_id AS "User ID", 
+Friendships.mutual_friend_ct, Friendships.user_id AS "User ID", 
 user.user_name AS "User Name", Friendships.friend_user_id AS "Friend User ID",  friend.user_name 
 AS "Friend User Name" 
 FROM Friendships 

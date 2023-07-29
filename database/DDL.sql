@@ -84,7 +84,6 @@ CREATE TABLE IF NOT EXISTS `Friendships` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
-
 -- -----------------------------------------------------
 -- Table `Posts_has_Friendships`
 -- -----------------------------------------------------
@@ -112,9 +111,11 @@ INSERT INTO `Users` (`user_name`, `email`, `password`) VALUES ('toub8294', 'toub
 INSERT INTO `Users` (`user_name`, `email`, `password`) VALUES ('pwune0921', 'pwune0921@gmail.com', '9384**&fafd');
 INSERT INTO `Users` (`user_name`, `email`, `password`) VALUES ('jimmyt801', 'jimmyt801@outlook.com', '8394*fhfkd');
 
-INSERT INTO `Friendships` (`start_date`, `mutual_friend_ct`, `user_id`, `friend_user_id`) VALUES ('2019-01-09', '0', '1', '2');
-INSERT INTO `Friendships` (`start_date`, `mutual_friend_ct`, `user_id`, `friend_user_id`) VALUES ('2009-11-19', '0', '1', '3');
-INSERT INTO `Friendships` (`start_date`, `mutual_friend_ct`, `user_id`, `friend_user_id`) VALUES ('2023-08-29', '1', '2', '3');
+INSERT INTO `Friendships` (`start_date`, `mutual_friend_ct`, `user_id`, `friend_user_id`) VALUES ('2019-01-09',1 ,
+ '1', '2');
+
+INSERT INTO `Friendships` (`start_date`, `mutual_friend_ct`, `user_id`, `friend_user_id`) VALUES ('2009-11-19', 2, '1', '3');
+INSERT INTO `Friendships` (`start_date`, `mutual_friend_ct`, `user_id`, `friend_user_id`) VALUES ('2023-08-29', 0, '2', '3');
 
 INSERT INTO `Locations` (`address`, `city`, `state`, `zip_code`, `country`) VALUES ('57434 Paucek Meadow, Suite 978', 'Efrainchester', 'Missouri', '99566-5220', 'United States');
 INSERT INTO `Locations` (`address`, `city`, `state`, `zip_code`, `country`) VALUES ('9088 Shanahan Groves, Suite 697', 'Pfannerstillhaven', 'Wisconsin', '97929', 'United States');
@@ -138,3 +139,11 @@ COMMIT;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
+ALTER TABLE Friendships ADD LesserUser int AS (CASE WHEN Friendships.user_id < Friendships.friend_user_id THEN Friendships.user_id ELSE Friendships.friend_user_id END);
+ALTER TABLE Friendships ADD GreaterUser int AS 
+  (CASE WHEN Friendships.user_id > Friendships.friend_user_id THEN Friendships.user_id ELSE Friendships.friend_user_id END);
+
+ALTER TABLE Friendships 
+  ADD CONSTRAINT FriendshipUnique UNIQUE(LesserUser, GreaterUser);
