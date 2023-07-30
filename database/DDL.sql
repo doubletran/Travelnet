@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `Posts` (
   CONSTRAINT `fk_Posts_Users1`
     FOREIGN KEY (`user_id`)
     REFERENCES `Users` (`user_id`)
-    ON DELETE SET NULL
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Posts_Locations1`
     FOREIGN KEY (`location_id`)

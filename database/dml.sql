@@ -41,8 +41,10 @@ INNER JOIN Users friend ON Friendships.friend_user_id = friend.user_id;
 -- The table on the posts.html page displays Post ID, Content, Access and User columns.
 SELECT Posts.post_id AS "Post ID", Posts.content AS "Content", access AS "Access", 
 Posts.user_id AS "User ID", user.user_name AS "User Name", GROUP_CONCAT(friend.user_name SEPARATOR', ') AS "Friends Mentioned", 
-Posts.location_id AS "Location ID"
-FROM Posts LEFT JOIN Posts_has_Friendships ON Posts.post_id = Posts_has_Friendships.post_id
+CONCAT(Locations.address, ' ', Locations.city, ' ', 
+Locations.state, ' ', Locations.zip_code, ' ', Locations.country) AS 'Locations Pinned'
+FROM Posts 
+LEFT JOIN Posts_has_Friendships ON Posts.post_id = Posts_has_Friendships.post_id
 INNER JOIN Users user ON user.user_id = Posts.user_id 
 LEFT JOIN Friendships ON Friendships.friendship_id = Posts_has_Friendships.friendship_id 
 LEFT JOIN Users friend ON Friendships.friend_user_id = friend.user_id 
@@ -58,9 +60,8 @@ FROM Locations;
 
 -- Get all data to populate the Posts_has_Friendships intersection table
 -- The table on the posts-friendships.html page displays Post Content, User, and Mentions columns.
-SELECT posts_friendships_id AS "Posts_Friendships ID", Posts_has_Friendships.post_id AS "Post ID", 
-Posts.content AS "Post Content", Posts_has_Friendships.friendship_id AS "Friendship ID", 
-user.user_name AS "User", friend.user_name AS "Friend"
+SELECT posts_friendships_id AS "Posts_Friendships ID", Posts.content AS "Post Content",
+user.user_name AS "User", friend.user_name AS "Friend Mentioned"
 FROM Posts_has_Friendships
 INNER JOIN Posts ON Posts_has_Friendships.post_id = Posts.post_id
 INNER JOIN Users user ON Posts.user_id = user.user_id
