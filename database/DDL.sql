@@ -27,7 +27,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `Users`
 -- -----------------------------------------------------
-CREATE OR REPLACE TABLE `Users` (
+CREATE TABLE IF NOT EXISTS `Users` (
   `user_id` INT NOT NULL AUTO_INCREMENT,
   `user_name` VARCHAR(45) NOT NULL,
   `email` VARCHAR(255) NOT NULL,
@@ -109,7 +109,7 @@ ENGINE = InnoDB;
 
 
 CREATE FUNCTION calMulCt (id1 int, id2 int)
-    RETURNS int
+    RETURNS int DETERMINISTIC
     RETURN (
       SELECT COUNT(*) 
       FROM (
