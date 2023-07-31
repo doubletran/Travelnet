@@ -1,58 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Friendships</title>
-<script language="JavaScript">
-		function showform(dowhat) {
-			/*
-			* four DIVS: browse, insert, update, delete
-			* this function sets one visible the others not
-			*/
-			if (dowhat == 'insert'){
-				document.getElementById('browse').style.display = 'none';
-				document.getElementById('insert').style.display = 'block';
-				document.getElementById('update').style.display = 'none';
-				document.getElementById('delete').style.display = 'none';
-			}
-			else if (dowhat == 'update'){
-				document.getElementById('browse').style.display = 'none';
-				document.getElementById('insert').style.display = 'none';
-				document.getElementById('update').style.display = 'block';
-				document.getElementById('delete').style.display = 'none';
-			}
-			else if (dowhat == 'delete'){
-				document.getElementById('browse').style.display = 'none';
-				document.getElementById('insert').style.display = 'none';
-				document.getElementById('update').style.display = 'none';
-				document.getElementById('delete').style.display = 'block';
-			}
-      else if (dowhat == 'all'){
-				document.getElementById('browse').style.display = 'block';
-				document.getElementById('insert').style.display = 'block';
-				document.getElementById('update').style.display = 'block';
-				document.getElementById('delete').style.display = 'block';
-			}
-			else { //by default display browse
-				document.getElementById('browse').style.display = 'block';
-				document.getElementById('insert').style.display = 'block';
-				document.getElementById('update').style.display = 'none';
-				document.getElementById('delete').style.display = 'none';
-			}
-		}
-    function newFriendship() { showform('insert'); }
-    function updateFriendship(pid) { showform('update'); }
-    function deleteFriendship(pid) { showform ('delete'); }
-    function browseFriendships() { showform ('browse'); }
-    function showAll() { showform ('all'); }
-</script>
-<link href="style.css" rel="stylesheet" type="text/css" />
-</head>
-
-<body onload="browseFriendships()">
 <h1>Friendships</h1>
-
-[ <a href="/">Home</a> | <a href="/users">Users</a> | <a href="/friendships">Friendships</a> | <a href="/posts">Posts</a> | <a href="/locations">Locations</a> | <a href="/posts-friendships">Posts_has_Friendships</a>]
-
+{{> navbar }}
 <div id="browse">
 <p><a href="#" onClick="showAll()">Display all forms</a> </p>
 <table border="1" cellpadding="5">
@@ -163,6 +110,3 @@
     <input class="btn" type="button" value="cancel" onClick="browseFriendships()">
   </form> 
 </div><!-- delete -->
-
-</body>
-</html>
