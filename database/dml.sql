@@ -1,6 +1,24 @@
 -- group #18
 -- Tongxin Sun, & Tran Tran
 
+CREATE FUNCTION calMulCt (id1 int, id2 int)
+    RETURNS int
+    RETURN (
+      SELECT COUNT(*) 
+      FROM (
+        (SELECT friend_user_id AS "user id" 
+        FROM ((select Friendships.friend_user_id from Users 
+    INNER JOIN Friendships ON Users.user_id = Friendships.user_id WHERE Friendships.user_id = id1)
+    UNION (select Friendships.user_id from Users 
+    INNER JOIN Friendships ON Users.user_id = Friendships.friend_user_id WHERE Friendships.friend_user_id = id1
+    )) AS a)
+    intersect 
+    (SELECT friend_user_id AS "user id" FROM ((select Friendships.friend_user_id from Users 
+    INNER JOIN Friendships ON Users.user_id = Friendships.user_id WHERE Friendships.user_id = id2)
+    UNION (select Friendships.user_id from Users 
+    INNER JOIN Friendships ON Users.user_id = Friendships.friend_user_id WHERE Friendships.friend_user_id = id2
+    )) AS b)
+          ) as t);
 
 -- The following 5 SELECT queries populate each table on each page with data------------------
 ----------------------------------------------------------------------------------------------
@@ -13,9 +31,8 @@ FROM Users;
 -- The table on the friendships.html page displays Friendship ID, Start Date, Mutual Friends 
 -- Count, User and Friend columns. 
 SELECT Friendships.friendship_id AS "Friendship ID", Friendships.start_date AS "Start Date", 
-Friendships.mutual_friend_ct AS "Mutual Friends Count", Friendships.user_id AS "User ID", 
-user.user_name AS "User Name", Friendships.friend_user_id AS "Friend User ID",  friend.user_name 
-AS "Friend User Name" 
+Friendships.mutual_friend_ct AS "Mutual Friends Count", user.user_name AS "User 1 Name", 
+friend.user_name AS "User 2 Name" 
 FROM Friendships 
 INNER JOIN Users user ON Friendships.user_id = user.user_id
 INNER JOIN Users friend ON Friendships.friend_user_id = friend.user_id;
@@ -24,8 +41,10 @@ INNER JOIN Users friend ON Friendships.friend_user_id = friend.user_id;
 -- The table on the posts.html page displays Post ID, Content, Access and User columns.
 SELECT Posts.post_id AS "Post ID", Posts.content AS "Content", access AS "Access", 
 Posts.user_id AS "User ID", user.user_name AS "User Name", GROUP_CONCAT(friend.user_name SEPARATOR', ') AS "Friends Mentioned", 
-Posts.location_id AS "Location ID"
-FROM Posts LEFT JOIN Posts_has_Friendships ON Posts.post_id = Posts_has_Friendships.post_id
+CONCAT(Locations.address, ' ', Locations.city, ' ', 
+Locations.state, ' ', Locations.zip_code, ' ', Locations.country) AS 'Locations Pinned'
+FROM Posts 
+LEFT JOIN Posts_has_Friendships ON Posts.post_id = Posts_has_Friendships.post_id
 INNER JOIN Users user ON user.user_id = Posts.user_id 
 LEFT JOIN Friendships ON Friendships.friendship_id = Posts_has_Friendships.friendship_id 
 LEFT JOIN Users friend ON Friendships.friend_user_id = friend.user_id 
@@ -41,9 +60,8 @@ FROM Locations;
 
 -- Get all data to populate the Posts_has_Friendships intersection table
 -- The table on the posts-friendships.html page displays Post Content, User, and Mentions columns.
-SELECT posts_friendships_id AS "Posts_Friendships ID", Posts_has_Friendships.post_id AS "Post ID", 
-Posts.content AS "Post Content", Posts_has_Friendships.friendship_id AS "Friendship ID", 
-user.user_name AS "User", friend.user_name AS "Friend"
+SELECT posts_friendships_id AS "Posts_Friendships ID", Posts.content AS "Post Content",
+user.user_name AS "User", friend.user_name AS "Friend Mentioned"
 FROM Posts_has_Friendships
 INNER JOIN Posts ON Posts_has_Friendships.post_id = Posts.post_id
 INNER JOIN Users user ON Posts.user_id = user.user_id
@@ -61,6 +79,30 @@ SELECT user_id, user_name FROM Users;
 SELECT user_id, user_name FROM Users
 WHERE user_id != :user_id_selected_from_user_name_dropdown_list;
 
+-- Get all User IDS and User Names to populate the Friends mentioned dropdown list on the Posts page
+SELECT *
+FROM ((select Friendships.friend_user_id, friend.user_name AS "friends" from Users 
+INNER JOIN Friendships ON Users.user_id = Friendships.user_id 
+INNER JOIN Users friend ON Friendships.friend_user_id = friend.user_id
+WHERE Friendships.user_id = 1)
+UNION (select Friendships.user_id, friend.user_name AS "friends" from Users 
+INNER JOIN Friendships ON Users.user_id = Friendships.friend_user_id 
+INNER JOIN Users friend ON Friendships.friend_user_id = friend.user_id
+WHERE Friendships.friend_user_id = 1
+)) as t;
+
+SELECT * FROM ((SELECT Users.user_id AS "User ID", Users.user_name AS "User", 
+Friendships.friend_user_id AS "Friend ID", friends.user_name AS "Friend"
+FROM Users 
+LEFT JOIN Friendships ON Friendships.user_id = Users.user_id 
+LEFT JOIN Users friends ON friends.user_id = Friendships.friend_user_id) 
+UNION 
+(SELECT Users.user_id AS "User ID", Users.user_name AS "User", 
+Friendships.user_id AS "Friend ID", friends.user_name AS "Friend"
+FROM Users 
+LEFT JOIN Friendships ON Friendships.friend_user_id = Users.user_id 
+LEFT JOIN Users friends ON friends.user_id = Friendships.user_id)) AS t
+ORDER BY Users.user_id;
 -- Get all Post IDs and Post Contents to populate the Post dropdown. 
 SELECT post_id, content FROM Posts;
 
@@ -85,12 +127,7 @@ INSERT INTO Users (user_name, email, password) VALUES (:user_name_input, :email_
 
 -- Add new row to the Friendships table
 INSERT INTO Friendships (start_date, mutual_friend_ct, user_id, friend_user_id) VALUES (:start_date_input, 
-(
-    SELECT COUNT(*) FROM ((select Friendships.friend_user_id from Users 
-    INNER JOIN Friendships ON Users.user_id = Friendships.user_id WHERE Friendships.user_id = :user_id_selected_from_drop_down)
-    intersect (select Friendships.friend_user_id from Users 
-    INNER JOIN Friendships ON Users.user_id = Friendships.user_id WHERE Friendships.user_id = :friend_user_id_selected_from_dropdown)) as t
-), :user_id_selected_from_dropdown, :friend_user_id_from_dropdown);
+calMulCt(:user_id_selected_from_dropdown, :friend_user_id_from_dropdown), :user_id_selected_from_dropdown, :friend_user_id_from_dropdown);
 
 -- Add new row to the Posts table
 INSERT INTO Posts (content, access, user_id) VALUES (:content_input, :access_input, :user_id_input);
@@ -116,6 +153,9 @@ SELECT user_id, user_name, email, password FROM Users WHERE user_id = :user_id_s
 SELECT friendship_id, start_date, mutual_friend_ct, user_id, friend_user_id 
 FROM Friendships
 WHERE friendship_id = :friendship_id_selected_from_browse_friendship_page;
+SELECT * from Friendships;
+
+
 
 -- Get a single post's data for the Update Post form
 SELECT post_id, content, access, user_id 
@@ -195,16 +235,3 @@ FROM Users user
 INNER JOIN Friendships ON user.user_id = Friendships.user_id
 INNER JOIN Users friend ON Friends.user_id = Friendships.friend_user_id
 WHERE user.user_id = :user_idInput;
-
-
-
-DELETE FROM Friendships WHERE user_id = :user_id_selected_from_user_id_dropdown_list 
-AND friend_user_id = :friend_user_id_selected_from_friend_user_name_dropdown_list;
-
--- Delete a given user based on a user_id
-DELETE FROM Users WHERE user_id = :user_id_input;
-DELETE FROM Users WHERE user_id = :user_id_input;
-SELECT Users WHERE user_id = user_id;
-
-SELECT friend_user_id FROM Friendships 
-JOIN Users WHERE Users.user_id = Friendships.friend_user_id;

@@ -1,57 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Posts_has_Friendshipss</title>
-<script language="JavaScript">
-		function showform(dowhat) {
-			/*
-			* four DIVS: browse, insert, update, delete
-			* this function sets one visible the others not
-			*/
-			if (dowhat == 'insert'){
-				document.getElementById('browse').style.display = 'none';
-				document.getElementById('insert').style.display = 'block';
-				document.getElementById('update').style.display = 'none';
-				document.getElementById('delete').style.display = 'none';
-			}
-			else if (dowhat == 'update'){
-				document.getElementById('browse').style.display = 'none';
-				document.getElementById('insert').style.display = 'none';
-				document.getElementById('update').style.display = 'block';
-				document.getElementById('delete').style.display = 'none';
-			}
-			else if (dowhat == 'delete'){
-				document.getElementById('browse').style.display = 'none';
-				document.getElementById('insert').style.display = 'none';
-				document.getElementById('update').style.display = 'none';
-				document.getElementById('delete').style.display = 'block';
-			}
-      else if (dowhat == 'all'){
-				document.getElementById('browse').style.display = 'block';
-				document.getElementById('insert').style.display = 'block';
-				document.getElementById('update').style.display = 'block';
-				document.getElementById('delete').style.display = 'block';
-			}
-			else { //by default display browse
-				document.getElementById('browse').style.display = 'block';
-				document.getElementById('insert').style.display = 'block';
-				document.getElementById('update').style.display = 'none';
-				document.getElementById('delete').style.display = 'none';
-			}
-		}
-    function newPosts_has_Friendships() { showform('insert'); }
-    function updatePosts_has_Friendships(pid) { showform('update'); }
-    function deletePosts_has_Friendships(pid) { showform ('delete'); }
-    function browsePosts_has_Friendshipss() { showform ('browse'); }
-    function showAll() { showform ('all'); }
-</script>
-<link href="style.css" rel="stylesheet" type="text/css" />
-</head>
-
-<body onload="browsePosts_has_Friendshipss()">
 <h1>Posts_has_Friendshipss</h1>
 
-[ <a href="/">Home</a> | <a href="/users">Users</a> | <a href="/friendships">Friendships</a> | <a href="/posts">Posts</a> | <a href="/locations">Locations</a> | <a href="/posts-friendships">Posts_has_Friendships</a>]
+{{> navbar }}
 
 <div id="browse">
 <p><a href="#" onClick="showAll()">Display all forms</a> </p>
@@ -60,9 +9,7 @@
     <th>Edit</th>
     <th>Delete</th>
     <th>Posts_Friendships ID</th>
-    <th>Post ID</th>
     <th>Post Content</th>
-    <th>Friendship ID</th>
     <th>User</th>
     <th>Friend</th>
   </tr>
@@ -70,9 +17,7 @@
     <td><a href="#" onClick="updatePosts_has_Friendships('Posts_has_FriendshipsID')">Edit</a></td>
     <td><a href="#" onclick="deletePosts_has_Friendships('this.Posts_has_FriendshipsID')">Delete</a></td>
     <td>1</td>
-    <td align="right" >1</td>
     <td >I love the city!</td>
-    <td align="right" >1</td>
     <td>mary563</td>
     <td>toub8294</td>
   </tr>
@@ -80,9 +25,7 @@
     <td><a href="#" onClick="updatePosts_has_Friendships('Posts_has_FriendshipsID')">Edit</a></td>
     <td><a href="#" onclick="deletePosts_has_Friendships('this.Posts_has_FriendshipsID')">Delete</a></td>
     <td>2</td>
-    <td align="right" >1</td>
     <td >I love the city!</td>
-    <td align="right" >2</td>
     <td>mary563</td>
     <td>pwune0921</td>
   </tr>
@@ -90,9 +33,7 @@
     <td><a href="#" onClick="updatePosts_has_Friendships('Posts_has_FriendshipsID')">Edit</a></td>
     <td><a href="#" onclick="deletePosts_has_Friendships('this.Posts_has_FriendshipsID')">Delete</a></td>
     <td>3</td>
-    <td align="right" >2</td>
     <td >I like the place! Look at it!!!</td>
-    <td align="right" >2</td>
     <td>mary563</td>
     <td>pwune0921</td>
   </tr>
@@ -164,6 +105,3 @@
     <input class="btn" type="button" value="cancel" onClick="browsePosts_has_Friendshipss()">
   </form> 
 </div><!-- delete -->
-
-</body>
-</html>
