@@ -12,8 +12,20 @@ var db = require('./database/db-connector')
 
 const { engine } = require('express-handlebars');
 var exphbs = require('express-handlebars');     // Import express-handlebars
-app.engine('.hbs', engine({extname: ".hbs"}));  // Create an instance of the handlebars engine to process templates
-app.set('view engine', '.hbs');  
+//app.engine('.hbs', engine({partialsDir: 'views/partials', extname: ".hbs"}));  // Create an instance of the handlebars engine to process templates
+
+app.engine('hbs', exphbs.engine({
+    layoutsDir: __dirname + '/views/layouts',
+    partialsDir: __dirname + '/views/partials/',
+    extname: '.hbs',
+    partialsDir: 'views/partials',
+    //new configuration parameter
+    defaultLayout: 'main',
+    }));
+
+app.set('view engine', '.hbs');
+app.set("views", "./views");
+
 exphbs.registerPartial('navbar');
 
 app.use(express.json())
