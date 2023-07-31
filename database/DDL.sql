@@ -8,7 +8,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 SET FOREIGN_KEY_CHECKS=0;
 SET AUTOCOMMIT = 0;
 
-DROP TABLES Users, Locations, Posts, Friendships, Posts_has_Friendships;
+DROP TABLE IF EXISTS Users, Locations, Posts, Friendships, Posts_has_Friendships;
 
 -- -----------------------------------------------------
 -- Table `Locations`
@@ -27,7 +27,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `Users`
 -- -----------------------------------------------------
-CREATE OR REPLACE TABLE `Users` (
+CREATE TABLE IF NOT EXISTS `Users` (
   `user_id` INT NOT NULL AUTO_INCREMENT,
   `user_name` VARCHAR(45) NOT NULL,
   `email` VARCHAR(255) NOT NULL,
@@ -52,12 +52,12 @@ CREATE TABLE IF NOT EXISTS `Posts` (
   CONSTRAINT `fk_Posts_Users1`
     FOREIGN KEY (`user_id`)
     REFERENCES `Users` (`user_id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Posts_Locations1`
     FOREIGN KEY (`location_id`)
     REFERENCES `Locations` (`location_id`)
-    ON DELETE NO ACTION
+    ON DELETE SET NULL
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -67,7 +67,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `Friendships` (
   `friendship_id` INT NOT NULL AUTO_INCREMENT,
   `start_date` DATE NOT NULL,
-  `mutual_friend_ct` INT NOT NULL,
+  `mutual_friend_ct` INT NOT NULL DEFAULT 0,
   `user_id` INT NOT NULL,
   `friend_user_id` INT NOT NULL,
   PRIMARY KEY (`friendship_id`),
@@ -84,7 +84,6 @@ CREATE TABLE IF NOT EXISTS `Friendships` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
-
 -- -----------------------------------------------------
 -- Table `Posts_has_Friendships`
 -- -----------------------------------------------------
@@ -107,14 +106,35 @@ CREATE TABLE IF NOT EXISTS `Posts_has_Friendships` (
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
+
+
+CREATE FUNCTION calMulCt (id1 int, id2 int)
+    RETURNS int DETERMINISTIC
+    RETURN (
+      SELECT COUNT(*) 
+      FROM (
+        (SELECT friend_user_id AS "user id" 
+        FROM ((select Friendships.friend_user_id from Users 
+    INNER JOIN Friendships ON Users.user_id = Friendships.user_id WHERE Friendships.user_id = id1)
+    UNION (select Friendships.user_id from Users 
+    INNER JOIN Friendships ON Users.user_id = Friendships.friend_user_id WHERE Friendships.friend_user_id = id1
+    )) AS a)
+    intersect 
+    (SELECT friend_user_id AS "user id" FROM ((select Friendships.friend_user_id from Users 
+    INNER JOIN Friendships ON Users.user_id = Friendships.user_id WHERE Friendships.user_id = id2)
+    UNION (select Friendships.user_id from Users 
+    INNER JOIN Friendships ON Users.user_id = Friendships.friend_user_id WHERE Friendships.friend_user_id = id2
+    )) AS b)
+          ) as t);
+
 INSERT INTO `Users` (`user_name`, `email`, `password`) VALUES ('mary563', 'mary563@gmail.com', '1937@#fadf');
 INSERT INTO `Users` (`user_name`, `email`, `password`) VALUES ('toub8294', 'toub8294@gmail.com', 'hfkd0)jf!');
 INSERT INTO `Users` (`user_name`, `email`, `password`) VALUES ('pwune0921', 'pwune0921@gmail.com', '9384**&fafd');
 INSERT INTO `Users` (`user_name`, `email`, `password`) VALUES ('jimmyt801', 'jimmyt801@outlook.com', '8394*fhfkd');
 
-INSERT INTO `Friendships` (`start_date`, `mutual_friend_ct`, `user_id`, `friend_user_id`) VALUES ('2019-01-09', '0', '1', '2');
-INSERT INTO `Friendships` (`start_date`, `mutual_friend_ct`, `user_id`, `friend_user_id`) VALUES ('2009-11-19', '0', '1', '3');
-INSERT INTO `Friendships` (`start_date`, `mutual_friend_ct`, `user_id`, `friend_user_id`) VALUES ('2023-08-29', '1', '2', '3');
+INSERT INTO `Friendships` (`start_date`, `mutual_friend_ct`, `user_id`, `friend_user_id`) VALUES ('2019-01-09', calMulCt(1, 2), '1', '2');
+INSERT INTO `Friendships` (`start_date`, `mutual_friend_ct`, `user_id`, `friend_user_id`) VALUES ('2009-11-19', calMulCt(1, 3), '1', '3');
+INSERT INTO `Friendships` (`start_date`, `mutual_friend_ct`, `user_id`, `friend_user_id`) VALUES ('2023-08-29', calMulCt(2, 3), '2', '3');
 
 INSERT INTO `Locations` (`address`, `city`, `state`, `zip_code`, `country`) VALUES ('57434 Paucek Meadow, Suite 978', 'Efrainchester', 'Missouri', '99566-5220', 'United States');
 INSERT INTO `Locations` (`address`, `city`, `state`, `zip_code`, `country`) VALUES ('9088 Shanahan Groves, Suite 697', 'Pfannerstillhaven', 'Wisconsin', '97929', 'United States');
@@ -138,3 +158,11 @@ COMMIT;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
+ALTER TABLE Friendships ADD LesserUser int AS (CASE WHEN Friendships.user_id < Friendships.friend_user_id THEN Friendships.user_id ELSE Friendships.friend_user_id END);
+ALTER TABLE Friendships ADD GreaterUser int AS 
+  (CASE WHEN Friendships.user_id > Friendships.friend_user_id THEN Friendships.user_id ELSE Friendships.friend_user_id END);
+
+ALTER TABLE Friendships 
+  ADD CONSTRAINT FriendshipUnique UNIQUE(LesserUser, GreaterUser);
