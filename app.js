@@ -14,7 +14,6 @@ const { engine } = require('express-handlebars');
 var exphbs = require('express-handlebars');     // Import express-handlebars
 app.engine('.hbs', engine({extname: ".hbs"}));  // Create an instance of the handlebars engine to process templates
 app.set('view engine', '.hbs');  
-exphbs.registerPartial('navbar');
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
