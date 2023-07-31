@@ -91,6 +91,18 @@ INNER JOIN Users friend ON Friendships.friend_user_id = friend.user_id
 WHERE Friendships.friend_user_id = 1
 )) as t;
 
+SELECT * FROM ((SELECT Users.user_id AS "User ID", Users.user_name AS "User", 
+Friendships.friend_user_id AS "Friend ID", friends.user_name AS "Friend"
+FROM Users 
+LEFT JOIN Friendships ON Friendships.user_id = Users.user_id 
+LEFT JOIN Users friends ON friends.user_id = Friendships.friend_user_id) 
+UNION 
+(SELECT Users.user_id AS "User ID", Users.user_name AS "User", 
+Friendships.user_id AS "Friend ID", friends.user_name AS "Friend"
+FROM Users 
+LEFT JOIN Friendships ON Friendships.friend_user_id = Users.user_id 
+LEFT JOIN Users friends ON friends.user_id = Friendships.user_id)) AS t
+ORDER BY Users.user_id;
 -- Get all Post IDs and Post Contents to populate the Post dropdown. 
 SELECT post_id, content FROM Posts;
 
