@@ -13,8 +13,8 @@
     <th>User 2 Name</th>
   </tr>
   <tr>
-    <td><a href="#" onClick="updateFriendship('this.FriendshipID')">Edit</a></td>
-    <td><a href="#" onclick="deleteFriendship('this.FriendshipID')">Delete</a></td>
+    <td><a href="#" onClick="updateItem('this.FriendshipID')">Edit</a></td>
+    <td><a href="#" onclick="deleteItem('this.FriendshipID')">Delete</a></td>
     <td align="right" >1</td>
     <td >2019-01-09</td>
     <td align="right" >0</td>
@@ -22,8 +22,8 @@
     <td>toub8294</td>
   </tr>
   <tr>
-    <td><a href="#" onClick="updateFriendship('this.FriendshipID')">Edit</a></td>
-    <td><a href="#" onclick="deleteFriendship('this.FriendshipID')">Delete</a></td>
+    <td><a href="#" onClick="updateItem('this.FriendshipID')">Edit</a></td>
+    <td><a href="#" onclick="deleteItem('this.FriendshipID')">Delete</a></td>
     <td align="right" >2</td>
     <td >2009-11-19</td>
     <td align="right" >0</td>
@@ -31,8 +31,8 @@
     <td>pwune0921</td>
   </tr>
   <tr>
-    <td><a href="#" onClick="updateFriendship('this.FriendshipID')">Edit</a></td>
-    <td><a href="#" onclick="deleteFriendship('this.FriendshipID')">Delete</a></td>
+    <td><a href="#" onClick="updateItem('this.FriendshipID')">Edit</a></td>
+    <td><a href="#" onclick="deleteItem('this.FriendshipID')">Delete</a></td>
     <td align="right" >3</td>
     <td >2023-08-29</td>
     <td align="right" >1</td>
@@ -63,7 +63,7 @@
                 </select>
       </fieldset>
           <input class="btn" type="submit" id="addFriendship" value="Add Friendship">
-          <input class="btn" type="button" value="cancel" onClick="browseFriendships()">
+          <input class="btn" type="button" value="cancel" onClick="browseItem()">
 	</form> 
 </div><!-- insert -->
 <p>&nbsp;</p>
@@ -91,7 +91,7 @@
                 </select>
           </fieldset>
           <input class="btn" type="submit" id="UpdateSaveFriendship" value="Save Update Friendship">
-          <input class="btn" type="button" value="cancel" onClick="browseFriendships()">
+          <input class="btn" type="button" value="cancel" onClick="browseItem()">
 	</form> 
 </div><!-- update -->
 
@@ -107,6 +107,6 @@
             <label> <strong>Friend: </strong> </label>toub8294 
         </fieldset>
     <input class="btn" type="submit" id="DeleteFriendship" value="Delete Friendship">
-    <input class="btn" type="button" value="cancel" onClick="browseFriendships()">
+    <input class="btn" type="button" value="cancel" onClick="browseItem()">
   </form> 
 </div><!-- delete -->

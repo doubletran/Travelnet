@@ -16,8 +16,8 @@
     <th>Country</th>
   </tr>
   <tr>
-    <td><a href="#" onClick="updateLocation('this.LocationID')">Edit</a></td>
-    <td><a href="#" onclick="deleteLocation('this.LocationID')">Delete</a></td>
+    <td><a href="#" onClick="updateItem('this.LocationID')">Edit</a></td>
+    <td><a href="#" onclick="deleteItem('this.LocationID')">Delete</a></td>
     <td align="right" >1</td>
     <td >57434 Paucek Meadow, Suite 978</td>
     <td >Efrainchester</td>
@@ -26,8 +26,8 @@
     <td>United States</td>
   </tr>
   <tr>
-    <td><a href="#" onClick="updateLocation('this.LocationID')">Edit</a></td>
-    <td><a href="#" onclick="deleteLocation('this.LocationID')">Delete</a></td>
+    <td><a href="#" onClick="updateItem('this.LocationID')">Edit</a></td>
+    <td><a href="#" onclick="deleteItem('this.LocationID')">Delete</a></td>
     <td align="right" >2</td>
     <td >9088 Shanahan Groves, Suite 697</td>
     <td >Pfannerstillhaven</td>
@@ -36,8 +36,8 @@
     <td>United States</td>
   </tr>
   <tr>
-    <td><a href="#" onClick="updateLocation('this.LocationID')">Edit</a></td>
-    <td><a href="#" onclick="deleteLocation('this.LocationID')">Delete</a></td>
+    <td><a href="#" onClick="updateItem('this.LocationID')">Edit</a></td>
+    <td><a href="#" onclick="deleteItem('this.LocationID')">Delete</a></td>
     <td align="right" >3</td>
     <td >Kpg Connor no 96, Apt 119</td>
     <td >Batu</td>
@@ -46,8 +46,8 @@
     <td>Indonesia</td>
   </tr>
   <tr>
-    <td><a href="#" onClick="updateLocation('this.LocationID')">Edit</a></td>
-    <td><a href="#" onclick="deleteLocation('this.LocationID')">Delete</a></td>
+    <td><a href="#" onClick="updateItem('this.LocationID')">Edit</a></td>
+    <td><a href="#" onclick="deleteItem('this.LocationID')">Delete</a></td>
     <td align="right" >4</td>
     <td >Strada Caterina 779, Appartamento 61</td>
     <td >Santarelli veneto</td>
@@ -56,8 +56,8 @@
     <td>Italy</td>
   </tr>
   <tr>
-    <td><a href="#" onClick="updateLocation('this.LocationID')">Edit</a></td>
-    <td><a href="#" onclick="deleteLocation('this.LocationID')">Delete</a></td>
+    <td><a href="#" onClick="updateItem('this.LocationID')">Edit</a></td>
+    <td><a href="#" onclick="deleteItem('this.LocationID')">Delete</a></td>
     <td align="right" >5</td>
     <td >76941 Vũ Inlet, Suite 164</td>
     <td >Cao Bằng</td>
@@ -79,15 +79,15 @@
             <label> Country </label><input type="text" name="country">
       </fieldset>
           <input class="btn" type="submit" id="addLocation" value="Add Location">
-          <input class="btn" type="button" value="cancel" onClick="browseLocations()">
+          <input class="btn" type="button" value="cancel" onClick="browseItem()">
 	</form> 
 </div><!-- insert -->
 <p>&nbsp;</p>
 <div id="update">
-    <form method="Location" id="UpdateLocation">
+    <form method="Location" id="updateLocation">
         <legend><strong>Update Location</strong></legend>
           <fieldset class="fields">
-          <input type="hidden" name="Location_id" id="updateLocationID" value="1">
+          <input type="hidden" name="Location_id" id="updateLocation" value="1">
           <label> ID: </label> 1
           <label> Address Line </label> <input name="address" value="57434 Paucek Meadow, Suite 978">
           <label>City</label> <input name="city" value="Efrainchester">
@@ -96,7 +96,7 @@
           <label>Country</label><input name="country" value="United States">
           </fieldset>
           <input class="btn" type="submit" id="UpdateSaveLocation" value="Save Update Location">
-          <input class="btn" type="button" value="cancel" onClick="browseLocations()">
+          <input class="btn" type="button" value="cancel" onClick="browseItem()">
 	</form> 
 </div><!-- update -->
 
@@ -106,7 +106,7 @@
       <legend><strong>Delete Location</strong></legend>
         <fieldset class="fields">
         <p>Are you sure you wish to delete the following?</p>
-        <input type="hidden" name="LocationID" id="deleteLocationID" value="1">
+        <input type="hidden" name="LocationID" id="deleteLocation" value="1">
         <label><strong>ID:</strong></label> 1
             <label> <strong>Address Line: </strong> </label> 57434 Paucek Meadow, Suite 978
             <label> <strong>City: </strong> </label> Efrainchester
@@ -114,7 +114,7 @@
             <label> <strong>Zip Code: </strong> </label>99566-5220
             <label><strong>Country: </strong></label>United States	
         </fieldset>
-    <input class="btn" type="submit" id="DeleteLocation" value="Delete Location">
-    <input class="btn" type="button" value="cancel" onClick="browseLocations()">
+    <input class="btn" type="submit" id="deleteLocation" value="Delete Location">
+    <input class="btn" type="button" value="cancel" onClick="browseItem()">
   </form> 
 </div><!-- delete -->
