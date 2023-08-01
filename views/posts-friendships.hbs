@@ -1,7 +1,39 @@
 <h1>Posts_has_Friendships</h1>
 
-[ <a href="/">Home</a> | <a href="/users">Users</a> | <a href="/friendships">Friendships</a> | <a href="/posts">Posts</a> | <a href="/locations">Locations</a> | <a href="/posts-friendships">Posts_has_Friendships</a>]
 
+[ <a href="/">Home</a> | <a href="/users">Users</a> | <a href="/friendships">Friendships</a> | <a href="/posts">Posts</a> | <a href="/locations">Locations</a> | <a href="/posts-friendships">Posts_has_Friendships</a>]
+{{!-- Create a table --}}
+<table>
+
+    {{!-- Header section --}}
+    <thead>
+
+        {{!-- For just the first row, we print each key of the row object as a header cell so we
+        know what each column means when the page renders --}}
+        <tr>
+            {{#each data.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+        </tr>
+    </thead>
+
+    {{!-- Body section --}}
+    <tbody>
+
+        {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
+        {{#each data}}
+        <tr>
+            <td>{{this.posts_friendships_id}}</td>
+            <td>{{this.post_id}}</td>
+            <td>{{this.friendship_id}}</td>
+
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+{{!-- 
 <div id="browse">
 <p><a href="#" onClick="showAll()">Display all forms</a> </p>
 <table border="1" cellpadding="5">
@@ -104,4 +136,4 @@
     <input class="btn" type="submit" id="DeletePosts_has_Friendships" value="Delete Posts_has_Friendships">
     <input class="btn" type="button" value="cancel" onClick="browsePosts_has_Friendshipss()">
   </form> 
-</div><!-- delete -->
+</div><!-- delete --> --}}
