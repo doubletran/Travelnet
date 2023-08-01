@@ -16,8 +16,8 @@
     <th>Location Pinned </th>
   </tr>
   <tr>
-    <td><a href="#" onClick="updatePost('this.PostID')">Edit</a></td>
-    <td><a href="#" onclick="deletePost('this.PostID')">Delete</a></td>
+    <td><a href="#" onClick="updateItem('this.PostID')">Edit</a></td>
+    <td><a href="#" onclick="deleteItem('this.PostID')">Delete</a></td>
     <td align="right" >1</td>
     <td >I love the city! </td>
     <td >Public</td>
@@ -26,8 +26,8 @@
     <td>57434 Paucek Meadow, Suite 978 Efrainchester Missouri 99566-5220 United States</td>
   </tr>
   <tr>
-    <td><a href="#" onClick="updatePost('this.PostID')">Edit</a></td>
-    <td><a href="#" onclick="deletePost('this.PostID')">Delete</a></td>
+    <td><a href="#" onClick="updateItem('this.PostID')">Edit</a></td>
+    <td><a href="#" onclick="deleteItem('this.PostID')">Delete</a></td>
     <td align="right" >2</td>
     <td > I like the place! Look at it!!!</td>
     <td>Public to friends</td>
@@ -36,8 +36,8 @@
     <td>NULL</td>
   </tr>
   <tr>
-    <td><a href="#" onClick="updatePost('this.PostID')">Edit</a></td>
-    <td><a href="#" onclick="deletePost('this.PostID')">Delete</a></td>
+    <td><a href="#" onClick="updateItem('this.PostID')">Edit</a></td>
+    <td><a href="#" onclick="deleteItem('this.PostID')">Delete</a></td>
     <td align="right" >3</td>
     <td > Don't come! It's not worth the time!</td>
     <td >Private</td>
@@ -46,8 +46,8 @@
     <td>57434 Paucek Meadow, Suite 978 Efrainchester Missouri 99566-5220 United States</td>
   </tr>
   <tr>
-    <td><a href="#" onClick="updatePost('this.PostID')">Edit</a></td>
-    <td><a href="#" onclick="deletePost('this.PostID')">Delete</a></td>
+    <td><a href="#" onClick="updateItem('this.PostID')">Edit</a></td>
+    <td><a href="#" onclick="deleteItem('this.PostID')">Delete</a></td>
     <td align="right" >4</td>
     <td >Great park!</td>
     <td >Public</td>
@@ -56,8 +56,8 @@
     <td>9088 Shanahan Groves, Suite 697 Pfannerstillhaven Wisconsin 97929 United States</td>
   </tr>
   <tr>
-    <td><a href="#" onClick="updatePost('this.PostID')">Edit</a></td>
-    <td><a href="#" onclick="deletePost('this.PostID')">Delete</a></td>
+    <td><a href="#" onClick="updateItem('this.PostID')">Edit</a></td>
+    <td><a href="#" onclick="deleteItem('this.PostID')">Delete</a></td>
     <td align="right" >5</td>
     <td > Wow!!!!!</td>
     <td >Public to friends</td>
@@ -105,15 +105,15 @@
             </div>
       </fieldset>
           <input class="btn" type="submit" id="addPost" value="Add Post">
-          <input class="btn" type="button" value="cancel" onClick="browsePosts()">
+          <input class="btn" type="button" value="cancel" onClick="browseItem()">
 	</form> 
 </div><!-- insert -->
 <p>&nbsp;</p>
 <div id="update">
-    <form method="POST" id="UpdatePost">
+    <form method="POST" id="updatePosts">
         <legend><strong>Update A Post</strong></legend>
           <fieldset class="fields">
-            <input type="hidden" name="Post_id" id="updatePostID" value="1">
+            <input type="hidden" name="Post_id" id="updatePostsID" value="1">
             <label> ID: </label> 1
           <label> Post Content </label> <textarea name="content" value="I love the city!"></textarea>
           <label>Access</label>
@@ -147,23 +147,23 @@
             <p>Hold down the Ctrl (windows) or Command (Mac) button to select multiple options.</p>
           </fieldset>
           <input class="btn" type="submit" id="UpdateSavePost" value="Save Update Post">
-          <input class="btn" type="button" value="cancel" onClick="browsePosts()">
+          <input class="btn" type="button" value="cancel" onClick="browseItem()">
 	</form> 
 </div><!-- update -->
 
 <p>&nbsp;</p>
 <div id="delete">
-  <form method="POST" id="deletePost">
+  <form method="POST" id="deletePosts">
       <legend><strong>Delete A Post</strong></legend>
         <fieldset class="fields">
         <p>Are you sure you wish to delete the following?</p>
-        <input type="hidden" name="personID" id="deletePostID" value="1">
+        <input type="hidden" name="personID" id="deletePostsID" value="1">
         <label><strong>ID:</strong></label> 1
             <label> <strong>Post Content: </strong> </label> I love the city!
             <label> <strong>User Name: </strong> </label> mary563
         </fieldset>
-    <input class="btn" type="submit" id="DeletePost" value="Delete Post">
-    <input class="btn" type="button" value="cancel" onClick="browsePosts()">
+    <input class="btn" type="submit" id="deletePosts" value="Delete Post">
+    <input class="btn" type="button" value="cancel" onClick="browseItem()">
   </form> 
 </div><!-- delete -->
 
