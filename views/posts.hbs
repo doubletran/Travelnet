@@ -5,66 +5,31 @@
 <div id="browse">
 <p><a href="#" onClick="showAll()">Display all forms</a> </p>
 <table border="1" cellpadding="5">
-  <tr>
-    <th>Edit</th>
-    <th>Delete</th>
-    <th>Post ID</th>
-    <th>Content</th>
-    <th>Access</th>
-    <th>User Name</th>
-    <th>Friends Mentioned</th>
-    <th>Location Pinned </th>
-  </tr>
-  <tr>
-    <td><a href="#" onClick="updatePost('this.PostID')">Edit</a></td>
-    <td><a href="#" onclick="deletePost('this.PostID')">Delete</a></td>
-    <td align="right" >1</td>
-    <td >I love the city! </td>
-    <td >Public</td>
-    <td>mary563</td>
-    <td>toub8294, pwune0921</td>
-    <td>57434 Paucek Meadow, Suite 978 Efrainchester Missouri 99566-5220 United States</td>
-  </tr>
-  <tr>
-    <td><a href="#" onClick="updatePost('this.PostID')">Edit</a></td>
-    <td><a href="#" onclick="deletePost('this.PostID')">Delete</a></td>
-    <td align="right" >2</td>
-    <td > I like the place! Look at it!!!</td>
-    <td>Public to friends</td>
-    <td>mary563</td>
-    <td>pwune0921</td>
-    <td>NULL</td>
-  </tr>
-  <tr>
-    <td><a href="#" onClick="updatePost('this.PostID')">Edit</a></td>
-    <td><a href="#" onclick="deletePost('this.PostID')">Delete</a></td>
-    <td align="right" >3</td>
-    <td > Don't come! It's not worth the time!</td>
-    <td >Private</td>
-    <td>jimmyt801</td>
-    <td>NULL</td>
-    <td>57434 Paucek Meadow, Suite 978 Efrainchester Missouri 99566-5220 United States</td>
-  </tr>
-  <tr>
-    <td><a href="#" onClick="updatePost('this.PostID')">Edit</a></td>
-    <td><a href="#" onclick="deletePost('this.PostID')">Delete</a></td>
-    <td align="right" >4</td>
-    <td >Great park!</td>
-    <td >Public</td>
-    <td>toub8294</td>
-    <td>NULL</td>
-    <td>9088 Shanahan Groves, Suite 697 Pfannerstillhaven Wisconsin 97929 United States</td>
-  </tr>
-  <tr>
-    <td><a href="#" onClick="updatePost('this.PostID')">Edit</a></td>
-    <td><a href="#" onclick="deletePost('this.PostID')">Delete</a></td>
-    <td align="right" >5</td>
-    <td > Wow!!!!!</td>
-    <td >Public to friends</td>
-    <td>jimmyt801</td>
-    <td>NULL</td>
-    <td>Kpg Connor no 96, Apt 119 Batu DKI Jakarta 11840 Indonesia</td>
-  </tr>
+    <thead>
+        <tr>
+            <th>Edit</th>
+            <th>Delete</th>
+            {{#each posts.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+        </tr>
+    </thead>
+    <tbody>
+        {{#each posts}}
+        <tr>
+            <td><a href="#" onClick="updateItem('this.PostID')">Edit</a></td>
+            <td><a href="#" onclick="deleteItem('this.PostID')">Delete</a></td>
+            <td>{{this.[Post ID]}}</td>
+            <td>{{this.[Content]}}</td>
+            <td>{{this.[Access]}}</td>
+            <td>{{this.[User Name]}}</td>
+            <td>{{this.[Friends Mentioned]}}</td>
+            <td>{{this.[Locations Pinned]}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
 </table>
 <p>&nbsp;</p>
 </div> <!-- browse -->
@@ -74,12 +39,17 @@
           <fieldset class="fields">
             <div>
               <label> User Name </label> 
-              <select name="user">
+              <select name="user" onchange="renderFriends(this.value)">
             	<option value="" selected>--Please select--</option>
-                <option value="1">mary563</option>
-                <option value="2">toub8294</option>
-                <option value="3">pwune0921</option>
-                <option value="3">jimmyt801</option>
+              {{#each users}}
+                <option value="{{this.user_id}}">{{this.user_name}}</option>
+              {{/each}}
+              </select>
+            </div>
+            <div>
+              <label> Friends Name </label> 
+              <select name="friendList" id="friendList" multiple>
+            	<option value="" selected>--Please select--</option>
               </select>
             </div>
             <div>

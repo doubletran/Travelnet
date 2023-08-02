@@ -40,7 +40,7 @@ INNER JOIN Users friend ON Friendships.friend_user_id = friend.user_id;
 -- Get all data to populate the Posts table
 -- The table on the posts.html page displays Post ID, Content, Access and User columns.
 SELECT Posts.post_id AS "Post ID", Posts.content AS "Content", access AS "Access", 
-Posts.user_id AS "User ID", user.user_name AS "User Name", GROUP_CONCAT(friend.user_name SEPARATOR', ') AS "Friends Mentioned", 
+user.user_name AS "User Name", GROUP_CONCAT(friend.user_name SEPARATOR', ') AS "Friends Mentioned", 
 CONCAT(Locations.address, ' ', Locations.city, ' ', 
 Locations.state, ' ', Locations.zip_code, ' ', Locations.country) AS 'Locations Pinned'
 FROM Posts 
@@ -91,18 +91,19 @@ INNER JOIN Users friend ON Friendships.friend_user_id = friend.user_id
 WHERE Friendships.friend_user_id = 1
 )) as t;
 
-SELECT * FROM ((SELECT Users.user_id AS "User ID", Users.user_name AS "User", 
-Friendships.friend_user_id AS "Friend ID", friends.user_name AS "Friend"
+-- This query gets all of the users and their friends. 
+SELECT * FROM ((SELECT Users.user_id AS "UserID", Users.user_name AS "User", 
+Friendships.friend_user_id AS "FriendID", friends.user_name AS "Friend"
 FROM Users 
-LEFT JOIN Friendships ON Friendships.user_id = Users.user_id 
-LEFT JOIN Users friends ON friends.user_id = Friendships.friend_user_id) 
+INNER JOIN Friendships ON Friendships.user_id = Users.user_id 
+INNER JOIN Users friends ON friends.user_id = Friendships.friend_user_id) 
 UNION 
-(SELECT Users.user_id AS "User ID", Users.user_name AS "User", 
-Friendships.user_id AS "Friend ID", friends.user_name AS "Friend"
+(SELECT Users.user_id AS "UserID", Users.user_name AS "User", 
+Friendships.user_id AS "FriendID", friends.user_name AS "Friend"
 FROM Users 
-LEFT JOIN Friendships ON Friendships.friend_user_id = Users.user_id 
-LEFT JOIN Users friends ON friends.user_id = Friendships.user_id)) AS t
-ORDER BY Users.user_id;
+INNER JOIN Friendships ON Friendships.friend_user_id = Users.user_id 
+INNER JOIN Users friends ON friends.user_id = Friendships.user_id)) AS t
+ORDER BY t.UserID;
 -- Get all Post IDs and Post Contents to populate the Post dropdown. 
 SELECT post_id, content FROM Posts;
 
