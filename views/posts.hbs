@@ -1,4 +1,191 @@
 <h1>Posts</h1>
+[ <a href="/">Home</a> | <a href="/users">Users</a> | <a href="/friendships">Friendships</a> | <a href="/posts">Posts</a> | <a href="/locations">Locations</a> | <a href="/posts-friendships">Posts_has_Friendships</a>]
+
+<div id="browse">
+<p><a href="#" onClick="showAll()">Display all forms</a> </p>
+<table border="1" cellpadding="5" id="post-table">
+    <thead>
+        <tr>
+            {{#each posts.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each posts}}
+        <tr>
+            <td>{{this.[Post ID]}}</td>
+            <td>{{this.[Content]}}</td>
+            <td>{{this.[Access]}}</td>
+            <td>{{this.[User Name]}}</td>
+            <td>{{this.[Friends Mentioned]}}</td>
+            <td>{{this.[Locations Pinned]}}</td>
+            <td><a href="#" onClick="updateItem('{{this.[Post ID]}}')">Edit</a></td>
+            <td><a href="#" onclick="deleteItem('{{this.[Post ID]}}')">Delete</a></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+<p>&nbsp;</p>
+<h2>Inserting a post</h2>
+</div> <!-- browse -->
+<div id="insert">
+    <form method="POST" id="addPost">
+        <legend><strong>Add A Post</strong></legend>
+          <fieldset class="fields">
+            <div>
+              <label> User Name <span style="color: red;">*</span></label> 
+              <select name="userID" id="userID" onclick="renderFriends(this.value)" required>
+            	<option value="" selected>--Please select--</option>
+              {{#each users}}
+                <option value="{{this.user_id}}">{{this.user_name}}</option>
+              {{/each}}
+              </select>
+            </div>
+            <div>
+              <label> Friends Mentioned </label> 
+              <select name="friendList" id="friendList" multiple>
+            	<option value="" selected>--Please select--</option>
+              </select>
+            </div>
+            <div>
+              <label> Content <span style="color: red;">*</span></label> 
+              <textarea name="content" id="content" required></textarea>
+            </div>
+            <div>
+              <label> Access <span style="color: red;">*</span></label>
+              <select name="access" id="access" required>
+                <option value="" selected>--Please select--</option>
+                <option value="Public">Public</option>
+                <option value="Public to friends">Public to friends</option>
+                <option value="Private">Private</option>
+              </select>
+            </div>
+            <div>
+            <label> Location </label> 
+              <select name="location" id="location">
+            	  <option value="" selected>--Please select--</option>
+                {{#each locations}}
+                <option value={{this.location_id}}>{{this.[Locations]}}</option>
+                {{/each}}
+              </select>
+            </div>
+            <div>
+              <span style="color: red;">*</span>Required field
+            </div>
+      </fieldset>
+          <input class="btn" type="submit" id="addPost" value="Add Post">
+          <input class="btn" type="button" value="cancel" onClick="browseItem()">
+	</form> 
+  
+</div><!-- insert -->
+<p>&nbsp;</p>
+<div id="update">
+<h2>Updating a post</h2>
+<p></p>
+<form id="update-post-form-ajax">
+    <legend><strong>Update A Post</strong></legend>
+          <fieldset class="fields">
+            <p>You can edit the following post: </p>
+    <div>
+        <label for="input-username"> User Name <span style="color: red;">*</span></label> 
+        <select name="input-username" id="input-username" onclick="renderFriendsUpdate(this.value)" required>
+        <option value="" selected>--Please select--</option>
+              {{#each users}}
+                <option value="{{this.[user_id]}}">{{this.[user_name]}}</option>
+              {{/each}}
+        </select>
+    </div>
+
+    <div>
+        <label for="updateFriends"> Friends Mentioned </label> 
+        <select name="updateFriends" id="updateFriends" multiple>
+            	<option value="" selected>--Please select--</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="input-content"> Content <span style="color: red;">*</span></label> 
+        <textarea name="input-content" id="input-content" required></textarea>
+        </div>
+    <div>
+    
+    <div>
+        <label> Access <span style="color: red;">*</span></label>
+        <select name="access" id="access" required>
+              <option value="" selected>--Please select--</option>
+              <option value="Public">Public</option>
+              <option value="Public to friends">Public to friends</option>
+              <option value="Private">Private</option>
+        </select>
+    </div>
+
+    <div>
+        <label> Location </label> 
+        <select name="location" id="location">
+            	  <option value="" selected>--Please select--</option>
+                {{#each locations}}
+                <option value={{this.location_id}}>{{this.[Locations]}}</option>
+                {{/each}}
+        </select>
+    </div>
+    <div>
+          <span style="color: red;">*</span>Required field
+    </div>
+    </fieldset>
+    <input type="submit">
+
+</form>
+ </div>
+<script src="./js/update_post.js"></script>
+
+<p>&nbsp;</p>
+<div id="delete">
+  <form method="POST" id="deletePosts">
+      <legend><strong>Delete A Post</strong></legend>
+        <fieldset class="fields">
+        <p>Are you sure you wish to delete the following?</p>
+        <input type="hidden" name="personID" id="deletePostsID" value="1">
+        <label><strong>ID:</strong></label> 1
+            <label> <strong>Post Content: </strong> </label> I love the city!
+            <label> <strong>User Name: </strong> </label> mary563
+        </fieldset>
+    <input class="btn" type="submit" id="deletePosts" value="Delete Post">
+    <input class="btn" type="button" value="cancel" onClick="browseItem()">
+  </form> 
+</div><!-- delete -->
+<script type="application/javascript" src="./js/add_post.js"></script>
+<script>
+function renderFriends(userID) {
+    document.getElementById('friendList').innerHTML = '<option value="" selected>--Please select--</option>';
+    let i = 0;
+    {{#each friendships}}
+    if ({{this.[UserID]}} == userID) {
+        const newOption = document.createElement("option");
+        newOption.innerHTML = '{{this.[Friend]}}';
+        newOption.value = {{this.[FriendID]}};
+        document.getElementById('friendList').appendChild(newOption)
+    }
+    {{/each}}
+}
+function renderFriendsUpdate(userID) {
+    document.getElementById('updateFriends').innerHTML = '<option value="" selected>--Please select--</option>';
+    let i = 0;
+    {{#each friendships}}
+    if ({{this.[UserID]}} == userID) {
+        const newOption = document.createElement("option");
+        newOption.innerHTML = '{{this.[Friend]}}';
+        newOption.value = {{this.[FriendID]}};
+        document.getElementById('updateFriends').appendChild(newOption)
+    }
+    {{/each}}
+}
+</script>
+{{!-- <!--<h1>Posts</h1>
 
 [ <a href="/">Home</a> | <a href="/users">Users</a> | <a href="/friendships">Friendships</a> | <a href="/posts">Posts</a> | <a href="/locations">Locations</a> | <a href="/posts-friendships">Posts_has_Friendships</a>]
 
@@ -67,8 +254,8 @@
   </tr>
 </table>
 <p>&nbsp;</p>
-</div> <!-- browse -->
-<div id="insert">
+</div>  -->
+<!--<div id="insert">
     <form method="POST" id="addPost">
         <legend><strong>Add A Post</strong></legend>
           <fieldset class="fields">
@@ -166,6 +353,4 @@
     <input class="btn" type="button" value="cancel" onClick="browseItem()">
   </form> 
 </div><!-- delete -->
-
-</body>
-</html>
+--> --}}
