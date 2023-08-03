@@ -25,9 +25,11 @@
         {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
         {{#each data}}
         <tr>
-            <td>{{this.posts_friendships_id}}</td>
-            <td>{{this.post_id}}</td>
-            <td>{{this.friendship_id}}</td>
+            <td>{{this.[Posts_Friendships ID]}}</td>
+            <td>{{this.[Post Content]}}</td>
+            <td>{{this.[User]}}</td>
+            <td>{{this.[Friend Mentioned]}}</td>
+            
 
         </tr>
         {{/each}}
@@ -46,24 +48,24 @@
     <th>Friend</th>
   </tr>
   <tr>
-    <td><a href="#" onClick="updateItem('Posts_has_FriendshipsID')">Edit</a></td>
-    <td><a href="#" onclick="deleteItem('this.Posts_has_FriendshipsID')">Delete</a></td>
+    <td><a href="#" onClick="updatePosts_has_Friendships('Posts_has_FriendshipsID')">Edit</a></td>
+    <td><a href="#" onclick="deletePosts_has_Friendships('this.Posts_has_FriendshipsID')">Delete</a></td>
     <td>1</td>
     <td >I love the city!</td>
     <td>mary563</td>
     <td>toub8294</td>
   </tr>
   <tr>
-    <td><a href="#" onClick="updateItem('Posts_has_FriendshipsID')">Edit</a></td>
-    <td><a href="#" onclick="deleteItem('this.Posts_has_FriendshipsID')">Delete</a></td>
+    <td><a href="#" onClick="updatePosts_has_Friendships('Posts_has_FriendshipsID')">Edit</a></td>
+    <td><a href="#" onclick="deletePosts_has_Friendships('this.Posts_has_FriendshipsID')">Delete</a></td>
     <td>2</td>
     <td >I love the city!</td>
     <td>mary563</td>
     <td>pwune0921</td>
   </tr>
   <tr>
-    <td><a href="#" onClick="updateItem('Posts_has_FriendshipsID')">Edit</a></td>
-    <td><a href="#" onclick="deleteItem('this.Posts_has_FriendshipsID')">Delete</a></td>
+    <td><a href="#" onClick="updatePosts_has_Friendships('Posts_has_FriendshipsID')">Edit</a></td>
+    <td><a href="#" onclick="deletePosts_has_Friendships('this.Posts_has_FriendshipsID')">Delete</a></td>
     <td>3</td>
     <td >I like the place! Look at it!!!</td>
     <td>mary563</td>
@@ -92,12 +94,12 @@
             
       </fieldset>
           <input class="btn" type="submit" id="addPosts_has_Friendships" value="Add Posts_has_Friendships">
-          <input class="btn" type="button" value="cancel" onClick="browseItem()">
+          <input class="btn" type="button" value="cancel" onClick="browsePosts_has_Friendshipss()">
 	</form> 
 </div><!-- insert -->
 
 <div id="update">
-    <form method="POST" id="updatePosts_has_Friendships">
+    <form method="POST" id="UpdatePosts_has_Friendships">
         <legend><strong>Update Posts_has_Friendships</strong></legend>
           <fieldset class="fields">
           <input type="hidden" name="Post_id" id="updatePostID" value="1">
@@ -117,7 +119,7 @@
                 </select>
           </fieldset>
           <input class="btn" type="submit" id="UpdateSavePost" value="Save Update Post">
-          <input class="btn" type="button" value="cancel" onClick="browseItem()">
+          <input class="btn" type="button" value="cancel" onClick="browsePosts_has_Friendshipss()">
 	</form> 
 </div><!-- update -->
 
@@ -133,7 +135,7 @@
             <label><strong>Post Content: </strong></label> I love the city!
             <label><strong>Friendship: </strong></label> mary563 - toub8294
         </fieldset>
-    <input class="btn" type="submit" id="deletePosts_has_Friendships" value="Delete Posts_has_Friendships">
-    <input class="btn" type="button" value="cancel" onClick="browseItem()">
+    <input class="btn" type="submit" id="DeletePosts_has_Friendships" value="Delete Posts_has_Friendships">
+    <input class="btn" type="button" value="cancel" onClick="browsePosts_has_Friendshipss()">
   </form> 
 </div><!-- delete --> --}}

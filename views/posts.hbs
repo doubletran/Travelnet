@@ -2,7 +2,7 @@
 
 [ <a href="/">Home</a> | <a href="/users">Users</a> | <a href="/friendships">Friendships</a> | <a href="/posts">Posts</a> | <a href="/locations">Locations</a> | <a href="/posts-friendships">Posts_has_Friendships</a>]
 {{!-- Create a table --}}
-<table>
+<table id="post-table">
 
     {{!-- Header section --}}
     <thead>
@@ -23,41 +23,52 @@
 
         {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
         {{#each data}}
-        <tr>
-            <td>{{this.post_id}}</td>
-            <td>{{this.content}}</td>
-            <td>{{this.access}}</td>
-            <td>{{this.user_id}}</td>
-            <td>{{this.location_id}}</td>
+        <tr data-value = {{this.[Post ID]}}>
+            <td>{{this.[Post ID]}}</td>
+            <td>{{this.[Content]}}</td>
+            <td>{{this.[Access]}}</td>
+            <td>{{this.[User ID]}}</td>
+            <td>{{this.[User Name]}}</td>
+            <td>{{this.[Friends Mentioned]}}</td>
+            <td>{{this.[Locations Pinned]}}</td>
         </tr>
         {{/each}}
     </tbody>
 </table>
-{{!-- 
+
 <h2>Updating a post</h2>
 <p>To update a specific user's homeworld select their name from the drop-down menu on the left and their desired homeworld from the drop down menu on the right</p>
 <form id="update-post-form-ajax">
 
     <label for="input-username"> </label>
-    <select name="input-username" id="mySelect">
-        <option value="test">Select a Person</option>
-        {{#each data}}
-        <option value="{{this.id}}">{{this.fname}} {{this.lname}}</option>
+    <select name="input-username" id="input-username">
+        <option value="test">Select a user</option>
+        {{#each users}}
+        <option value="{{this.[user_id]}}">{{this.[user_name]}}</option>
         {{/each}}
     </select>
+        <label for="input-content"> </label>
+    <select name="input-content" id="input-content">
+        <option value="test">Select a post's content</option>
+        {{#each data}}
+        <option value="{{this.[Post ID]}}">{{this.[Content]}}</option>
+        {{/each}}
+    </select>
+    
 
-    <label for="input-homeworld">Homeworld: </label>
-    <select name="input-homeworld" id="input-homeworld-update">
-        <option>Select a Planet</option>
-        {{#each planets}}
-        <option value="{{this.id}}">{{this.name}}</option>
+
+    <label for="input-friend"></label>
+    <select name="input-friend" id="input-friend">
+        <option>Select a friend</option>
+        {{#each users}}
+        <option value="{{this.[user_id]}}">{{this.[user_name]}}</option>
         {{/each}}
     </select>
     <input type="submit">
 
 </form>
 
-<script src="./js/update_person.js"></script> --}}
+<script src="./js/update_post.js"></script> 
 {{!-- 
 <div id="browse">
 <p><a href="#" onClick="showAll()">Display all forms</a> </p>
@@ -73,8 +84,8 @@
     <th>Location Pinned </th>
   </tr>
   <tr>
-    <td><a href="#" onClick="updateItem('this.PostID')">Edit</a></td>
-    <td><a href="#" onclick="deleteItem('this.PostID')">Delete</a></td>
+    <td><a href="#" onClick="updatePost('this.PostID')">Edit</a></td>
+    <td><a href="#" onclick="deletePost('this.PostID')">Delete</a></td>
     <td align="right" >1</td>
     <td >I love the city! </td>
     <td >Public</td>
@@ -83,8 +94,8 @@
     <td>57434 Paucek Meadow, Suite 978 Efrainchester Missouri 99566-5220 United States</td>
   </tr>
   <tr>
-    <td><a href="#" onClick="updateItem('this.PostID')">Edit</a></td>
-    <td><a href="#" onclick="deleteItem('this.PostID')">Delete</a></td>
+    <td><a href="#" onClick="updatePost('this.PostID')">Edit</a></td>
+    <td><a href="#" onclick="deletePost('this.PostID')">Delete</a></td>
     <td align="right" >2</td>
     <td > I like the place! Look at it!!!</td>
     <td>Public to friends</td>
@@ -93,8 +104,8 @@
     <td>NULL</td>
   </tr>
   <tr>
-    <td><a href="#" onClick="updateItem('this.PostID')">Edit</a></td>
-    <td><a href="#" onclick="deleteItem('this.PostID')">Delete</a></td>
+    <td><a href="#" onClick="updatePost('this.PostID')">Edit</a></td>
+    <td><a href="#" onclick="deletePost('this.PostID')">Delete</a></td>
     <td align="right" >3</td>
     <td > Don't come! It's not worth the time!</td>
     <td >Private</td>
@@ -103,8 +114,8 @@
     <td>57434 Paucek Meadow, Suite 978 Efrainchester Missouri 99566-5220 United States</td>
   </tr>
   <tr>
-    <td><a href="#" onClick="updateItem('this.PostID')">Edit</a></td>
-    <td><a href="#" onclick="deleteItem('this.PostID')">Delete</a></td>
+    <td><a href="#" onClick="updatePost('this.PostID')">Edit</a></td>
+    <td><a href="#" onclick="deletePost('this.PostID')">Delete</a></td>
     <td align="right" >4</td>
     <td >Great park!</td>
     <td >Public</td>
@@ -113,8 +124,8 @@
     <td>9088 Shanahan Groves, Suite 697 Pfannerstillhaven Wisconsin 97929 United States</td>
   </tr>
   <tr>
-    <td><a href="#" onClick="updateItem('this.PostID')">Edit</a></td>
-    <td><a href="#" onclick="deleteItem('this.PostID')">Delete</a></td>
+    <td><a href="#" onClick="updatePost('this.PostID')">Edit</a></td>
+    <td><a href="#" onclick="deletePost('this.PostID')">Delete</a></td>
     <td align="right" >5</td>
     <td > Wow!!!!!</td>
     <td >Public to friends</td>
@@ -162,15 +173,15 @@
             </div>
       </fieldset>
           <input class="btn" type="submit" id="addPost" value="Add Post">
-          <input class="btn" type="button" value="cancel" onClick="browseItem()">
+          <input class="btn" type="button" value="cancel" onClick="browsePosts()">
 	</form> 
 </div><!-- insert -->
 <p>&nbsp;</p>
 <div id="update">
-    <form method="POST" id="updatePosts">
+    <form method="POST" id="UpdatePost">
         <legend><strong>Update A Post</strong></legend>
           <fieldset class="fields">
-            <input type="hidden" name="Post_id" id="updatePostsID" value="1">
+            <input type="hidden" name="Post_id" id="updatePostID" value="1">
             <label> ID: </label> 1
           <label> Post Content </label> <textarea name="content" value="I love the city!"></textarea>
           <label>Access</label>
@@ -204,23 +215,23 @@
             <p>Hold down the Ctrl (windows) or Command (Mac) button to select multiple options.</p>
           </fieldset>
           <input class="btn" type="submit" id="UpdateSavePost" value="Save Update Post">
-          <input class="btn" type="button" value="cancel" onClick="browseItem()">
+          <input class="btn" type="button" value="cancel" onClick="browsePosts()">
 	</form> 
 </div><!-- update -->
 
 <p>&nbsp;</p>
 <div id="delete">
-  <form method="POST" id="deletePosts">
+  <form method="POST" id="deletePost">
       <legend><strong>Delete A Post</strong></legend>
         <fieldset class="fields">
         <p>Are you sure you wish to delete the following?</p>
-        <input type="hidden" name="personID" id="deletePostsID" value="1">
+        <input type="hidden" name="personID" id="deletePostID" value="1">
         <label><strong>ID:</strong></label> 1
             <label> <strong>Post Content: </strong> </label> I love the city!
             <label> <strong>User Name: </strong> </label> mary563
         </fieldset>
-    <input class="btn" type="submit" id="deletePosts" value="Delete Post">
-    <input class="btn" type="button" value="cancel" onClick="browseItem()">
+    <input class="btn" type="submit" id="DeletePost" value="Delete Post">
+    <input class="btn" type="button" value="cancel" onClick="browsePosts()">
   </form> 
 </div><!-- delete -->
 

@@ -1,9 +1,38 @@
 <h1>Users</h1>
 
 [ <a href="/">Home</a> | <a href="/users">Users</a> | <a href="/friendships">Friendships</a> | <a href="/posts">Posts</a> | <a href="/locations">Locations</a> | <a href="/posts-friendships">Posts_has_Friendships</a>]
+<table>
 
+    {{!-- Header section --}}
+    <thead>
+
+        {{!-- For just the first row, we print each key of the row object as a header cell so we
+        know what each column means when the page renders --}}
+        <tr>
+            {{#each data.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+        </tr>
+    </thead>
+
+    {{!-- Body section --}}
+    <tbody>
+
+        {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
+        {{#each data}}
+        <tr>
+            <td>{{this.[User ID]}}</td>
+            <td>{{this.[User Name]}}</td>
+            <td>{{this.[Email]}}</td>
+            <td>{{this.[Password]}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
 <div id="browse">
-<p><a href="#" onClick="showAll()">Display all forms</a> </p>
+<p><a href="#" onClick="showAll()">Display all forms</a></p>
 <table border="1" cellpadding="5">
   <tr>
     <th>Edit</th>
@@ -14,32 +43,32 @@
     <th>Password</th>
   </tr>
   <tr>
-    <td><a href="#" onClick="updateItem('this.UserID')">Edit</a></td>
-    <td><a href="#" onclick="deleteItem('this.UserID')">Delete</a></td>
+    <td><a href="#" onClick="updateUser('this.UserID')">Edit</a></td>
+    <td><a href="#" onclick="deleteUser('this.UserID')">Delete</a></td>
     <td align="right" >1</td>
     <td >mary563</td>
     <td align="right" >mary563@gmail.com</td>
     <td>1937@#fadf</td>
   </tr>
   <tr>
-    <td><a href="#" onClick="updateItem('this.UserID')">Edit</a></td>
-    <td><a href="#" onclick="deleteItem('this.UserID')">Delete</a></td>
+    <td><a href="#" onClick="updateUser('this.UserID')">Edit</a></td>
+    <td><a href="#" onclick="deleteUser('this.UserID')">Delete</a></td>
     <td align="right" >2</td>
     <td>toub8294</td>
     <td align="right" >toub8294@gmail.com</td>
     <td >hfkd0)jf!</td>
   </tr>
   <tr>
-    <td><a href="#" onClick="updateItem('this.UserID')">Edit</a></td>
-    <td><a href="#" onclick="deleteItem('this.UserID')">Delete</a></td>
+    <td><a href="#" onClick="updateUser('this.UserID')">Edit</a></td>
+    <td><a href="#" onclick="deleteUser('this.UserID')">Delete</a></td>
     <td align="right" >3</td>
     <td>pwune0921</td>
     <td align="right" >pwune0921@gmail.com</td>
     <td>9384**&fafd</td>
   </tr>
   <tr>
-    <td><a href="#" onClick="updateItem('this.UserID')">Edit</a></td>
-    <td><a href="#" onclick="deleteItem('this.UserID')">Delete</a></td>
+    <td><a href="#" onClick="updateUser('this.UserID')">Edit</a></td>
+    <td><a href="#" onclick="deleteUser('this.UserID')">Delete</a></td>
     <td align="right" >4</td>
     <td>jimmyt801</td>
     <td align="right" >jimmyt801@outlook.com</td>
@@ -57,36 +86,36 @@
             <label> password </label> <input type="text" name="password">
       </fieldset>
           <input class="btn" type="submit" id="addUser" value="Add User">
-          <input class="btn" type="button" value="cancel" onClick="browseItem()">
+          <input class="btn" type="button" value="cancel" onClick="browseUsers()">
 	</form> 
 </div><!-- insert -->
 <p>&nbsp;</p>
 <div id="update">
-    <form method="POST" id="updateUsers">
+    <form method="POST" id="UpdateUser">
         <legend><strong>Update A User</strong></legend>
           <fieldset class="fields">
-          <input type="hidden" name="user_id" id="updateUsersID" value="1">
+          <input type="hidden" name="user_id" id="updateUserID" value="1">
           <label> ID: </label> 1
           <label> user name</label> <input type="text" name="user_name" value="mary563">
             <label> email </label> <input type="text" name="email" value="mary563@gmail.com">
             <label> password </label> <input type="text" name="password" value="1937@#fadf">
           </fieldset>
           <input class="btn" type="submit" id="UpdateSaveUser" value="Save Update User">
-          <input class="btn" type="button" value="cancel" onClick="browseItem()">
+          <input class="btn" type="button" value="cancel" onClick="browseUsers()">
 	</form> 
 </div><!-- update -->
 
 <p>&nbsp;</p>
 <div id="delete">
-  <form method="POST" id="deleteUsers">
+  <form method="POST" id="deleteUser">
       <legend><strong>Delete A User</strong></legend>
         <fieldset class="fields">
         <p>Are you sure you wish to delete the following?</p>
-        <input type="hidden" name="personID" id="deleteUsersID" value="1">
+        <input type="hidden" name="personID" id="deleteUserID" value="1">
         <label><strong>ID:</strong></label> 1
             <label> <strong>User Name: </strong> </label> mary563
         </fieldset>
-    <input class="btn" type="submit" id="deleteUsers" value="Delete User">
-    <input class="btn" type="button" value="cancel" onClick="browseItem()">
+    <input class="btn" type="submit" id="DeleteUser" value="Delete User">
+    <input class="btn" type="button" value="cancel" onClick="browseUsers()">
   </form> 
 </div><!-- delete -->

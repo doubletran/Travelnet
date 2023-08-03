@@ -3,22 +3,29 @@ let updatePostForm = document.getElementById('update-post-form-ajax');
 
 // Modify the objects we need
 updatePostForm.addEventListener("submit", function (e) {
-   
+  
     // Prevent the form from submitting
     e.preventDefault();
 
     // Get form fields we need to get data from
-    let inputContent = document.getElementById("mySelect");
-    let inputHomeworld = document.getElementById("input-homeworld-update");
+    let inputUsername = document.getElementById("input-username");
+    let inputContent = document.getElementById("input-content")
+    let inputFriend = document.getElementById("input-friend");
 
     // Get the values from the form fields
-    let fullNameValue = inputFullName.value;
-    let homeworldValue = inputHomeworld.value;
+    let user_id = inputUsername.value;
+    let post_id = inputContent.value;
+    let friend_user_id = inputFriend.value;
+    
     
     // currently the database table for bsg_people does not allow updating values to NULL
-    // so we must abort if being bassed NULL for homeworld
+    // so we must abort if being bassed NULL for location
 
-    if (isNaN(homeworldValue)) 
+    if (isNaN(friend_user_id)) 
+    {
+        return;
+    }
+    if (isNaN(post_id)) 
     {
         return;
     }
@@ -26,8 +33,10 @@ updatePostForm.addEventListener("submit", function (e) {
 
     // Put our data we want to send in a javascript object
     let data = {
-        fullname: fullNameValue,
-        homeworld: homeworldValue,
+        user: user_id,
+        post: post_id,
+        friend: friend_user_id
+    
     }
     
     // Setup our AJAX request
@@ -40,10 +49,12 @@ updatePostForm.addEventListener("submit", function (e) {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
 
             // Add the new data to the table
-            updateRow(xhttp.response, fullNameValue);
+            updateRow(xhttp.response, post_id);
+
 
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
+            console.log(error);
             console.log("There was an error with the input.")
         }
     }
@@ -54,24 +65,26 @@ updatePostForm.addEventListener("submit", function (e) {
 })
 
 
-function updateRow(data, postID){
+function updateRow(data, post_id){
     let parsedData = JSON.parse(data);
-    
-    let table = document.getElementById("people-table");
+    console.log(post_id);
+    let table = document.getElementById("post-table");
 
     for (let i = 0, row; row = table.rows[i]; i++) {
        //iterate through rows
        //rows would be accessed using the "row" variable assigned in the for loop
-       if (table.rows[i].getAttribute("data-value") == postID) {
+       if (table.rows[i].getAttribute("data-value") == post_id) {
 
             // Get the location of the row where we found the matching post ID
             let updateRowIndex = table.getElementsByTagName("tr")[i];
 
-            // Get td of homeworld value
-            let td = updateRowIndex.getElementsByTagName("td")[3];
+            // Get td of location value
+            let td = updateRowIndex.getElementsByTagName("td")[5];
 
-            // Reassign homeworld to our value we updated to
-            td.innerHTML = parsedData[0].name; 
+            // Reassign location to our value we updated to
+
+            td.innerHTML = parsedData[0].friend_user_id; 
+            console.log(td.innerHTML);
        }
     }
 }
