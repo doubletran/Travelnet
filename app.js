@@ -117,8 +117,9 @@ app.get('/posts-friendships', function (req, res)
       
         let update_post = `UPDATE Posts_has_Friendships SET friendship_id = (SELECT friendship_id FROM Friendships 
             WHERE user_id = ? AND friend_user_id = ?) WHERE post_id = ?;`;
-        let select_friend = `SELECT * FROM Friendships WHERE friendship_id = (SELECT friendship_id FROM Friendships 
-            WHERE user_id = ? AND friend_user_id = ?)`;
+        let select_friend = `SELECT Users.user_name from Friendships 
+        JOIN Users ON Users.user_id = Friendships.friend_user_id WHERE friendship_id = (SELECT friendship_id FROM Friendships 
+                WHERE user_id = ? AND friend_user_id = ?);`;
 
     
 
