@@ -43,7 +43,7 @@ app.get('/friendships', function (req, res)
 app.get('/posts', function (req, res)
     {
         let query1 = `SELECT Posts.post_id AS "Post ID", Posts.content AS "Content", access AS "Access", 
-        user.user_name AS "User Name", GROUP_CONCAT(friend.user_name SEPARATOR', ') AS "Friends Mentioned", 
+        user.user_name AS "User Name", user.user_id AS "User ID", GROUP_CONCAT(friend.user_name SEPARATOR', ') AS "Friends Mentioned", 
         CONCAT(Locations.address, ' ', Locations.city, ' ', 
         Locations.state, ' ', Locations.zip_code, ' ', Locations.country) AS 'Locations Pinned'
         FROM Posts 
@@ -171,57 +171,67 @@ app.post('/posts-ajax', function(req, res)
 
 app.put('/put-post-ajax', function(req,res,next){
     let data = req.body;
-    console.log
-    let friend= parseInt(data.friend);
-    let post = parseInt(data.post);
-    let user = parseInt(data.user);
+    console.log(data);
+    let location_id = parseInt(data.location_id);
+    let content = data.content;
+    let access = data.access;
+    let friend_ids = data.friend_user_ids;
+    let user_id = parseInt(data.user_id);
+    let post_id = parseInt(data.post_id);
    // let select_friendship = `SELECT friendship_id FROM Friendships 
    // WHERE user_id = ? AND friend_user_id = ?`;
-
-
+   for (let i = 0; i < friend_ids.length; i++) {
+        let update_post = `UPDATE Posts_has_Friendships SET friendship_id = (SELECT friendship_id FROM Friendships WHERE (user_id = ? 
+            AND friend_user_id = ? ) OR (user_id = ? AND friend_user_id = ?)) WHERE post_id = ?;`;
+       // let update_post = `(SELECT friendship_id FROM Friendships WHERE (user_id = '${data.user_id}' AND friend_user_id = '${data.friend_ids[i]}') OR (user_id = '${data.friend_ids[i]}' AND friend_user_id = '${data.user_id}'))`
+        db.pool.query(update_post ,[user_id, parseInt(data.friend_user_ids[i]), parseInt(data.friend_user_ids[i]), user_id, post_id], function(error, row_friendship, fields){
+            if (error) {
   
-    let update_post = `UPDATE Posts_has_Friendships SET friendship_id = (SELECT friendship_id FROM Friendships 
-        WHERE user_id = ? AND friend_user_id = ?) WHERE post_id = ?;`;
-    let select_friend = `SELECT Users.user_name from Friendships 
-    JOIN Users ON Users.user_id = Friendships.friend_user_id WHERE friendship_id = (SELECT friendship_id FROM Friendships 
-            WHERE user_id = ? AND friend_user_id = ?);`;
+                // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                console.log(error);
+                res.sendStatus(400);
+                }
+        })
+   }});
+//     let select_friend = `SELECT Users.user_name from Friendships 
+//     JOIN Users ON Users.user_id = Friendships.friend_user_id WHERE friendship_id = (SELECT friendship_id FROM Friendships 
+//             WHERE user_id = ? AND friend_user_id = ?);`;
 
 
-
-    //console.log (friend, user, select_friendship, update_post);
+//     //console.log (friend, user, select_friendship, update_post);
   
-          // Run the 1st query
+//           // Run the 1st query
           
-          db.pool.query(update_post ,[user,friend,post], function(error, row_friendship, fields){
-              if (error) {
+//           db.pool.query(update_post ,[user,friend,post], function(error, row_friendship, fields){
+//               if (error) {
   
-              // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
-              console.log(error);
-              res.sendStatus(400);
-              }
+//               // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+//               console.log(error);
+//               res.sendStatus(400);
+//               }
   
-              // If there was no error, we run our second query and return that data so we can use it to update the people's
-              // table on the front-end
-              else
-              {
-               // console.log(row_friendship);
+//               // If there was no error, we run our second query and return that data so we can use it to update the people's
+//               // table on the front-end
+//               else
+//               {
+//                // console.log(row_friendship);
 
-                  // Run the second query
-                  db.pool.query(select_friend, [user, friend], function(error, rows, fields) {
+//                   // Run the second query
+//                   db.pool.query(select_friend, [user, friend], function(error, rows, fields) {
   
-                      if (error) {
-                          console.log(error);
-                          res.sendStatus(400);
-                      } else {
-                        //console.log(rows);
+//                       if (error) {
+//                           console.log(error);
+//                           res.sendStatus(400);
+//                       } else {
+//                         //console.log(rows);
                         
 
-                          res.send(rows);
-                      }
-                  })
+//                           res.send(rows);
+//                       }
+//                   })
             
-              }
-  })});
+//               }
+//   })});
 
 /*
     LISTENER

@@ -8,24 +8,39 @@ updatePostForm.addEventListener("submit", function (e) {
     e.preventDefault();
 
     // Get form fields we need to get data from
-    //let inputUsername = document.getElementById("input-username");
+    let inputPostID = document.getElementById("post-id");
+    let inputUserID = document.getElementById("input-user");
+    let inputLocation = document.getElementById("input-location");
     let inputContent = document.getElementById("input-content");
-    //let inputFriend = document.getElementById("input-friend");
+    let inputFriends = document.getElementById("input-friends");
+    let inputAccess = document.getElementById("showAccess");
 
     // Get the values from the form fields
-    //let user_id = inputUsername.value;
-    let inputContentValue = inputContent.value;
-    //let friend_user_id = inputFriend.value;
-    
+    let post_id = inputPostID.value;
+    let user_id = inputUserID.value;
+    let location_id = inputLocation.value;
+    let content = inputContent.value;
+    let access = inputAccess.value;
+
+    var selected = [];
+    for (var option of inputFriends.options)
+    {
+        if (option.selected) {
+            selected.push(option.value);
+        }
+    }
+
+    let friend_user_ids = selected;
     
     // currently the database table for bsg_people does not allow updating values to NULL
     // so we must abort if being bassed NULL for location
 
-    // if (isNaN(friend_user_id)) 
-    // {
+    // if (isNaN(friend_user_ids)) 
+    // {   
+    //     console.log("What?")
     //     return;
     // }
-    if (isNaN(post_id)) 
+    if (isNaN(location_id)) 
     {
         return;
     }
@@ -33,11 +48,16 @@ updatePostForm.addEventListener("submit", function (e) {
 
     // Put our data we want to send in a javascript object
     let data = {
-        user: user_id,
-        post: post_id,
-        friend: friend_user_id
+        post_id: post_id,
+        user_id: user_id,
+        location_id: location_id,
+        content: content,
+        access: access,
+        friend_user_ids: friend_user_ids
     
     }
+
+    console.log("My updated data is: ", data)
     
     // Setup our AJAX request
     var xhttp = new XMLHttpRequest();

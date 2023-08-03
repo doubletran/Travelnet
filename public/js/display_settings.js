@@ -35,7 +35,11 @@ else if (dowhat == 'all'){
     }
 }
 function newItem() { showform('insert'); }
-function updateItem(pid) { showform('update'); }
+function updateItem(pid) { 
+    showform('update');
+    update(pid);
+
+ }
 function deleteItem(pid) { showform ('delete'); }
 function browseItem() { showform ('browse'); }
 function showAll() { showform ('all'); }

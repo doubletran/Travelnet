@@ -24,7 +24,7 @@
             <td>{{this.[User Name]}}</td>
             <td>{{this.[Friends Mentioned]}}</td>
             <td>{{this.[Locations Pinned]}}</td>
-            <td><a href="#" onClick="updateItem('{{this.[Post ID]}}')">Edit</a></td>
+            <td><a href="#"  onClick="updateItem('{{this.[Post ID]}}'); renderPosts('{{this.[Post ID]}}'); renderFriendsUpdate('{{this.[User Name]}}')">Edit</a></td>
             <td><a href="#" onclick="deleteItem('{{this.[Post ID]}}')">Delete</a></td>
         </tr>
         {{/each}}
@@ -91,42 +91,39 @@
     <legend><strong>Update A Post</strong></legend>
           <fieldset class="fields">
             <p>You can edit the following post: </p>
-    <div>
-        <label for="input-username"> User Name <span style="color: red;">*</span></label> 
-        <select name="input-username" id="input-username" onclick="renderFriendsUpdate(this.value)" required>
-        <option value="" selected>--Please select--</option>
-              {{#each users}}
-                <option value="{{this.[user_id]}}">{{this.[user_name]}}</option>
-              {{/each}}
-        </select>
-    </div>
+            <div>
+              <label id="showPostID">Post ID: </label>
+            </div>
+
+            <div>
+              <label id="showUserName">User Name: </label>
+            </div>
 
     <div>
-        <label for="updateFriends"> Friends Mentioned </label> 
-        <select name="updateFriends" id="updateFriends" multiple>
+        <label for="input-friends"> Friends Mentioned </label> 
+        <select name="input-friends" id="input-friends" multiple>
             	<option value="" selected>--Please select--</option>
         </select>
     </div>
 
     <div>
-        <label for="input-content"> Content <span style="color: red;">*</span></label> 
-        <textarea name="input-content" id="input-content" required></textarea>
-        </div>
-    <div>
+    <label for="input-content" id="showPostContent">
+    <!-- textarea will be added here by the function renderPosts -->
+    </div>
     
     <div>
-        <label> Access <span style="color: red;">*</span></label>
-        <select name="access" id="access" required>
-              <option value="" selected>--Please select--</option>
-              <option value="Public">Public</option>
-              <option value="Public to friends">Public to friends</option>
-              <option value="Private">Private</option>
+        <label for="showAccess"> Access <span style="color: red;">*</span></label>
+        <select name="showAccess" id="showAccess" required>
+          <option value="">--Please select--</option>
+          <option value="Public" >Public</option>
+          <option value="Public to friends" >Public to friends</option>
+          <option value="Private" >Private</option>
         </select>
     </div>
 
     <div>
-        <label> Location </label> 
-        <select name="location" id="location">
+        <label for="input-location"> Location </label> 
+        <select name="input-location" id="input-location">
             	  <option value="" selected>--Please select--</option>
                 {{#each locations}}
                 <option value={{this.location_id}}>{{this.[Locations]}}</option>
@@ -137,7 +134,8 @@
           <span style="color: red;">*</span>Required field
     </div>
     </fieldset>
-    <input type="submit">
+    <input class="btn" type="submit" id="UpdateSavePost" value="Save Update Post">
+    <input class="btn" type="button" value="cancel" onClick="browseItem()">
 
 </form>
  </div>
@@ -160,9 +158,10 @@
 </div><!-- delete -->
 <script type="application/javascript" src="./js/add_post.js"></script>
 <script>
+
 function renderFriends(userID) {
     document.getElementById('friendList').innerHTML = '<option value="" selected>--Please select--</option>';
-    let i = 0;
+    
     {{#each friendships}}
     if ({{this.[UserID]}} == userID) {
         const newOption = document.createElement("option");
@@ -172,18 +171,85 @@ function renderFriends(userID) {
     }
     {{/each}}
 }
-function renderFriendsUpdate(userID) {
-    document.getElementById('updateFriends').innerHTML = '<option value="" selected>--Please select--</option>';
-    let i = 0;
+function renderFriendsUpdate(userName) {
+    document.getElementById('input-friends').innerHTML = '<option value="" selected>--Please select--</option>';
+    
     {{#each friendships}}
-    if ({{this.[UserID]}} == userID) {
+    if ('{{this.[User]}}' == userName) {
         const newOption = document.createElement("option");
         newOption.innerHTML = '{{this.[Friend]}}';
         newOption.value = {{this.[FriendID]}};
-        document.getElementById('updateFriends').appendChild(newOption)
+        document.getElementById('input-friends').appendChild(newOption)
     }
     {{/each}}
 }
+
+function renderPosts(pid) {
+
+    // Dynamically show the Post ID 
+    const input = document.createElement("input");
+    input.value = pid;
+    input.style.display = "inline";
+    input.setAttribute("disabled", true)
+    input.setAttribute("id", "post-id")
+    document.getElementById('showPostID').appendChild(input);
+
+    {{#each posts}}
+    if ({{this.[Post ID]}} == pid) {
+
+      // Dynamically show the User Name
+      const input2 = document.createElement("input");
+      input2.style.display = "inline";
+      input2.value = {{this.[User ID]}};
+      input2.innerHTML = '{{this.[User Name]}}';
+      input2.setAttribute("disabled", true)
+      input2.setAttribute("id", "input-user")
+      document.getElementById('showUserName').appendChild(input2)
+
+      // Dynamically show the post content
+      const txt = document.createElement("textarea");
+      txt.innerHTML = '{{this.[Content]}}';
+      txt.name = "input-content";
+      txt.id = "input-content";
+      document.getElementById('showPostContent').appendChild(txt);
+
+      // Dynamically show the access options
+      const e = document.getElementById("showAccess");
+      const a = e.options[e.selectedIndex];
+      e.remove(e.selectedIndex);
+      const option = document.querySelector('option[value={{this.[Access]}}]');
+      option.setAttribute('selected', true);
+    }
+    {{/each}}
+    }
+
+function showNormalSelections() {
+      const select = document.getElementById('showAccess')
+      select.innerHTML = '';
+
+      // adding three options
+      const option1 = document.createElement("option");
+      const option2 = document.createElement("option");
+      const option3 = document.createElement("option");
+      const option4 = document.createElement("option");
+
+      option1.value = "";
+      option2.value = "Public";
+      option3.value = "Public to friends";
+      option4.value = "Private";
+
+      option1.innerHTML = "--Please select--";
+      option2.innerHTML = "Public";
+      option3.innerHTML = "Public to friends";
+      option4.innerHTML = "Private";
+
+      select.appendChild(option1);
+      select.appendChild(option2);
+      select.appendChild(option3);
+      select.appendChild(option4);
+    }
+
+function hideSelectedAccess() {document.getElementbyId("selectedAccess").innerHTML = ''}
 </script>
 {{!-- <!--<h1>Posts</h1>
 
