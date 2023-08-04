@@ -6,7 +6,7 @@
 <table border="1" cellpadding="5" id="post-table">
     <thead>
         <tr>
-            {{#each posts.[0]}}
+            {{#each post_clean.[0]}}
             <th>
                 {{@key}}
             </th>
@@ -217,7 +217,7 @@ function renderPosts(pid) {
       const e = document.getElementById("showAccess");
       const a = e.options[e.selectedIndex];
       e.remove(e.selectedIndex);
-      const option = document.querySelector('option[value={{this.[Access]}}]');
+      const option = document.querySelector('option[value="{{this.[Access]}}"]');
       option.setAttribute('selected', true);
     }
     {{/each}}

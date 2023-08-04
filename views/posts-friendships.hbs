@@ -5,7 +5,7 @@
 
 <div id="browse">
 <table border="1" cellpadding="5" id="post-table">
-
+<p><a href="#" onClick="showAll()">Display all forms</a> </p>
     {{!-- Header section --}}
     <thead>
 
@@ -26,9 +26,10 @@
         {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
         {{#each data}}
         <tr>
-            <td>{{this.posts_friendships_id}}</td>
-            <td>{{this.post_id}}</td>
-            <td>{{this.friendship_id}}</td>
+            <td>{{this.[Posts_Friendships ID]}}</td>
+            <td>{{this.[Post Content]}}</td>
+            <td>{{this.[User]}}</td>
+            <td>{{this.[Friend Mentioned]}}</td>
 
         </tr>
         {{/each}}
@@ -36,42 +37,6 @@
 </table>
 </div>
 
-<div id="browse">
-<p><a href="#" onClick="showAll()">Display all forms</a> </p>
-<table border="1" cellpadding="5">
-  <tr>
-    <th>Edit</th>
-    <th>Delete</th>
-    <th>Posts_Friendships ID</th>
-    <th>Post Content</th>
-    <th>User</th>
-    <th>Friend</th>
-  </tr>
-  <tr>
-    <td><a href="#" onClick="updateItem('Posts_has_FriendshipsID')">Edit</a></td>
-    <td><a href="#" onclick="deleteItem('this.Posts_has_FriendshipsID')">Delete</a></td>
-    <td>1</td>
-    <td >I love the city!</td>
-    <td>mary563</td>
-    <td>toub8294</td>
-  </tr>
-  <tr>
-    <td><a href="#" onClick="updateItem('Posts_has_FriendshipsID')">Edit</a></td>
-    <td><a href="#" onclick="deleteItem('this.Posts_has_FriendshipsID')">Delete</a></td>
-    <td>2</td>
-    <td >I love the city!</td>
-    <td>mary563</td>
-    <td>pwune0921</td>
-  </tr>
-  <tr>
-    <td><a href="#" onClick="updateItem('Posts_has_FriendshipsID')">Edit</a></td>
-    <td><a href="#" onclick="deleteItem('this.Posts_has_FriendshipsID')">Delete</a></td>
-    <td>3</td>
-    <td >I like the place! Look at it!!!</td>
-    <td>mary563</td>
-    <td>pwune0921</td>
-  </tr>
-</table>
 <p>&nbsp;</p>
 </div> <!-- browse -->
 </div>
