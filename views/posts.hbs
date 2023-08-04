@@ -1,162 +1,65 @@
 <h1>Posts</h1>
-
 [ <a href="/">Home</a> | <a href="/users">Users</a> | <a href="/friendships">Friendships</a> | <a href="/posts">Posts</a> | <a href="/locations">Locations</a> | <a href="/posts-friendships">Posts_has_Friendships</a>]
-{{!-- Create a table --}}
-<table id="post-table">
 
-    {{!-- Header section --}}
+<div id="browse">
+<p><a href="#" onClick="showAll()">Display all forms</a> </p>
+<table border="1" cellpadding="5" id="post-table">
     <thead>
-
-        {{!-- For just the first row, we print each key of the row object as a header cell so we
-        know what each column means when the page renders --}}
         <tr>
-            {{#each data.[0]}}
+            {{#each posts.[0]}}
             <th>
                 {{@key}}
             </th>
             {{/each}}
+            <th>Edit</th>
+            <th>Delete</th>
         </tr>
     </thead>
-
-    {{!-- Body section --}}
     <tbody>
-
-        {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
-        {{#each data}}
-        <tr data-value = {{this.[Post ID]}}>
+        {{#each posts}}
+        <tr data-value={{this.[Post ID]}}>
             <td>{{this.[Post ID]}}</td>
             <td>{{this.[Content]}}</td>
             <td>{{this.[Access]}}</td>
-            <td>{{this.[User ID]}}</td>
             <td>{{this.[User Name]}}</td>
             <td>{{this.[Friends Mentioned]}}</td>
             <td>{{this.[Locations Pinned]}}</td>
+            <td><a href="#"  onClick="updateItem('{{this.[Post ID]}}'); renderPosts('{{this.[Post ID]}}'); renderFriendsUpdate('{{this.[User Name]}}')">Edit</a></td>
+            <td><a href="#" onclick="deletePost('{{this.[Post ID]}}')">Delete</a></td>
         </tr>
         {{/each}}
     </tbody>
 </table>
-
-<h2>Updating a post</h2>
-<p>To update a specific user's homeworld select their name from the drop-down menu on the left and their desired homeworld from the drop down menu on the right</p>
-<form id="update-post-form-ajax">
-
-    <label for="input-username"> </label>
-    <select name="input-username" id="input-username">
-        <option value="test">Select a user</option>
-        {{#each users}}
-        <option value="{{this.[user_id]}}">{{this.[user_name]}}</option>
-        {{/each}}
-    </select>
-        <label for="input-content"> </label>
-    <select name="input-content" id="input-content">
-        <option value="test">Select a post's content</option>
-        {{#each data}}
-        <option value="{{this.[Post ID]}}">{{this.[Content]}}</option>
-        {{/each}}
-    </select>
-    
-
-
-    <label for="input-friend"></label>
-    <select name="input-friend" id="input-friend">
-        <option>Select a friend</option>
-        {{#each users}}
-        <option value="{{this.[user_id]}}">{{this.[user_name]}}</option>
-        {{/each}}
-    </select>
-    <input type="submit">
-
-</form>
-
-<script src="./js/update_post.js"></script> 
-{{!-- 
-<div id="browse">
-<p><a href="#" onClick="showAll()">Display all forms</a> </p>
-<table border="1" cellpadding="5">
-  <tr>
-    <th>Edit</th>
-    <th>Delete</th>
-    <th>Post ID</th>
-    <th>Content</th>
-    <th>Access</th>
-    <th>User Name</th>
-    <th>Friends Mentioned</th>
-    <th>Location Pinned </th>
-  </tr>
-  <tr>
-    <td><a href="#" onClick="updatePost('this.PostID')">Edit</a></td>
-    <td><a href="#" onclick="deletePost('this.PostID')">Delete</a></td>
-    <td align="right" >1</td>
-    <td >I love the city! </td>
-    <td >Public</td>
-    <td>mary563</td>
-    <td>toub8294, pwune0921</td>
-    <td>57434 Paucek Meadow, Suite 978 Efrainchester Missouri 99566-5220 United States</td>
-  </tr>
-  <tr>
-    <td><a href="#" onClick="updatePost('this.PostID')">Edit</a></td>
-    <td><a href="#" onclick="deletePost('this.PostID')">Delete</a></td>
-    <td align="right" >2</td>
-    <td > I like the place! Look at it!!!</td>
-    <td>Public to friends</td>
-    <td>mary563</td>
-    <td>pwune0921</td>
-    <td>NULL</td>
-  </tr>
-  <tr>
-    <td><a href="#" onClick="updatePost('this.PostID')">Edit</a></td>
-    <td><a href="#" onclick="deletePost('this.PostID')">Delete</a></td>
-    <td align="right" >3</td>
-    <td > Don't come! It's not worth the time!</td>
-    <td >Private</td>
-    <td>jimmyt801</td>
-    <td>NULL</td>
-    <td>57434 Paucek Meadow, Suite 978 Efrainchester Missouri 99566-5220 United States</td>
-  </tr>
-  <tr>
-    <td><a href="#" onClick="updatePost('this.PostID')">Edit</a></td>
-    <td><a href="#" onclick="deletePost('this.PostID')">Delete</a></td>
-    <td align="right" >4</td>
-    <td >Great park!</td>
-    <td >Public</td>
-    <td>toub8294</td>
-    <td>NULL</td>
-    <td>9088 Shanahan Groves, Suite 697 Pfannerstillhaven Wisconsin 97929 United States</td>
-  </tr>
-  <tr>
-    <td><a href="#" onClick="updatePost('this.PostID')">Edit</a></td>
-    <td><a href="#" onclick="deletePost('this.PostID')">Delete</a></td>
-    <td align="right" >5</td>
-    <td > Wow!!!!!</td>
-    <td >Public to friends</td>
-    <td>jimmyt801</td>
-    <td>NULL</td>
-    <td>Kpg Connor no 96, Apt 119 Batu DKI Jakarta 11840 Indonesia</td>
-  </tr>
-</table>
+<script src="./js/delete_post.js"></script>
 <p>&nbsp;</p>
+<h2>Inserting a post</h2>
 </div> <!-- browse -->
 <div id="insert">
     <form method="POST" id="addPost">
         <legend><strong>Add A Post</strong></legend>
           <fieldset class="fields">
             <div>
-              <label> User Name </label> 
-              <select name="user">
+              <label> User Name <span style="color: red;">*</span></label> 
+              <select name="userID" id="userID" onclick="renderFriends(this.value)" required>
             	<option value="" selected>--Please select--</option>
-                <option value="1">mary563</option>
-                <option value="2">toub8294</option>
-                <option value="3">pwune0921</option>
-                <option value="3">jimmyt801</option>
+              {{#each users}}
+                <option value="{{this.user_id}}">{{this.user_name}}</option>
+              {{/each}}
               </select>
             </div>
             <div>
-              <label>Content</label> 
-              <textarea name="content"></textarea>
+              <label> Friends Mentioned </label> 
+              <select name="friendList" id="friendList" multiple>
+            	<option value="" selected>--Please select--</option>
+              </select>
             </div>
             <div>
-              <label>Access</label>
-              <select name="access">
+              <label> Content <span style="color: red;">*</span></label> 
+              <textarea name="content" id="content" required></textarea>
+            </div>
+            <div>
+              <label> Access <span style="color: red;">*</span></label>
+              <select name="access" id="access" required>
                 <option value="" selected>--Please select--</option>
                 <option value="Public">Public</option>
                 <option value="Public to friends">Public to friends</option>
@@ -165,75 +68,188 @@
             </div>
             <div>
             <label> Location </label> 
-              <select name="location">
+              <select name="location" id="location">
             	  <option value="" selected>--Please select--</option>
-                <option value="1">57434 Paucek Meadow, Suite 978 Efrainchester Missouri 99566-5220 United States</option>
-                <option value="2">9088 Shanahan Groves, Suite 697 Pfannerstillhaven Wisconsin 97929 United States</option>
+                {{#each locations}}
+                <option value={{this.location_id}}>{{this.[Locations]}}</option>
+                {{/each}}
               </select>
+            </div>
+            <div>
+              <span style="color: red;">*</span>Required field
             </div>
       </fieldset>
           <input class="btn" type="submit" id="addPost" value="Add Post">
-          <input class="btn" type="button" value="cancel" onClick="browsePosts()">
+          <input class="btn" type="button" value="cancel" onClick="browseItem()">
 	</form> 
+  
 </div><!-- insert -->
 <p>&nbsp;</p>
 <div id="update">
-    <form method="POST" id="UpdatePost">
-        <legend><strong>Update A Post</strong></legend>
+<h2>Updating a post</h2>
+<p></p>
+<form id="update-post-form-ajax">
+    <legend><strong>Update A Post</strong></legend>
           <fieldset class="fields">
-            <input type="hidden" name="Post_id" id="updatePostID" value="1">
-            <label> ID: </label> 1
-          <label> Post Content </label> <textarea name="content" value="I love the city!"></textarea>
-          <label>Access</label>
-            <select name="access">
-              <option value="Public" selected>Public</option>
-              <option value="Public to friends">Public to friends</option>
-              <option value="Private">Private</option>
-              </select>
-          <label> User Name </label> <select name="user">
-            	<option value="0">&nbsp;</option>
-                <option value="1" selected>mary563</option>
-                <option value="2">toub8294</option>
-                <option value="3">pwune0921</option>
-                <option value="3">jimmyt801</option>
-                </select>
-             <label> Location </label> <select name="location">
-            	<option value="0" selected>NULL</option>
-                <option value="1">57434 Paucek Meadow, Suite 978 Efrainchester Missouri 99566-5220 United States</option>
-                <option value="2">9088 Shanahan Groves, Suite 697 Pfannerstillhaven Wisconsin 97929 United States</option>
-                </select>
-
-              <p></p>
+            <p>You can edit the following post: </p>
             <div>
-            <label for="friends-mentioned">Which friends are mentioned in this post?</label>
-
-            <select name="friends-mentioned" id="friends-mentioned" multiple>
-            <option value="2">toub8294</option>
-            <option value="3">pwune0921</option>
-            </select>
+              <label id="showPostID">Post ID: </label>
             </div>
-            <p>Hold down the Ctrl (windows) or Command (Mac) button to select multiple options.</p>
-          </fieldset>
-          <input class="btn" type="submit" id="UpdateSavePost" value="Save Update Post">
-          <input class="btn" type="button" value="cancel" onClick="browsePosts()">
-	</form> 
-</div><!-- update -->
+
+            <div>
+              <label id="showUserName">User Name: </label>
+            </div>
+
+    <div>
+        <label for="input-friends"> Friends Mentioned </label> 
+        <select name="input-friends" id="input-friends" multiple>
+            	<option value="" selected>--Please select--</option>
+        </select>
+    </div>
+
+    <div>
+    <label for="input-content" id="showPostContent">
+    <!-- textarea will be added here by the function renderPosts -->
+    </div>
+    
+    <div>
+        <label for="showAccess"> Access <span style="color: red;">*</span></label>
+        <select name="showAccess" id="showAccess" required>
+          <option value="">--Please select--</option>
+          <option value="Public" >Public</option>
+          <option value="Public to friends" >Public to friends</option>
+          <option value="Private" >Private</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="input-location"> Location </label> 
+        <select name="input-location" id="input-location">
+            	  <option value="" selected>--Please select--</option>
+                {{#each locations}}
+                <option value={{this.location_id}}>{{this.[Locations]}}</option>
+                {{/each}}
+        </select>
+    </div>
+    <div>
+          <span style="color: red;">*</span>Required field
+    </div>
+    </fieldset>
+    <input class="btn" type="submit" id="UpdateSavePost" value="Save Update Post">
+    <input class="btn" type="button" value="cancel" onClick="browseItem()">
+
+</form>
+ </div>
+<script src="./js/update_post.js"></script>
 
 <p>&nbsp;</p>
 <div id="delete">
-  <form method="POST" id="deletePost">
+  <form method="POST" id="deletePosts">
       <legend><strong>Delete A Post</strong></legend>
         <fieldset class="fields">
         <p>Are you sure you wish to delete the following?</p>
-        <input type="hidden" name="personID" id="deletePostID" value="1">
+        <input type="hidden" name="personID" id="deletePosts" value="1">
         <label><strong>ID:</strong></label> 1
             <label> <strong>Post Content: </strong> </label> I love the city!
             <label> <strong>User Name: </strong> </label> mary563
         </fieldset>
-    <input class="btn" type="submit" id="DeletePost" value="Delete Post">
-    <input class="btn" type="button" value="cancel" onClick="browsePosts()">
+    <input class="btn" type="submit" id="deletePosts" value="Delete Post" onClick="deletePost">
+    <input class="btn" type="button" value="cancel" onClick="browseItem()">
   </form> 
 </div><!-- delete -->
+<script type="application/javascript" src="./js/add_post.js"></script>
+<script>
 
-</body>
-</html> --}}
+function renderFriends(userID) {
+    document.getElementById('friendList').innerHTML = '<option value="" selected>--Please select--</option>';
+    
+    {{#each friendships}}
+    if ({{this.[UserID]}} == userID) {
+        const newOption = document.createElement("option");
+        newOption.innerHTML = '{{this.[Friend]}}';
+        newOption.value = {{this.[FriendID]}};
+        document.getElementById('friendList').appendChild(newOption)
+    }
+    {{/each}}
+}
+function renderFriendsUpdate(userName) {
+    document.getElementById('input-friends').innerHTML = '<option value="" selected>--Please select--</option>';
+    
+    {{#each friendships}}
+    if ('{{this.[User]}}' == userName) {
+        const newOption = document.createElement("option");
+        newOption.innerHTML = '{{this.[Friend]}}';
+        newOption.value = {{this.[FriendID]}};
+        document.getElementById('input-friends').appendChild(newOption)
+    }
+    {{/each}}
+}
+
+function renderPosts(pid) {
+
+    // Dynamically show the Post ID 
+    const input = document.createElement("input");
+    input.value = pid;
+    input.style.display = "inline";
+    input.setAttribute("disabled", true)
+    input.setAttribute("id", "post-id")
+    document.getElementById('showPostID').appendChild(input);
+
+    {{#each posts}}
+    if ({{this.[Post ID]}} == pid) {
+
+      // Dynamically show the User Name
+      const input2 = document.createElement("input");
+      input2.style.display = "inline";
+      input2.value = {{this.[User ID]}};
+      input2.innerHTML = '{{this.[User Name]}}';
+      input2.setAttribute("disabled", true)
+      input2.setAttribute("id", "input-user")
+      document.getElementById('showUserName').appendChild(input2)
+
+      // Dynamically show the post content
+      const txt = document.createElement("textarea");
+      txt.innerHTML = '{{this.[Content]}}';
+      txt.name = "input-content";
+      txt.id = "input-content";
+      document.getElementById('showPostContent').appendChild(txt);
+
+      // Dynamically show the access options
+      const e = document.getElementById("showAccess");
+      const a = e.options[e.selectedIndex];
+      e.remove(e.selectedIndex);
+      const option = document.querySelector('option[value={{this.[Access]}}]');
+      option.setAttribute('selected', true);
+    }
+    {{/each}}
+    }
+
+function showNormalSelections() {
+      const select = document.getElementById('showAccess')
+      select.innerHTML = '';
+
+      // adding three options
+      const option1 = document.createElement("option");
+      const option2 = document.createElement("option");
+      const option3 = document.createElement("option");
+      const option4 = document.createElement("option");
+
+      option1.value = "";
+      option2.value = "Public";
+      option3.value = "Public to friends";
+      option4.value = "Private";
+
+      option1.innerHTML = "--Please select--";
+      option2.innerHTML = "Public";
+      option3.innerHTML = "Public to friends";
+      option4.innerHTML = "Private";
+
+      select.appendChild(option1);
+      select.appendChild(option2);
+      select.appendChild(option3);
+      select.appendChild(option4);
+    }
+
+function hideSelectedAccess() {document.getElementbyId("selectedAccess").innerHTML = ''}
+</script>
+

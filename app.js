@@ -16,9 +16,10 @@ const { query } = require ('express');
 app.engine('.hbs', engine({extname: ".hbs"}));  // Create an instance of the handlebars engine to process templates
 app.set('view engine', '.hbs');  
 
-app.use(express.json())
-app.use(express.urlencoded({extended: true}))
-app.use(express.static(__dirname + '/public'));
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+app.use(express.static(__dirname +'/public'));
+ 
 
 /*
     ROUTES
@@ -29,34 +30,20 @@ app.get('/', function(req, res)
     });  
 app.get('/users', function (req, res)
     {
-        let select_all = `SELECT user_id AS "User ID", user_name AS "User Name", email AS Email, password AS Password 
-        FROM Users;`;
-       
-        db.pool.query(select_all, function(error, rows, fields){    // Execute the query
-
-            res.render('users', {data: rows});                  // Render the index.hbs file, and also send the renderer
-        }) 
+        res.render('users');
     });
 app.get('/friendships', function (req, res)
     {
-        let query1 = `SELECT Friendships.friendship_id AS "Friendship ID", Friendships.start_date AS "Start Date", 
-        Friendships.mutual_friend_ct AS "Mutual Friends Count", user.user_name AS "User 1 Name", 
-        friend.user_name AS "User 2 Name" 
-        FROM Friendships 
-        INNER JOIN Users user ON Friendships.user_id = user.user_id
-        INNER JOIN Users friend ON Friendships.friend_user_id = friend.user_id;`;
-       
-        db.pool.query(query1, function(error, rows, fields){    // Execute the query
-
-            res.render('friendships', {data: rows});              
-            console.log(rows);   
-        })   
+        let query2 = "SELECT * from Users;";
+        db.pool.query(query2, function(error, rows, fields){  
+        res.render('friendships', {data: rows});
+        })
     });
+
 app.get('/posts', function (req, res)
     {
-        //let query1 = "SELECT * from Posts;";
         let query1 = `SELECT Posts.post_id AS "Post ID", Posts.content AS "Content", access AS "Access", 
-        Posts.user_id AS "User ID", user.user_name AS "User Name", GROUP_CONCAT(friend.user_name SEPARATOR', ') AS "Friends Mentioned", 
+        user.user_name AS "User Name", user.user_id AS "User ID", GROUP_CONCAT(friend.user_name SEPARATOR', ') AS "Friends Mentioned", 
         CONCAT(Locations.address, ' ', Locations.city, ' ', 
         Locations.state, ' ', Locations.zip_code, ' ', Locations.country) AS 'Locations Pinned'
         FROM Posts 
@@ -65,100 +52,185 @@ app.get('/posts', function (req, res)
         LEFT JOIN Friendships ON Friendships.friendship_id = Posts_has_Friendships.friendship_id 
         LEFT JOIN Users friend ON Friendships.friend_user_id = friend.user_id 
         LEFT JOIN Locations ON Locations.location_id = Posts.location_id
-        GROUP BY Posts.post_id;`;
-        db.pool.query(query1, function(error, rows1, fields){    // Execute the query
-        
-            let userQuery = `SELECT * from Users;`
-            db.pool.query(userQuery, (error, row2, fields) => { 
-            
-                return res.render('posts', {data: rows1, users: row2});
+        GROUP BY Posts.post_id`;
 
-            })
-            //res.render('posts', {data: posts});
+        let query2 = `SELECT user_id, user_name FROM Users`;
+
+        let query3 = `SELECT * FROM ((SELECT Users.user_id AS "UserID", Users.user_name AS "User", 
+        Friendships.friend_user_id AS "FriendID", friends.user_name AS "Friend"
+        FROM Users 
+        INNER JOIN Friendships ON Friendships.user_id = Users.user_id 
+        INNER JOIN Users friends ON friends.user_id = Friendships.friend_user_id) 
+        UNION 
+        (SELECT Users.user_id AS "UserID", Users.user_name AS "User", 
+        Friendships.user_id AS "FriendID", friends.user_name AS "Friend"
+        FROM Users 
+        INNER JOIN Friendships ON Friendships.friend_user_id = Users.user_id 
+        INNER JOIN Users friends ON friends.user_id = Friendships.user_id)) AS t
+        ORDER BY t.UserID`;
+
+        let query4 = `SELECT CONCAT(Locations.address, ' ', Locations.city, ' ', 
+        Locations.state, ' ', Locations.zip_code, ' ', Locations.country) AS 'Locations', location_id
+        FROM Locations`;
+
+        db.pool.query(query1, function(error, rows, fields){ 
             
-        }) 
+            let posts = rows;
+
+            db.pool.query(query2, function(error, rows, fields){
+
+                let users = rows;
+
+                db.pool.query(query3, function(error, rows, fields){
+
+                    let friendships = rows;
+                    
+                    db.pool.query(query4, function(error, rows, fields){
+
+                        res.render('posts', {posts: posts, users: users, friendships: friendships, locations: rows});
+                    })
+                })
+                
+            })
+        })
     });
 app.get('/locations', function (req, res)
     {
-        let select_all = `SELECT Locations.location_id AS "Location ID", Locations.address AS "Address Line", Locations.city
-        AS "City", Locations.state AS "State", Locations.zip_code AS "Zip Code", Locations.country AS "Country"
-        FROM Locations;`;
-       
-        db.pool.query(select_all, function(error, rows, fields){    // Execute the query
-
-            res.render('locations', {data: rows});                  // Render the index.hbs file, and also send the renderer
-        })   
+        res.render('locations');
     });
 app.get('/posts-friendships', function (req, res)
     {
-        let select_all = `SELECT posts_friendships_id AS "Posts_Friendships ID", Posts.content AS "Post Content",
-        user.user_name AS "User", friend.user_name AS "Friend Mentioned"
-        FROM Posts_has_Friendships
-        INNER JOIN Posts ON Posts_has_Friendships.post_id = Posts.post_id
-        INNER JOIN Users user ON Posts.user_id = user.user_id
-        INNER JOIN Friendships ON Posts_has_Friendships.friendship_id = Friendships.friendship_id
-        INNER JOIN Users friend ON Friendships.friend_user_id = friend.user_id;`;
+        let query = "SELECT * from Posts_has_Friendships;";
        
-        db.pool.query(select_all, function(error, rows, fields){    // Execute the query
+        db.pool.query(query, function(error, rows, fields){    // Execute the query
 
             res.render('posts-friendships', {data: rows});                  // Render the index.hbs file, and also send the renderer
         })   
     });
-    app.put('/put-post-ajax', function(req,res,next){
-        let data = req.body;
-      
-        let friend= parseInt(data.friend);
-        let post = parseInt(data.post);
-        let user = parseInt(data.user);
-       // let select_friendship = `SELECT friendship_id FROM Friendships 
-       // WHERE user_id = ? AND friend_user_id = ?`;
 
-    
-      
-        let update_post = `UPDATE Posts_has_Friendships SET friendship_id = (SELECT friendship_id FROM Friendships 
-            WHERE user_id = ? AND friend_user_id = ?) WHERE post_id = ?;`;
-        let select_friend = `SELECT Users.user_name from Friendships 
-        JOIN Users ON Users.user_id = Friendships.friend_user_id WHERE friendship_id = (SELECT friendship_id FROM Friendships 
-                WHERE user_id = ? AND friend_user_id = ?);`;
+// app.js - ROUTES section
 
-    
+app.post('/posts-ajax', function(req, res) 
+{
+    let data = req.body;
 
-        //console.log (friend, user, select_friendship, update_post);
-      
-              // Run the 1st query
-              
-              db.pool.query(update_post ,[user,friend,post], function(error, row_friendship, fields){
-                  if (error) {
-      
-                  // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
-                  console.log(error);
-                  res.sendStatus(400);
-                  }
-      
-                  // If there was no error, we run our second query and return that data so we can use it to update the people's
-                  // table on the front-end
-                  else
-                  {
-                   // console.log(row_friendship);
+    // Capture NULL values
+    let location = parseInt(data.location);
+    if (isNaN(location))
+    {
+        location = 'NULL'
+    }
 
-                      // Run the second query
-                      db.pool.query(select_friend, [user, friend], function(error, rows, fields) {
-      
-                          if (error) {
-                              console.log(error);
-                              res.sendStatus(400);
-                          } else {
-                            //console.log(rows);
-                            
+    // First, insert into Posts
+    query1 = `INSERT INTO Posts (content, access, user_id, location_id) VALUES 
+    ('${data.content}', '${data.access}', '${data.userID}', '${data.location}')`;
+    db.pool.query(query1, function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        }
+    })
 
-                              res.send(rows);
-                          }
-                      })
-                
-                  }
-      })});
+    // Next, for every friend mentioned, insert into the Posts_has_Friendships intersection table.
+    for (let i = 0; i < data.friendList.length; i++) {
+        query2 = `INSERT INTO Posts_has_Friendships (post_id, friendship_id) 
+        VALUES (
+            (SELECT post_id FROM Posts WHERE content = '${data.content}' AND access = '${data.access}' AND user_id = '${data.userID}' AND location_id = '${data.location}'), 
+            (SELECT friendship_id FROM Friendships WHERE (user_id = '${data.userID}' AND friend_user_id = '${data.friendList[i]}') OR (user_id = '${data.friendList[i]}' AND friend_user_id = '${data.userID}'))
+            )`;
+        db.pool.query(query2, function(error, rows, fields){
+            if (error) {
+                console.log(error);
+                res.sendStatus(400);
+            }
+        })
+    }
 
-/*
+    // Finally, send back the data to be used for appending a row to the Posts table in ajax. 
+    query3 = `SELECT Posts.post_id, Posts.content AS "Content", access AS "Access", 
+           user.user_name, GROUP_CONCAT(friend.user_name SEPARATOR', ') AS "FriendsMentioned", 
+           CONCAT(Locations.address, ' ', Locations.city, ' ', 
+           Locations.state, ' ', Locations.zip_code, ' ', Locations.country) AS 'LocationsPinned'
+           FROM Posts 
+           LEFT JOIN Posts_has_Friendships ON Posts.post_id = Posts_has_Friendships.post_id
+           INNER JOIN Users user ON user.user_id = Posts.user_id 
+           LEFT JOIN Friendships ON Friendships.friendship_id = Posts_has_Friendships.friendship_id 
+           LEFT JOIN Users friend ON Friendships.friend_user_id = friend.user_id 
+           LEFT JOIN Locations ON Locations.location_id = Posts.location_id
+           GROUP BY Posts.post_id`;
+    db.pool.query(query3, function(error, rows, fields){
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        }
+        else{
+            res.send(rows);
+        }
+    })
+});
+
+app.put('/put-post-ajax', function(req,res,next){
+    let data = req.body;
+    console.log(data);
+    let location_id = parseInt(data.location_id);
+    let content = data.content;
+    let access = data.access;
+    let friend_ids = data.friend_user_ids;
+    let user_id = parseInt(data.user_id);
+    let post_id = parseInt(data.post_id);
+   // let select_friendship = `SELECT friendship_id FROM Friendships 
+   // WHERE user_id = ? AND friend_user_id = ?`;
+   for (let i = 0; i < friend_ids.length; i++) {
+        let update_post = `UPDATE Posts_has_Friendships SET friendship_id = (SELECT friendship_id FROM Friendships WHERE (user_id = ? 
+            AND friend_user_id = ? ) OR (user_id = ? AND friend_user_id = ?)) WHERE post_id = ?;`;
+       // let update_post = `(SELECT friendship_id FROM Friendships WHERE (user_id = '${data.user_id}' AND friend_user_id = '${data.friend_ids[i]}') OR (user_id = '${data.friend_ids[i]}' AND friend_user_id = '${data.user_id}'))`
+        db.pool.query(update_post ,[user_id, parseInt(data.friend_user_ids[i]), parseInt(data.friend_user_ids[i]), user_id, post_id], function(error, row_friendship, fields){
+            if (error) {
+  
+                // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                console.log(error);
+                res.sendStatus(400);
+                }
+        })
+   }});
+
+app.delete('/delete-post-ajax/', function(req,res,next){                                                                
+    let data = req.body;
+    let postID = parseInt(data.id);
+    //let deletePosts = `DELETE FROM post WHERE pid = ?`;
+    let deletePost= `DELETE FROM Posts WHERE post_id = ?`;
+    let deletePost_Friendship = `DELETE FROM Posts_has_Friendships WHERE post_id =?`;
+  
+  
+          // Run the 1st query
+          db.pool.query(deletePost, [postID], function(error, rows, fields){
+              if (error) {
+  
+              // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+              console.log(error);
+              res.sendStatus(400);
+              }
+  
+              else
+              {
+                db.pool.query(deletePost_Friendship, [postID], function(error, rows, fields){
+                    if (error) {
+        
+                    // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                    console.log(error);
+                    res.sendStatus(400);
+                    }
+        
+                    else
+                    {
+                        // Run the second query
+                       res.sendStatus(204);
+                    }
+              }
+            }
+  })});
+  
+  /*
     LISTENER
 */
 app.listen(PORT, function(){
