@@ -1,4 +1,4 @@
-// Get the objects we need to modify
+//Source: https://github.com/osu-cs340-ecampus/nodejs-starter-app/ 
 let updatePostForm = document.getElementById('update-post-form-ajax');
 
 // Modify the objects we need

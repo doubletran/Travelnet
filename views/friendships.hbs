@@ -1,6 +1,39 @@
+<!-- Source: https://github.com/osu-cs340-ecampus/nodejs-starter-app/ -->
 <h1>Friendships</h1>
 [ <a href="/">Home</a> | <a href="/users">Users</a> | <a href="/friendships">Friendships</a> | <a href="/posts">Posts</a> | <a href="/locations">Locations</a> | <a href="/posts-friendships">Posts_has_Friendships</a>]
-<div id="browse">
+<table>
+
+    {{!-- Header section --}}
+    <thead>
+
+        {{!-- For just the first row, we print each key of the row object as a header cell so we
+        know what each column means when the page renders --}}
+        <tr>
+            {{#each data.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+        </tr>
+    </thead>
+
+    {{!-- Body section --}}
+    <tbody>
+
+        {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
+        {{#each data}}
+        <tr>
+            <td>{{this.[Friendship ID]}}</td>
+            <td>{{this.[Start Date]}}</td>
+            <td>{{this.[Mutual Friends Count]}}</td>
+            <td>{{this.[User 1 Name]}}</td>
+            <td>{{this.[User 2 Name]}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+{{!-- <div id="browse">
 <p><a href="#" onClick="showAll()">Display all forms</a> </p>
 <table border="1" cellpadding="5">
   <tr>
@@ -13,8 +46,8 @@
     <th>User 2 Name</th>
   </tr>
   <tr>
-    <td><a href="#" onClick="updateItem('this.FriendshipID')">Edit</a></td>
-    <td><a href="#" onclick="deleteItem('this.FriendshipID')">Delete</a></td>
+    <td><a href="#" onClick="updateFriendship('this.FriendshipID')">Edit</a></td>
+    <td><a href="#" onclick="deleteFriendship('this.FriendshipID')">Delete</a></td>
     <td align="right" >1</td>
     <td >2019-01-09</td>
     <td align="right" >0</td>
@@ -22,8 +55,8 @@
     <td>toub8294</td>
   </tr>
   <tr>
-    <td><a href="#" onClick="updateItem('this.FriendshipID')">Edit</a></td>
-    <td><a href="#" onclick="deleteItem('this.FriendshipID')">Delete</a></td>
+    <td><a href="#" onClick="updateFriendship('this.FriendshipID')">Edit</a></td>
+    <td><a href="#" onclick="deleteFriendship('this.FriendshipID')">Delete</a></td>
     <td align="right" >2</td>
     <td >2009-11-19</td>
     <td align="right" >0</td>
@@ -31,8 +64,8 @@
     <td>pwune0921</td>
   </tr>
   <tr>
-    <td><a href="#" onClick="updateItem('this.FriendshipID')">Edit</a></td>
-    <td><a href="#" onclick="deleteItem('this.FriendshipID')">Delete</a></td>
+    <td><a href="#" onClick="updateFriendship('this.FriendshipID')">Edit</a></td>
+    <td><a href="#" onclick="deleteFriendship('this.FriendshipID')">Delete</a></td>
     <td align="right" >3</td>
     <td >2023-08-29</td>
     <td align="right" >1</td>
@@ -63,7 +96,7 @@
                 </select>
       </fieldset>
           <input class="btn" type="submit" id="addFriendship" value="Add Friendship">
-          <input class="btn" type="button" value="cancel" onClick="browseItem()">
+          <input class="btn" type="button" value="cancel" onClick="browseFriendships()">
 	</form> 
 </div><!-- insert -->
 <p>&nbsp;</p>
@@ -91,7 +124,7 @@
                 </select>
           </fieldset>
           <input class="btn" type="submit" id="UpdateSaveFriendship" value="Save Update Friendship">
-          <input class="btn" type="button" value="cancel" onClick="browseItem()">
+          <input class="btn" type="button" value="cancel" onClick="browseFriendships()">
 	</form> 
 </div><!-- update -->
 
@@ -107,6 +140,6 @@
             <label> <strong>Friend: </strong> </label>toub8294 
         </fieldset>
     <input class="btn" type="submit" id="DeleteFriendship" value="Delete Friendship">
-    <input class="btn" type="button" value="cancel" onClick="browseItem()">
+    <input class="btn" type="button" value="cancel" onClick="browseFriendships()">
   </form> 
-</div><!-- delete -->
+</div><!-- delete --> --}}

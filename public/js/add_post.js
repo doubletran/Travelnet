@@ -1,5 +1,4 @@
-// Get the objects we need to modify
-
+//Source: https://github.com/osu-cs340-ecampus/nodejs-starter-app/ 
 let addPostForm = document.getElementById('addPost');
 
 // Modify the objects we need
@@ -38,8 +37,6 @@ addPostForm.addEventListener("submit", function (e) {
 		access: accessValue,
         location: locationValue
     }
-
-    console.log(data);
     // Setup our AJAX request
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", "/posts-ajax", true);

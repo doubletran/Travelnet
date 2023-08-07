@@ -1,11 +1,13 @@
+<!-- Source: https://github.com/osu-cs340-ecampus/nodejs-starter-app/ -->
 <h1>Posts_has_Friendships</h1>
 
 
 [ <a href="/">Home</a> | <a href="/users">Users</a> | <a href="/friendships">Friendships</a> | <a href="/posts">Posts</a> | <a href="/locations">Locations</a> | <a href="/posts-friendships">Posts_has_Friendships</a>]
-
 <div id="browse">
-<table border="1" cellpadding="5" id="post-table">
 <p><a href="#" onClick="showAll()">Display all forms</a> </p>
+{{!-- Create a table --}}
+<table border="1" cellpadding="5" id="post-table">
+
     {{!-- Header section --}}
     <thead>
 
@@ -30,79 +32,9 @@
             <td>{{this.[Post Content]}}</td>
             <td>{{this.[User]}}</td>
             <td>{{this.[Friend Mentioned]}}</td>
+            
 
         </tr>
         {{/each}}
     </tbody>
 </table>
-</div>
-
-<p>&nbsp;</p>
-</div> <!-- browse -->
-</div>
-<div id="insert">
-  <form method="POST" id="addPosts_has_Friendships">
-    <legend><strong>Add Posts_has_Friendships</strong></legend>
-    <fieldset class="fields">
-      <label> Post </label> 
-      <select name="post">
-        <option value="0">&nbsp;</option>
-        <option value="1" selected>I love the city!</option>
-        <option value="2">I like the place! Look at it!!!</option>
-        <option value="3">Don't come! It's not worth the time!</option>
-        <option value="3">Great park!</option>
-        <option value="3">Wow!!!!!</option>
-      </select>
-      <label> Friendship </label> 
-      <select name="friend">
-        <option value="0">&nbsp;</option>
-        <option value="1" selected>mary563 - toub8294</option>
-        <option value="2">mary563 - pwune0921</option>
-      </select>
-      </fieldset>
-          <input class="btn" type="submit" id="addPosts_has_Friendships" value="Add Posts_has_Friendships">
-          <input class="btn" type="button" value="cancel" onClick="browseItem()">
-	</form> 
-</div><!-- insert -->
-
-<div id="update">
-    <form method="POST" id="updatePosts_has_Friendships">
-        <legend><strong>Update Posts_has_Friendships</strong></legend>
-          <fieldset class="fields">
-          <input type="hidden" name="Post_id" id="updatePostID" value="1">
-          <label> ID: </label> 1
-          <label> Post </label> <select name="post">
-            	<option value="0">&nbsp;</option>
-                <option value="1" selected>I love the city!</option>
-                <option value="2">I like the place! Look at it!!!</option>
-                <option value="3">Don't come! It's not worth the time!</option>
-                <option value="3">Great park!</option>
-                <option value="3">Wow!!!!!</option>
-                </select>
-            <label> Friendship </label> <select name="friend">
-            	<option value="0">&nbsp;</option>
-                <option value="1" selected>mary563 - toub8294</option>
-                <option value="2">mary563 - pwune0921</option>
-                </select>
-          </fieldset>
-          <input class="btn" type="submit" id="UpdateSavePost" value="Save Update Post">
-          <input class="btn" type="button" value="cancel" onClick="browseItem()">
-	</form> 
-</div><!-- update -->
-
-<p>&nbsp;</p>
-<div id="delete">
-  <form method="POST" id="deletePosts_has_Friendships">
-      <legend><strong>Delete Posts_has_Friendships</strong></legend>
-        <fieldset class="fields">
-        <p>Are you sure you wish to delete the following?</p>
-        <input type="hidden" name="personID" id="deletePosts_has_FriendshipsID" value="1">
-        <label><strong>Post ID:</strong></label> 1
-            <label> <strong>Friendship ID: </strong> </label> 1
-            <label><strong>Post Content: </strong></label> I love the city!
-            <label><strong>Friendship: </strong></label> mary563 - toub8294
-        </fieldset>
-    <input class="btn" type="submit" id="deletePosts_has_Friendships" value="Delete Posts_has_Friendships">
-    <input class="btn" type="button" value="cancel" onClick="browseItem()">
-  </form> 
-</div>
