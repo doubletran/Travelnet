@@ -56,8 +56,6 @@ updatePostForm.addEventListener("submit", function (e) {
         friend_user_ids: friend_user_ids
     
     }
-
-    console.log("My updated data is: ", data)
     
     // Setup our AJAX request
     var xhttp = new XMLHttpRequest();
@@ -65,46 +63,46 @@ updatePostForm.addEventListener("submit", function (e) {
     xhttp.setRequestHeader("Content-type", "application/json");
 
     // Tell our AJAX request how to resolve
-    xhttp.onreadystatechange = () => {
-        if (xhttp.readyState == 4 && xhttp.status == 200) {
+//     xhttp.onreadystatechange = () => {
+//         if (xhttp.readyState == 4 && xhttp.status == 200) {
 
-            // Add the new data to the table
-            updateRow(xhttp.response, post_id);
+//             // Add the new data to the table
+//             updateRow(xhttp.response, post_id);
 
 
-        }
-        else if (xhttp.readyState == 4 && xhttp.status != 200) {
-            console.log(error);
-            console.log("There was an error with the input.")
-        }
-    }
+//         }
+//         else if (xhttp.readyState == 4 && xhttp.status != 200) {
+//             console.log(error);
+//             console.log("There was an error with the input.")
+//         }
+//     }
 
-    // Send the request and wait for the response
-    xhttp.send(JSON.stringify(data));
+//     // Send the request and wait for the response
+//     xhttp.send(JSON.stringify(data));
 
+// })
+
+
+// function updateRow(data, post_id){
+//     let parsedData = JSON.parse(data);
+//     console.log(post_id);
+//     let table = document.getElementById("post-table");
+
+//     for (let i = 0, row; row = table.rows[i]; i++) {
+//        //iterate through rows
+//        //rows would be accessed using the "row" variable assigned in the for loop
+//        if (table.rows[i].getAttribute("data-value") == post_id) {
+
+//             // Get the location of the row where we found the matching post ID
+//             let updateRowIndex = table.getElementsByTagName("tr")[i];
+
+//             // Get td of location value
+//             let td = updateRowIndex.getElementsByTagName("td")[5];
+
+//             // Reassign location to our value we updated to
+
+//             td.innerHTML = parsedData[0].friend_user_id; 
+//             console.log(td.innerHTML);
+//        }
+//     }
 })
-
-
-function updateRow(data, post_id){
-    let parsedData = JSON.parse(data);
-    console.log(post_id);
-    let table = document.getElementById("post-table");
-
-    for (let i = 0, row; row = table.rows[i]; i++) {
-       //iterate through rows
-       //rows would be accessed using the "row" variable assigned in the for loop
-       if (table.rows[i].getAttribute("data-value") == post_id) {
-
-            // Get the location of the row where we found the matching post ID
-            let updateRowIndex = table.getElementsByTagName("tr")[i];
-
-            // Get td of location value
-            let td = updateRowIndex.getElementsByTagName("td")[5];
-
-            // Reassign location to our value we updated to
-
-            td.innerHTML = parsedData[0].friend_user_id; 
-            console.log(td.innerHTML);
-       }
-    }
-}
