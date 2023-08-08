@@ -98,11 +98,11 @@
             </div>
 
             <div style="display: none;">
-              <label id="showUserName">User ID: </label>
+              <label id="showUserID">User ID: </label>
             </div>
 
             <div>
-              <label id="showUserNames">User Name: </label>
+              <label id="showUserName">User Name: </label>
             </div>
 
     <div>
@@ -113,7 +113,7 @@
     </div>
 
     <div>
-    <label for="input-content" id="showPostContent">
+    <label for="input-content" id="showPostContent">Post Content</label>
     <!-- textarea will be added here by the function renderPosts -->
     </div>
     
@@ -197,7 +197,10 @@ function renderFriendsUpdate(userName) {
 }
 
 function renderPosts(pid) {
-    // Dynamically show the Post ID 
+    // Dynamically show the Post ID
+    if (document.getElementById('showPostID').childNodes[1]) {                  // If the input element exists, remove the old input element.
+      document.getElementById('showPostID').childNodes[1].remove();
+    }
     const input = document.createElement("input");
     input.value = pid;
     input.style.display = "inline";
@@ -208,28 +211,39 @@ function renderPosts(pid) {
     {{#each post_for_render}}
     if ({{this.[Post ID]}} == pid) {
 
-      // Dynamically show the User Name
+      // Dynamically show the User ID (but set display = "none" for User ID for better UI experience)
+      if (document.getElementById('showUserID').childNodes[1]) {               // If the input element exists, remove the old input element.
+      document.getElementById('showUserID').childNodes[1].remove();
+    }
       const input2 = document.createElement("input");
       input2.style.display = "inline";
       input2.value = {{this.[User ID]}};
       input2.innerHTML = '{{this.[User Name]}}';
       input2.setAttribute("disabled", true);
       input2.setAttribute("id", "input-user");
-      document.getElementById('showUserName').appendChild(input2);
+      document.getElementById('showUserID').appendChild(input2);
 
+      // Dynamically show the User Name
+      if (document.getElementById('showUserName').childNodes[1]) {               // If the input element exists, remove the old input element.
+            document.getElementById('showUserName').childNodes[1].remove();
+          }
       const input3 = document.createElement("input");
       input3.style.display = "inline";
       input3.value = '{{this.[User Name]}}';
       input3.innerHTML = '{{this.[User Name]}}';
       input3.setAttribute("disabled", true);
       input3.setAttribute("id", "input-users");
-      document.getElementById('showUserNames').appendChild(input3);
+      document.getElementById('showUserName').appendChild(input3);
 
       // Dynamically show the post content
+      if (document.getElementById('showPostContent').childNodes[1]) {               // If the input element exists, remove the old input element.
+            document.getElementById('showPostContent').childNodes[1].remove();
+          }
       const txt = document.createElement("textarea");
       txt.innerHTML = '{{this.[Content]}}';
       txt.setAttribute("name", "input-content");
       txt.setAttribute("id", "input-content");
+      txt.style.display = "block";
       document.getElementById('showPostContent').appendChild(txt);
 
       // Dynamically show the access options
