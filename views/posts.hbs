@@ -247,42 +247,25 @@ function renderPosts(pid) {
       document.getElementById('showPostContent').appendChild(txt);
 
       // Dynamically show the access options
-      const e = document.getElementById("showAccess");
-      const a = e.options[e.selectedIndex];
-      e.remove(e.selectedIndex);
-      const option = document.querySelector('option[value="{{this.[Access]}}"]');
-      option.setAttribute('selected', true);
+      if (document.getElementById('showAccess').hasChildNodes()) {               // If the input element exists, remove the old input element.
+            document.getElementById('showAccess').innerHTML = "";
+          }
+      const option = document.createElement("option");
+      option.setAttribute("value", "{{this.[Access]}}");
+      option.innerHTML = "{{this.[Access]}}";
+      document.getElementById('showAccess').appendChild(option);
+      const accessList = ["Public", "Public to friends", "Private"];
+      for (let i = 0; i < accessList.length; i++) {
+        if (accessList[i] != '{{this.[Access]}}') {
+          const option = document.createElement("option");
+          option.setAttribute("value", accessList[i]);
+          option.innerHTML = accessList[i];
+          document.getElementById("showAccess").appendChild(option);
+        }
+      }
     }
     {{/each}}
     }
-
-function showNormalSelections() {
-      const select = document.getElementById('showAccess')
-      select.innerHTML = '';
-
-      // adding three options
-      const option1 = document.createElement("option");
-      const option2 = document.createElement("option");
-      const option3 = document.createElement("option");
-      const option4 = document.createElement("option");
-
-      option1.value = "";
-      option2.value = "Public";
-      option3.value = "Public to friends";
-      option4.value = "Private";
-
-      option1.innerHTML = "--Please select--";
-      option2.innerHTML = "Public";
-      option3.innerHTML = "Public to friends";
-      option4.innerHTML = "Private";
-
-      select.appendChild(option1);
-      select.appendChild(option2);
-      select.appendChild(option3);
-      select.appendChild(option4);
-    }
-
-function hideSelectedAccess() {document.getElementbyId("selectedAccess").innerHTML = ''}
 </script>
 
 

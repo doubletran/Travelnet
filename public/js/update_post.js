@@ -56,7 +56,7 @@ updatePostForm.addEventListener("submit", function (e) {
         friend_user_ids: friend_user_ids
     
     }
-    
+    console.log(data);
     // Setup our AJAX request
     var xhttp = new XMLHttpRequest();
     xhttp.open("PUT", "/put-post-ajax", true);
