@@ -129,12 +129,10 @@
 
     <div>
         <label for="input-location"> Location </label> 
-        <select name="input-location" id="input-location">
-            	  <option value="" selected disabled>--Please select--</option>
-                {{#each locations}}
+        <select name="input-location" id="input-location"></select>
+                {{!-- {{#each locations}}
                 <option value={{this.location_id}}>{{this.[Locations]}}</option>
-                {{/each}}
-        </select>
+                {{/each}} --}}
     </div>
     <div>
           <span style="color: red;">*</span>Required field
@@ -263,6 +261,32 @@ function renderPosts(pid) {
           document.getElementById("showAccess").appendChild(option);
         }
       }
+
+      // Dynamically show the Locations options
+      if (document.getElementById('input-location').hasChildNodes) {               // If the input element exists, remove the old input element.
+            document.getElementById('input-location').innerHTML = "";
+          }
+      const locationOption = document.createElement("option");
+      locationOption.setAttribute("value", "{{this.[Locations Pinned]}}");
+      locationOption.innerHTML = "{{this.[Locations Pinned]}}";
+      document.getElementById('input-location').appendChild(locationOption);
+      const noLocation = document.createElement("option");
+      noLocation.setAttribute("value", "");
+      noLocation.innerHTML = "--Please select--";
+      document.getElementById('input-location').appendChild(noLocation);
+      let LocationsList = [];
+      {{#each ../locations}}
+        LocationsList.push('{{this.[Locations]}}');
+      {{/each}}
+      for (let i = 0; i < LocationsList.length; i++) {
+        if (LocationsList[i] != '{{this.[Locations Pinned]}}') {
+          const locationOption = document.createElement("option");
+          locationOption.setAttribute("value", LocationsList[i]);
+          locationOption.innerHTML = LocationsList[i];
+          document.getElementById("input-location").appendChild(locationOption);
+        }
+      }
+      
     }
     {{/each}}
     }
