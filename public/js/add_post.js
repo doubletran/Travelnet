@@ -37,6 +37,7 @@ addPostForm.addEventListener("submit", function (e) {
 		access: accessValue,
         location: locationValue
     }
+
     // Setup our AJAX request
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", "/posts-ajax", true);
@@ -77,6 +78,7 @@ addRowToTable = (data) => {
     // Get a reference to the new row from the database query (last object)
     let parsedData = JSON.parse(data);
     let newRow = parsedData[parsedData.length - 1]
+    console.log(newRow);
     // Create a row and 4 cells
     let row = document.createElement("TR");
     let postIDCell = document.createElement("TD");

@@ -7,7 +7,7 @@
 <table border="1" cellpadding="5" id="post-table">
     <thead>
         <tr>
-            {{#each post_clean.[0]}}
+            {{#each posts.[0]}}
             <th>
                 {{@key}}
             </th>
@@ -130,7 +130,7 @@
     <div>
         <label for="input-location"> Location </label> 
         <select name="input-location" id="input-location">
-            	  <option value="" selected>--Please select--</option>
+            	  <option value="" selected disabled>--Please select--</option>
                 {{#each locations}}
                 <option value={{this.location_id}}>{{this.[Locations]}}</option>
                 {{/each}}
@@ -171,7 +171,7 @@
 <script>
 
 function renderFriends(userID) {
-    document.getElementById('friendList').innerHTML = '<option value="" selected>--Please select--</option>';
+    document.getElementById('friendList').innerHTML = '<option value="">--Please select--</option>';
     
     {{#each friendships}}
     if ({{this.[UserID]}} == userID) {
@@ -182,8 +182,9 @@ function renderFriends(userID) {
     }
     {{/each}}
 }
+
 function renderFriendsUpdate(userName) {
-    document.getElementById('input-friends').innerHTML = '<option value="" selected>--Please select--</option>';
+    document.getElementById('input-friends').innerHTML = '<option value="">--Please select--</option>';
     
     {{#each friendships}}
     if ('{{this.[User]}}' == userName) {
@@ -204,7 +205,7 @@ function renderPosts(pid) {
     input.setAttribute("id", "post-id");
     document.getElementById('showPostID').appendChild(input);
 
-    {{#each posts}}
+    {{#each post_for_render}}
     if ({{this.[Post ID]}} == pid) {
 
       // Dynamically show the User Name
@@ -227,8 +228,8 @@ function renderPosts(pid) {
       // Dynamically show the post content
       const txt = document.createElement("textarea");
       txt.innerHTML = '{{this.[Content]}}';
-      txt.name = "input-content";
-      txt.id = "input-content";
+      txt.setAttribute("name", "input-content");
+      txt.setAttribute("id", "input-content");
       document.getElementById('showPostContent').appendChild(txt);
 
       // Dynamically show the access options
