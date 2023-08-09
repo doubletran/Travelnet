@@ -1,7 +1,8 @@
+<!-- Source: https://github.com/osu-cs340-ecampus/nodejs-starter-app/ -->
 <h1>Users</h1>
 
 [ <a href="/">Home</a> | <a href="/users">Users</a> | <a href="/friendships">Friendships</a> | <a href="/posts">Posts</a> | <a href="/locations">Locations</a> | <a href="/posts-friendships">Posts_has_Friendships</a>]
-<table>
+<table id="user-table">
 
     {{!-- Header section --}}
     <thead>
@@ -33,62 +34,23 @@
 </table>
 <div id="browse">
 <p><a href="#" onClick="showAll()">Display all forms</a></p>
-<table border="1" cellpadding="5">
-  <tr>
-    <th>Edit</th>
-    <th>Delete</th>
-    <th>User ID</th>
-    <th>User Name</th>
-    <th>Email</th>
-    <th>Password</th>
-  </tr>
-  <tr>
-    <td><a href="#" onClick="updateUser('this.UserID')">Edit</a></td>
-    <td><a href="#" onclick="deleteUser('this.UserID')">Delete</a></td>
-    <td align="right" >1</td>
-    <td >mary563</td>
-    <td align="right" >mary563@gmail.com</td>
-    <td>1937@#fadf</td>
-  </tr>
-  <tr>
-    <td><a href="#" onClick="updateUser('this.UserID')">Edit</a></td>
-    <td><a href="#" onclick="deleteUser('this.UserID')">Delete</a></td>
-    <td align="right" >2</td>
-    <td>toub8294</td>
-    <td align="right" >toub8294@gmail.com</td>
-    <td >hfkd0)jf!</td>
-  </tr>
-  <tr>
-    <td><a href="#" onClick="updateUser('this.UserID')">Edit</a></td>
-    <td><a href="#" onclick="deleteUser('this.UserID')">Delete</a></td>
-    <td align="right" >3</td>
-    <td>pwune0921</td>
-    <td align="right" >pwune0921@gmail.com</td>
-    <td>9384**&fafd</td>
-  </tr>
-  <tr>
-    <td><a href="#" onClick="updateUser('this.UserID')">Edit</a></td>
-    <td><a href="#" onclick="deleteUser('this.UserID')">Delete</a></td>
-    <td align="right" >4</td>
-    <td>jimmyt801</td>
-    <td align="right" >jimmyt801@outlook.com</td>
-    <td>8394*fhfkd</td>
-  </tr>
-</table>
+
 <p>&nbsp;</p>
 </div> <!-- browse -->
 <div id="insert">
     <form method="POST" id="addUser">
         <legend><strong>Add A User</strong></legend>
           <fieldset class="fields">
-            <label> user name </label> <input type="text" name="user_name">
-            <label> email </label> <input type="text" name="email">
-            <label> password </label> <input type="text" name="password">
+            
+            <label> User name </label> <input type="text" name="userName" id = "userName" > 
+            <label> Email </label> <input type="email" name="email" id = "email" >
+            <label> Password </label> <input type="password" name="password" id = "password">
       </fieldset>
           <input class="btn" type="submit" id="addUser" value="Add User">
           <input class="btn" type="button" value="cancel" onClick="browseUsers()">
 	</form> 
 </div><!-- insert -->
+<script src="./js/add_user.js"></script>
 <p>&nbsp;</p>
 <div id="update">
     <form method="POST" id="UpdateUser">
@@ -104,18 +66,9 @@
           <input class="btn" type="button" value="cancel" onClick="browseUsers()">
 	</form> 
 </div><!-- update -->
+<div id ="delete">
 
-<p>&nbsp;</p>
-<div id="delete">
-  <form method="POST" id="deleteUser">
-      <legend><strong>Delete A User</strong></legend>
-        <fieldset class="fields">
-        <p>Are you sure you wish to delete the following?</p>
-        <input type="hidden" name="personID" id="deleteUserID" value="1">
-        <label><strong>ID:</strong></label> 1
-            <label> <strong>User Name: </strong> </label> mary563
-        </fieldset>
-    <input class="btn" type="submit" id="DeleteUser" value="Delete User">
-    <input class="btn" type="button" value="cancel" onClick="browseUsers()">
-  </form> 
-</div><!-- delete -->
+</div>
+
+
+
