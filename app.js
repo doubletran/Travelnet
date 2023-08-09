@@ -71,7 +71,7 @@ app.get('/posts', function (req, res)
         let query5 = `SELECT Posts.post_id AS "Post ID", Posts.content AS "Content", access AS "Access", 
         Posts.user_id AS "User ID", user.user_name AS "User Name", GROUP_CONCAT(friend.user_name SEPARATOR', ') AS "Friends Mentioned", 
         CONCAT(Locations.address, ' ', Locations.city, ' ', 
-        Locations.state, ' ', Locations.zip_code, ' ', Locations.country) AS 'Locations Pinned'
+        Locations.state, ' ', Locations.zip_code, ' ', Locations.country) AS 'Locations Pinned', Locations.location_id
         FROM Posts
         LEFT JOIN Users user ON user.user_id = Posts.user_id
         LEFT JOIN Posts_has_Friendships ON Posts_has_Friendships.post_id = Posts.post_id
@@ -223,13 +223,25 @@ app.put('/put-post-ajax', function(req,res,next){
                 })
             }
             update_post_content = `UPDATE Posts SET content = ?, access = ?, location_id = ? WHERE post_id = ?`;
-            console.log(location_id);
-            db.pool.query(update_post_content, [content, access, location_id, post_id], function(error, row_friendship, fields) {
+            db.pool.query(update_post_content, [content, access, location_id, post_id], function(error, rows, fields) {
                 if (error) {
                     console.log(error);
                     res.sendStatus(400);
                 } else {
-                    res.send(row_friendship);
+                    show_updated = `SELECT Posts.post_id, Posts.content, access, 
+                    user.user_name, GROUP_CONCAT(friend.user_name SEPARATOR', ') AS "Friends", 
+                    CONCAT(Locations.address, ' ', Locations.city, ' ', 
+                    Locations.state, ' ', Locations.zip_code, ' ', Locations.country) AS 'Locations'
+                    FROM Posts
+                    LEFT JOIN Users user ON user.user_id = Posts.user_id
+                    LEFT JOIN Posts_has_Friendships ON Posts_has_Friendships.post_id = Posts.post_id
+                    LEFT JOIN Friendships ON Friendships.friendship_id = Posts_has_Friendships.friendship_id
+                    LEFT JOIN Users friend ON (CASE WHEN Posts.user_id = Friendships.user_id THEN Friendships.friend_user_id ELSE Friendships.user_id END) = friend.user_id
+                    LEFT JOIN Locations ON Locations.location_id = Posts.location_id
+                    GROUP BY Posts.post_id`;
+                    db.pool.query(show_updated, function(error, rows, fields) {
+                        res.send(rows);
+                    })
                 }
             })
         }

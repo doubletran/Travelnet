@@ -78,7 +78,6 @@ addRowToTable = (data) => {
     // Get a reference to the new row from the database query (last object)
     let parsedData = JSON.parse(data);
     let newRow = parsedData[parsedData.length - 1]
-    console.log(newRow);
     // Create a row and 4 cells
     let row = document.createElement("TR");
     let postIDCell = document.createElement("TD");
@@ -104,6 +103,13 @@ addRowToTable = (data) => {
     row.appendChild(friendsMentionedCell);
     row.appendChild(locationsPinnedCell);
     
+    row.setAttribute('data-value', newRow.id);
     // // Add the row to the table
     currentTable.appendChild(row);
+
+    let newContent = document.getElementById("input-content");
+    let txt = document.createElement("textarea");
+    txt.text = newRow.content;
+    txt.value = newRow.content;
+    newContent.add(txt);
 }

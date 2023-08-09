@@ -56,6 +56,7 @@ updatePostForm.addEventListener("submit", function (e) {
         friend_user_ids: friend_user_ids
     
     }
+
     // Setup our AJAX request
     var xhttp = new XMLHttpRequest();
     xhttp.open("PUT", "/put-post-ajax", true);
@@ -66,7 +67,6 @@ updatePostForm.addEventListener("submit", function (e) {
          if (xhttp.readyState == 4 && xhttp.status == 200) {
 
              // Add the new data to the table
-            
              updateRow(xhttp.response, post_id);
 
 
@@ -85,24 +85,27 @@ updatePostForm.addEventListener("submit", function (e) {
 
  function updateRow(data, post_id){
      let parsedData = JSON.parse(data);
-     console.log(post_id);
+     console.log(parsedData[0]);
      let table = document.getElementById("post-table");
 
-     for (let i = 0, row; row = table.rows[i]; i++) {
+     for (let i = 1, row; row = table.rows[i]; i++) {
+        console.log(row)
         //iterate through rows
         //rows would be accessed using the "row" variable assigned in the for loop
-        if (table.rows[i].getAttribute("data-value") == post_id) {
-
+        if (row.getAttribute("data-value") == post_id) {
+             
              // Get the location of the row where we found the matching post ID
              let updateRowIndex = table.getElementsByTagName("tr")[i];
-
              // Get td of location value
-             let td = updateRowIndex.getElementsByTagName("td")[5];
-
+             let content_td = updateRowIndex.getElementsByTagName("td")[1];
+             let access_td = updateRowIndex.getElementsByTagName("td")[2];
+             let friends_td = updateRowIndex.getElementsByTagName("td")[4];
+             let location_td = updateRowIndex.getElementsByTagName("td")[5]
              // Reassign location to our value we updated to
-
-             td.innerHTML = parsedData[0].friend_user_id; 
-             console.log(td.innerHTML);
+             content_td.innerHTML = parsedData[i-1].content;
+             access_td.innerHTML = parsedData[i-1].access;
+             friends_td.innerHTML = parsedData[i-1].Friends;  
+             location_td.innerHTML = parsedData[i-1].Locations;
         }
      }
 }
