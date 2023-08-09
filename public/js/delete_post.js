@@ -1,3 +1,4 @@
+//Source: https://github.com/osu-cs340-ecampus/nodejs-starter-app/ 
 function deletePost(post_id) {
     let data = {
         id: post_id
@@ -28,7 +29,7 @@ function deletePost(post_id) {
 function deleteRow(post_id){
 
     let table = document.getElementById("post-table");
-    console.log(post_id);
+    //console.log(post_id);
     for (let i = 0, row; row = table.rows[i]; i++) {
        
 

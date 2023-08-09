@@ -1,59 +1,58 @@
+<!-- Source: https://github.com/osu-cs340-ecampus/nodejs-starter-app/ -->
 <!-- main.hbs-->
-
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <title>TravelNet</title>
-    {{#each css}}
-        <link rel="stylesheet" href="/css/{{this}}">
-    {{/each}}
-    <!--<script language="JavaScript">
-		function showform(dowhat) {
-			/*
-			* four DIVS: browse, insert, update, delete
-			* this function sets one visible the others not
-			*/
-			if (dowhat == 'insert'){
-				document.getElementById('browse').style.display = 'none';
-				document.getElementById('insert').style.display = 'block';
-				document.getElementById('update').style.display = 'none';
-				document.getElementById('delete').style.display = 'none';
-			}
-			else if (dowhat == 'update'){
-				document.getElementById('browse').style.display = 'none';
-				document.getElementById('insert').style.display = 'none';
-				document.getElementById('update').style.display = 'block';
-				document.getElementById('delete').style.display = 'none';
-			}
-			else if (dowhat == 'delete'){
-				document.getElementById('browse').style.display = 'none';
-				document.getElementById('insert').style.display = 'none';
-				document.getElementById('update').style.display = 'none';
-				document.getElementById('delete').style.display = 'block';
-			}
-      else if (dowhat == 'all'){
-				document.getElementById('browse').style.display = 'block';
-				document.getElementById('insert').style.display = 'block';
-				document.getElementById('update').style.display = 'block';
-				document.getElementById('delete').style.display = 'block';
-			}
-			else { //by default display browse
-				document.getElementById('browse').style.display = 'block';
-				document.getElementById('insert').style.display = 'block';
-				document.getElementById('update').style.display = 'none';
-				document.getElementById('delete').style.display = 'none';
-			}
-		}
-    function newFriendship() { showform('insert'); }
-    function updateFriendship(pid) { showform('update'); }
-    function deleteFriendship(pid) { showform ('delete'); }
-    function browseFriendships() { showform ('browse'); }
-    function showAll() { showform ('all'); }
-</script>-->
-<link href="style.css" rel="stylesheet" type="text/css" />
+	<link href="./css/style.css" rel="stylesheet" type="text/css" />
+	<script language="javascript">
+	function showform(dowhat) {
+    /*
+    * four DIVS: browse, insert, update, delete
+    * this function sets one visible the others not
+    */
+    if (dowhat == 'insert'){
+        document.getElementById('browse').style.display = 'none';
+        document.getElementById('insert').style.display = 'block';
+        document.getElementById('update').style.display = 'none';
+        document.getElementById('delete').style.display = 'none';
+    }
+    else if (dowhat == 'update'){
+        document.getElementById('browse').style.display = 'block';
+        document.getElementById('insert').style.display = 'none';
+        document.getElementById('update').style.display = 'block';
+        document.getElementById('delete').style.display = 'none';
+    }
+    else if (dowhat == 'delete'){
+        document.getElementById('browse').style.display = 'none';
+        document.getElementById('insert').style.display = 'none';
+        document.getElementById('update').style.display = 'none';
+        document.getElementById('delete').style.display = 'block';
+    }
+else if (dowhat == 'all'){
+        document.getElementById('browse').style.display = 'block';
+        document.getElementById('insert').style.display = 'block';
+        document.getElementById('update').style.display = 'block';
+        document.getElementById('delete').style.display = 'block';
+    }
+    else { //by default display browse
+        document.getElementById('browse').style.display = 'block';
+        document.getElementById('insert').style.display = 'block';
+        document.getElementById('update').style.display = 'none';
+        document.getElementById('delete').style.display = 'none';
+    }
+}
+function newItem() { showform('insert'); }
+function updateItem(pid) { 
+	showform('update');
+}
+function deleteItem(pid) { showform ('delete'); }
+function browseItem() { showform ('browse'); }
+function showAll() { showform ('all'); }
+</script>
 </head>
-<body>
+<body onload="browseItem()">
 
     {{{body}}}
 

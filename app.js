@@ -29,8 +29,9 @@ app.get('/users', function (req, res)
     {
         let query1= `SELECT user_id AS "User ID", user_name AS "User Name", email AS Email, password AS Password 
         FROM Users;`;
+        res.render('users');
         db.pool.query(query1, function(error, rows, fields){  
-            res.render('users', {data: rows});
+            res.render('friendships', {data: rows});
             })
     });
 app.get('/friendships', function (req, res)

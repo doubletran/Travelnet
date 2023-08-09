@@ -1,3 +1,4 @@
+<!-- Source: https://github.com/osu-cs340-ecampus/nodejs-starter-app/ -->
 <h1>Posts</h1>
 [ <a href="/">Home</a> | <a href="/users">Users</a> | <a href="/friendships">Friendships</a> | <a href="/posts">Posts</a> | <a href="/locations">Locations</a> | <a href="/posts-friendships">Posts_has_Friendships</a>]
 
@@ -16,7 +17,7 @@
         </tr>
     </thead>
     <tbody>
-        {{#each posts}}
+        {{#each posts }}
         <tr data-value={{this.[Post ID]}}>
             <td>{{this.[Post ID]}}</td>
             <td>{{this.[Content]}}</td>
@@ -32,15 +33,15 @@
 </table>
 <script src="./js/delete_post.js"></script>
 <p>&nbsp;</p>
-<h2>Inserting a post</h2>
 </div> <!-- browse -->
 <div id="insert">
+<h2>Inserting a post</h2>
     <form method="POST" id="addPost">
         <legend><strong>Add A Post</strong></legend>
           <fieldset class="fields">
             <div>
               <label> User Name <span style="color: red;">*</span></label> 
-              <select name="userID" id="userID" onclick="renderFriends(this.value)" required>
+              <select name="userID" id="userID" onChange="renderFriends(this.value)" required>
             	<option value="" selected>--Please select--</option>
               {{#each users}}
                 <option value="{{this.user_id}}">{{this.user_name}}</option>
@@ -96,6 +97,10 @@
               <label id="showPostID">Post ID: </label>
             </div>
 
+            <div style="display: none;">
+              <label id="showUserID">User ID: </label>
+            </div>
+
             <div>
               <label id="showUserName">User Name: </label>
             </div>
@@ -108,7 +113,7 @@
     </div>
 
     <div>
-    <label for="input-content" id="showPostContent">
+    <label for="input-content" id="showPostContent">Post Content</label>
     <!-- textarea will be added here by the function renderPosts -->
     </div>
     
@@ -124,12 +129,10 @@
 
     <div>
         <label for="input-location"> Location </label> 
-        <select name="input-location" id="input-location">
-            	  <option value="" selected>--Please select--</option>
-                {{#each locations}}
+        <select name="input-location" id="input-location"></select>
+                {{!-- {{#each locations}}
                 <option value={{this.location_id}}>{{this.[Locations]}}</option>
-                {{/each}}
-        </select>
+                {{/each}} --}}
     </div>
     <div>
           <span style="color: red;">*</span>Required field
@@ -140,28 +143,33 @@
 
 </form>
  </div>
-<script src="./js/update_post.js"></script>
 
-<p>&nbsp;</p>
+ <p>&nbsp;</p>
 <div id="delete">
-  <form method="POST" id="deletePosts">
-      <legend><strong>Delete A Post</strong></legend>
+  <!--<form method="Location" id="deleteLocation">
+      <legend><strong>Delete Location</strong></legend>
         <fieldset class="fields">
         <p>Are you sure you wish to delete the following?</p>
-        <input type="hidden" name="personID" id="deletePosts" value="1">
+        <input type="hidden" name="LocationID" id="deleteLocationID" value="1">
         <label><strong>ID:</strong></label> 1
-            <label> <strong>Post Content: </strong> </label> I love the city!
-            <label> <strong>User Name: </strong> </label> mary563
+            <label> <strong>Address Line: </strong> </label> 57434 Paucek Meadow, Suite 978
+            <label> <strong>City: </strong> </label> Efrainchester
+            <label> <strong>State: </strong> </label> Missouri
+            <label> <strong>Zip Code: </strong> </label>99566-5220
+            <label><strong>Country: </strong></label>United States	
         </fieldset>
-    <input class="btn" type="submit" id="deletePosts" value="Delete Post" onClick="deletePost">
-    <input class="btn" type="button" value="cancel" onClick="browseItem()">
-  </form> 
+    <input class="btn" type="submit" id="DeleteLocation" value="Delete Location">
+    <input class="btn" type="button" value="cancel" onClick="browseLocations()">
+  </form> -->
 </div><!-- delete -->
+<script src="./js/update_post.js"></script>
+
+
 <script type="application/javascript" src="./js/add_post.js"></script>
 <script>
 
 function renderFriends(userID) {
-    document.getElementById('friendList').innerHTML = '<option value="" selected>--Please select--</option>';
+    document.getElementById('friendList').innerHTML = '<option value="">--Please select--</option>';
     
     {{#each friendships}}
     if ({{this.[UserID]}} == userID) {
@@ -172,8 +180,9 @@ function renderFriends(userID) {
     }
     {{/each}}
 }
+
 function renderFriendsUpdate(userName) {
-    document.getElementById('input-friends').innerHTML = '<option value="" selected>--Please select--</option>';
+    document.getElementById('input-friends').innerHTML = '<option value="">--Please select--</option>';
     
     {{#each friendships}}
     if ('{{this.[User]}}' == userName) {
@@ -186,70 +195,102 @@ function renderFriendsUpdate(userName) {
 }
 
 function renderPosts(pid) {
-
-    // Dynamically show the Post ID 
+    // Dynamically show the Post ID
+    if (document.getElementById('showPostID').childNodes[1]) {                  // If the input element exists, remove the old input element.
+      document.getElementById('showPostID').childNodes[1].remove();
+    }
     const input = document.createElement("input");
     input.value = pid;
     input.style.display = "inline";
-    input.setAttribute("disabled", true)
-    input.setAttribute("id", "post-id")
+    input.setAttribute("disabled", true);
+    input.setAttribute("id", "post-id");
     document.getElementById('showPostID').appendChild(input);
 
-    {{#each posts}}
+    {{#each post_for_render}}
     if ({{this.[Post ID]}} == pid) {
 
-      // Dynamically show the User Name
+      // Dynamically show the User ID (but set display = "none" for User ID for better UI experience)
+      if (document.getElementById('showUserID').childNodes[1]) {               // If the input element exists, remove the old input element.
+      document.getElementById('showUserID').childNodes[1].remove();
+    }
       const input2 = document.createElement("input");
       input2.style.display = "inline";
       input2.value = {{this.[User ID]}};
       input2.innerHTML = '{{this.[User Name]}}';
-      input2.setAttribute("disabled", true)
-      input2.setAttribute("id", "input-user")
-      document.getElementById('showUserName').appendChild(input2)
+      input2.setAttribute("disabled", true);
+      input2.setAttribute("id", "input-user");
+      document.getElementById('showUserID').appendChild(input2);
+
+      // Dynamically show the User Name
+      if (document.getElementById('showUserName').childNodes[1]) {               // If the input element exists, remove the old input element.
+            document.getElementById('showUserName').childNodes[1].remove();
+          }
+      const input3 = document.createElement("input");
+      input3.style.display = "inline";
+      input3.value = '{{this.[User Name]}}';
+      input3.innerHTML = '{{this.[User Name]}}';
+      input3.setAttribute("disabled", true);
+      input3.setAttribute("id", "input-users");
+      document.getElementById('showUserName').appendChild(input3);
 
       // Dynamically show the post content
+      if (document.getElementById('showPostContent').childNodes[1]) {               // If the input element exists, remove the old input element.
+            document.getElementById('showPostContent').childNodes[1].remove();
+          }
       const txt = document.createElement("textarea");
       txt.innerHTML = '{{this.[Content]}}';
-      txt.name = "input-content";
-      txt.id = "input-content";
+      txt.setAttribute("name", "input-content");
+      txt.setAttribute("id", "input-content");
+      txt.style.display = "block";
       document.getElementById('showPostContent').appendChild(txt);
 
       // Dynamically show the access options
-      const e = document.getElementById("showAccess");
-      const a = e.options[e.selectedIndex];
-      e.remove(e.selectedIndex);
-      const option = document.querySelector('option[value={{this.[Access]}}]');
-      option.setAttribute('selected', true);
+      if (document.getElementById('showAccess').hasChildNodes()) {               // If the input element exists, remove the old input element.
+            document.getElementById('showAccess').innerHTML = "";
+          }
+      const option = document.createElement("option");
+      option.setAttribute("value", "{{this.[Access]}}");
+      option.innerHTML = "{{this.[Access]}}";
+      document.getElementById('showAccess').appendChild(option);
+      const accessList = ["Public", "Public to friends", "Private"];
+      for (let i = 0; i < accessList.length; i++) {
+        if (accessList[i] != '{{this.[Access]}}') {
+          const option = document.createElement("option");
+          option.setAttribute("value", accessList[i]);
+          option.innerHTML = accessList[i];
+          document.getElementById("showAccess").appendChild(option);
+        }
+      }
+
+      // Dynamically show the Locations options
+      if (document.getElementById('input-location').hasChildNodes) {               // If the input element exists, remove the old input element.
+            document.getElementById('input-location').innerHTML = "";
+          }
+      const locationOption = document.createElement("option");
+      locationOption.setAttribute("value", "{{this.[Locations Pinned]}}");
+      locationOption.innerHTML = "{{this.[Locations Pinned]}}";
+      document.getElementById('input-location').appendChild(locationOption);
+      const noLocation = document.createElement("option");
+      noLocation.setAttribute("value", "");
+      noLocation.innerHTML = "--Please select--";
+      document.getElementById('input-location').appendChild(noLocation);
+      let LocationsList = [];
+      {{#each ../locations}}
+        LocationsList.push('{{this.[Locations]}}');
+      {{/each}}
+      for (let i = 0; i < LocationsList.length; i++) {
+        if (LocationsList[i] != '{{this.[Locations Pinned]}}') {
+          const locationOption = document.createElement("option");
+          locationOption.setAttribute("value", LocationsList[i]);
+          locationOption.innerHTML = LocationsList[i];
+          document.getElementById("input-location").appendChild(locationOption);
+        }
+      }
+      
     }
     {{/each}}
     }
-
-function showNormalSelections() {
-      const select = document.getElementById('showAccess')
-      select.innerHTML = '';
-
-      // adding three options
-      const option1 = document.createElement("option");
-      const option2 = document.createElement("option");
-      const option3 = document.createElement("option");
-      const option4 = document.createElement("option");
-
-      option1.value = "";
-      option2.value = "Public";
-      option3.value = "Public to friends";
-      option4.value = "Private";
-
-      option1.innerHTML = "--Please select--";
-      option2.innerHTML = "Public";
-      option3.innerHTML = "Public to friends";
-      option4.innerHTML = "Private";
-
-      select.appendChild(option1);
-      select.appendChild(option2);
-      select.appendChild(option3);
-      select.appendChild(option4);
-    }
-
-function hideSelectedAccess() {document.getElementbyId("selectedAccess").innerHTML = ''}
 </script>
+
+
 

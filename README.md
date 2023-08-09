@@ -6,4 +6,4 @@ nvm install v16.15.0
 nvm use v16.15.0
 ```
 
-"All code is based on the CS 340 starter code, with the exception of..."
+"Credit: All code is based on the CS 340 starter code."
