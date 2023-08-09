@@ -8,19 +8,20 @@ addFriendshipForm.addEventListener("submit", function (e) {
     e.preventDefault();
 
     // Get form fields we need to get data from
-    let user1Value= document.getElementById("username1").value;
-    let user2Value = document.getElementById("username2").value;
-    let startDateValue = document.getElementById("start_date").value;
-    console.log(startDateValue);
+    let inputUser1 = document.getElementById("username1")
+    let inputUser2 = document.getElementById("username2")
+    let inputStartDate = document.getElementById("start_date")
+
+    
 
 
 	
 
     // Put our data we want to send in a javascript object
     let data = {
-        user_id: user1Value,
-        friend_user_id: user2Value,
-        start_date : startDateValue
+        user_id: inputUser1.value,
+        friend_user_id: inputUser2.value,
+        start_date : inputStartDate.value
 
     }
 
@@ -36,10 +37,10 @@ addFriendshipForm.addEventListener("submit", function (e) {
             addRowToTable(xhttp.response);
 
             // Clear the input fields for another transaction
-            // inputUserID.value = '';
-            // inputFriendList.value = '';
-            // inputContent.value = '';
-            // inputLocation.value = '';
+            inputUser1.value = '';
+            inputStartDate.value = '';
+           inputUser2.value = '';
+          
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
             console.log("There was an error with the input.")

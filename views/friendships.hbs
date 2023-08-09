@@ -44,6 +44,7 @@
           <fieldset class="fields">
             <label> Start Date </label> <input type="date" name="start_date" id = "start_date">
             <label> User 1 Name </label> <select name="user" id="username1" onChange="renderOtherUsers(this.value)" required>
+              <option value="">--Please select--</option>
               {{#each users}}
                 <option value="{{this.user_id}}">{{this.user_name}}</option>
               {{/each}}
