@@ -29,22 +29,10 @@ app.get('/users', function (req, res)
     {
         let query1= `SELECT user_id AS "User ID", user_name AS "User Name", email AS Email, password AS Password 
         FROM Users;`;
-        res.render('users');
+       
         db.pool.query(query1, function(error, rows, fields){  
-            res.render('friendships', {data: rows});
+            res.render('users', {data: rows});
             })
-    });
-app.get('/friendships', function (req, res)
-    {
-        let query2 = `SELECT Friendships.friendship_id AS "Friendship ID", Friendships.start_date AS "Start Date", 
-        Friendships.mutual_friend_ct AS "Mutual Friends Count", user.user_name AS "User 1 Name", 
-        friend.user_name AS "User 2 Name" 
-        FROM Friendships 
-        INNER JOIN Users user ON Friendships.user_id = user.user_id
-        INNER JOIN Users friend ON Friendships.friend_user_id = friend.user_id;`;
-        db.pool.query(query2, function(error, rows, fields){  
-        res.render('friendships', {data: rows});
-        })
     });
 
 app.get('/posts', function (req, res)
@@ -330,6 +318,62 @@ app.delete('/delete-post-ajax/', function(req,res,next){
         }
         else{
             db.pool.query(readNewUserQuery, [data.username], function(error, row, fields){
+                if (error){
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                else{
+                    console.log(row);
+                    res.send(row);
+                }
+            })
+
+        }
+    })
+  })
+
+    /*
+  FRIENDSHIP 
+  */
+ let readUserQuery = `SELECT * from Users`;
+ let readFriendshipQuery = `SELECT Friendships.friendship_id AS "Friendship ID", Friendships.start_date AS "Start Date", 
+ calMulCt(user.user_id, friend.user_id) AS "Mutual Friends Count", user.user_name AS "User 1 Name", 
+ friend.user_name AS "User 2 Name" 
+ FROM Friendships 
+ INNER JOIN Users user ON Friendships.user_id = user.user_id
+ INNER JOIN Users friend ON Friendships.friend_user_id = friend.user_id`;
+  app.get('/friendships', function (req, res)
+  {
+     
+      db.pool.query(readFriendshipQuery, function(error, friendship_rows, fields){  
+        db.pool.query(readUserQuery, function(error, user_rows, fields){
+            return res.render('friendships', {data: friendship_rows, users: user_rows})
+
+        })
+
+
+      })
+  });
+
+
+  app.post('/add-friendship-ajax', function(req, res, next){
+    
+    let data = req.body;
+    console.log(data);
+    let addFriendshipQuery = `INSERT INTO Friendships (start_date, mutual_friend_ct, user_id, friend_user_id) VALUES ('${data.start_date}', 'calMuCt(${data.user_id}, ${data.friend_user_id})', '${data.user_id}' , '${data.friend_user_id}' );`;
+    let readNewFriendshipQuery = `${readFriendshipQuery} WHERE Friendships.user_id = ? AND Friendships.friend_user_id = ?;`;
+    db.pool.query(addFriendshipQuery, function (error, row, fields){
+        if (error){
+            console.log(error.errno);
+            res.sendStatus(400);
+            if (error.errno == 1062){
+     
+            }
+            
+
+        }
+        else{
+            db.pool.query(readNewFriendshipQuery, [data.user_id, data.friend_user_id], function(error, row, fields){
                 if (error){
                     console.log(error);
                     res.sendStatus(400);

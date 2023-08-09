@@ -1,7 +1,9 @@
 <!-- Source: https://github.com/osu-cs340-ecampus/nodejs-starter-app/ -->
 <h1>Friendships</h1>
 [ <a href="/">Home</a> | <a href="/users">Users</a> | <a href="/friendships">Friendships</a> | <a href="/posts">Posts</a> | <a href="/locations">Locations</a> | <a href="/posts-friendships">Posts_has_Friendships</a>]
-<table>
+<div id="browse">
+<p><a href="#" onClick="showAll()">Display all forms</a> </p>
+<table id="friendship-table">
 
     {{!-- Header section --}}
     <thead>
@@ -33,72 +35,27 @@
     </tbody>
 </table>
 
-{{!-- <div id="browse">
-<p><a href="#" onClick="showAll()">Display all forms</a> </p>
-<table border="1" cellpadding="5">
-  <tr>
-    <th>Edit</th>
-    <th>Delete</th>
-    <th>Friendship ID</th>
-    <th>Start Date</th>
-    <th>Mutual Friends Count</th>
-    <th>User 1 Name</th>
-    <th>User 2 Name</th>
-  </tr>
-  <tr>
-    <td><a href="#" onClick="updateFriendship('this.FriendshipID')">Edit</a></td>
-    <td><a href="#" onclick="deleteFriendship('this.FriendshipID')">Delete</a></td>
-    <td align="right" >1</td>
-    <td >2019-01-09</td>
-    <td align="right" >0</td>
-    <td> mary563</td>
-    <td>toub8294</td>
-  </tr>
-  <tr>
-    <td><a href="#" onClick="updateFriendship('this.FriendshipID')">Edit</a></td>
-    <td><a href="#" onclick="deleteFriendship('this.FriendshipID')">Delete</a></td>
-    <td align="right" >2</td>
-    <td >2009-11-19</td>
-    <td align="right" >0</td>
-    <td> mary563</td>
-    <td>pwune0921</td>
-  </tr>
-  <tr>
-    <td><a href="#" onClick="updateFriendship('this.FriendshipID')">Edit</a></td>
-    <td><a href="#" onclick="deleteFriendship('this.FriendshipID')">Delete</a></td>
-    <td align="right" >3</td>
-    <td >2023-08-29</td>
-    <td align="right" >1</td>
-    <td>toub8294</td>
-    <td>pwune0921</td>
-  </tr>
-</table>
 <p>&nbsp;</p>
 </div> <!-- browse -->
+
 <div id="insert">
     <form method="POST" id="addFriendship">
         <legend><strong>Add Friendship</strong></legend>
           <fieldset class="fields">
-            <label> Start Date </label> <input type="date" name="start_date">
-            <label> User 1 Name </label> <select name="user">
-            	<option value="0">&nbsp;</option>
-                <option value="1" selected>mary563</option>
-                <option value="2">toub8294</option>
-                <option value="3">pwune0921</option>
-                <option value="3">jimmyt801</option>
+            <label> Start Date </label> <input type="date" name="start_date" id = "start_date">
+            <label> User 1 Name </label> <select name="user" id="username1" onChange="renderOtherUsers(this.value)" required>
+              {{#each users}}
+                <option value="{{this.user_id}}">{{this.user_name}}</option>
+              {{/each}}
                 </select>
-            <label> User 2 Name </label> <select name="friend">
-            	<option value="0">&nbsp;</option>
-                <option value="1" >mary563</option>
-                <option value="2" selected>toub8294</option>
-                <option value="3">pwune0921</option>
-                <option value="3">jimmyt801</option>
+            <label> User 2 Name </label> <select name="friend" id="username2" >
                 </select>
       </fieldset>
           <input class="btn" type="submit" id="addFriendship" value="Add Friendship">
           <input class="btn" type="button" value="cancel" onClick="browseFriendships()">
 	</form> 
 </div><!-- insert -->
+<script src="./js/add_friendship.js"></script>
 <p>&nbsp;</p>
 <div id="update">
     <form method="POST" id="UpdateFriendship">
@@ -130,16 +87,20 @@
 
 <p>&nbsp;</p>
 <div id="delete">
-  <form method="POST" id="deleteFriendship">
-      <legend><strong>Delete Friendship</strong></legend>
-        <fieldset class="fields">
-        <p>Are you sure you wish to delete the following?</p>
-        <input type="hidden" name="personID" id="deleteFriendshipID" value="1">
-        <label><strong>ID:</strong></label> 1
-            <label> <strong>User: </strong> </label>mary563
-            <label> <strong>Friend: </strong> </label>toub8294 
-        </fieldset>
-    <input class="btn" type="submit" id="DeleteFriendship" value="Delete Friendship">
-    <input class="btn" type="button" value="cancel" onClick="browseFriendships()">
-  </form> 
-</div><!-- delete --> --}}
+
+</div><!-- delete --> 
+<script>
+function renderOtherUsers(userID) {
+  let otherUsersSelect = document.getElementById('username2');
+    otherUsersSelect.innerHTML = '<option value="">--Please select--</option>';
+    
+    {{#each users}}
+    if ({{this.user_id}} != userID) {
+        const newOption = document.createElement("option");
+        newOption.innerHTML = '{{this.user_name}}';
+        newOption.value = {{this.user_id}};
+       otherUsersSelect.appendChild(newOption);
+    }
+    {{/each}}
+}
+</script>

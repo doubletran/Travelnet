@@ -19,6 +19,12 @@ CREATE FUNCTION calMulCt (id1 int, id2 int)
     INNER JOIN Friendships ON Users.user_id = Friendships.friend_user_id WHERE Friendships.friend_user_id = id2
     )) AS b)
           ) as t);
+SELECT Friendships.friendship_id AS "Friendship ID", Friendships.start_date AS "Start Date", 
+calMulCt(user.user_id, friend.user_id) AS "Mutual Friends Count", user.user_name AS "User 1 Name", 
+friend.user_name AS "User 2 Name" 
+FROM Friendships 
+INNER JOIN Users user ON Friendships.user_id = user.user_id
+INNER JOIN Users friend ON Friendships.friend_user_id = friend.user_id;
 
 -- The following 5 SELECT queries populate each table on each page with data------------------
 ----------------------------------------------------------------------------------------------
