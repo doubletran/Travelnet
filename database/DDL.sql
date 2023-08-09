@@ -58,7 +58,8 @@ CREATE TABLE IF NOT EXISTS `Posts` (
     FOREIGN KEY (`location_id`)
     REFERENCES `Locations` (`location_id`)
     ON DELETE SET NULL
-    ON UPDATE CASCADE)
+    ON UPDATE CASCADE
+    )
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------

@@ -3,10 +3,10 @@ let updatePostForm = document.getElementById('update-post-form-ajax');
 
 // Modify the objects we need
 updatePostForm.addEventListener("submit", function (e) {
-  
+    
     // Prevent the form from submitting
     e.preventDefault();
-
+    
     // Get form fields we need to get data from
     let inputPostID = document.getElementById("post-id");
     let inputUserID = document.getElementById("input-user");
@@ -14,14 +14,14 @@ updatePostForm.addEventListener("submit", function (e) {
     let inputContent = document.getElementById("input-content");
     let inputFriends = document.getElementById("input-friends");
     let inputAccess = document.getElementById("showAccess");
-
+    
     // Get the values from the form fields
     let post_id = inputPostID.value;
     let user_id = inputUserID.value;
     let location_id = inputLocation.value;
     let content = inputContent.value;
     let access = inputAccess.value;
-
+    
     var selected = [];
     for (var option of inputFriends.options)
     {
@@ -40,10 +40,10 @@ updatePostForm.addEventListener("submit", function (e) {
     //     console.log("What?")
     //     return;
     // }
-    if (isNaN(location_id)) 
-    {
-        return;
-    }
+    // if (isNaN(location_id)) 
+    // {
+    //     return;
+    // }
 
 
     // Put our data we want to send in a javascript object
@@ -56,53 +56,53 @@ updatePostForm.addEventListener("submit", function (e) {
         friend_user_ids: friend_user_ids
     
     }
-    console.log(data);
     // Setup our AJAX request
     var xhttp = new XMLHttpRequest();
     xhttp.open("PUT", "/put-post-ajax", true);
     xhttp.setRequestHeader("Content-type", "application/json");
 
-    // Tell our AJAX request how to resolve
-//     xhttp.onreadystatechange = () => {
-//         if (xhttp.readyState == 4 && xhttp.status == 200) {
+// Tell our AJAX request how to resolve
+    xhttp.onreadystatechange = () => {
+         if (xhttp.readyState == 4 && xhttp.status == 200) {
 
-//             // Add the new data to the table
-//             updateRow(xhttp.response, post_id);
-
-
-//         }
-//         else if (xhttp.readyState == 4 && xhttp.status != 200) {
-//             console.log(error);
-//             console.log("There was an error with the input.")
-//         }
-//     }
-
-//     // Send the request and wait for the response
-//     xhttp.send(JSON.stringify(data));
-
-// })
+             // Add the new data to the table
+            
+             updateRow(xhttp.response, post_id);
 
 
-// function updateRow(data, post_id){
-//     let parsedData = JSON.parse(data);
-//     console.log(post_id);
-//     let table = document.getElementById("post-table");
+         }
+         else if (xhttp.readyState == 4 && xhttp.status != 200) {
+             console.log(error);
+             console.log("There was an error with the input.")
+         }
+     }
 
-//     for (let i = 0, row; row = table.rows[i]; i++) {
-//        //iterate through rows
-//        //rows would be accessed using the "row" variable assigned in the for loop
-//        if (table.rows[i].getAttribute("data-value") == post_id) {
+     // Send the request and wait for the response
+     xhttp.send(JSON.stringify(data));
 
-//             // Get the location of the row where we found the matching post ID
-//             let updateRowIndex = table.getElementsByTagName("tr")[i];
+ })
 
-//             // Get td of location value
-//             let td = updateRowIndex.getElementsByTagName("td")[5];
 
-//             // Reassign location to our value we updated to
+ function updateRow(data, post_id){
+     let parsedData = JSON.parse(data);
+     console.log(post_id);
+     let table = document.getElementById("post-table");
 
-//             td.innerHTML = parsedData[0].friend_user_id; 
-//             console.log(td.innerHTML);
-//        }
-//     }
-})
+     for (let i = 0, row; row = table.rows[i]; i++) {
+        //iterate through rows
+        //rows would be accessed using the "row" variable assigned in the for loop
+        if (table.rows[i].getAttribute("data-value") == post_id) {
+
+             // Get the location of the row where we found the matching post ID
+             let updateRowIndex = table.getElementsByTagName("tr")[i];
+
+             // Get td of location value
+             let td = updateRowIndex.getElementsByTagName("td")[5];
+
+             // Reassign location to our value we updated to
+
+             td.innerHTML = parsedData[0].friend_user_id; 
+             console.log(td.innerHTML);
+        }
+     }
+}

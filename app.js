@@ -200,10 +200,6 @@ app.post('/posts-ajax', function(req, res)
         }});
     });
 
-    
-
-    
-
 app.put('/put-post-ajax', function(req,res,next){
     let data = req.body;
     let location_id = parseInt(data.location_id);
@@ -212,9 +208,9 @@ app.put('/put-post-ajax', function(req,res,next){
     let friend_ids = data.friend_user_ids;
     let user_id = parseInt(data.user_id);
     let post_id = parseInt(data.post_id);
-
+    
     if (isNaN(location_id)) {
-        location_id = 'NULL';
+        location_id = null;
     }
 
     // Update friends mentioned
@@ -227,9 +223,6 @@ app.put('/put-post-ajax', function(req,res,next){
         }
         else {
             for (let i = 0; i < friend_ids.length; i++) {
-                console.log("This line runs!");
-                console.log(i);
-                console.log(friend_ids.length);
                 insert_friends_mentioned = `INSERT INTO Posts_has_Friendships (post_id, friendship_id) VALUES (?, (
                     SELECT friendship_id FROM Friendships WHERE (user_id = ? AND friend_user_id = ?) OR 
                     (user_id = ? AND friend_user_id = ?)
@@ -241,13 +234,14 @@ app.put('/put-post-ajax', function(req,res,next){
                     }
                 })
             }
-            update_post_content = `UPDATE Posts SET content = ?, access = ?, location_id = ? WHERE post_id = ?`
+            update_post_content = `UPDATE Posts SET content = ?, access = ?, location_id = ? WHERE post_id = ?`;
+            console.log(location_id);
             db.pool.query(update_post_content, [content, access, location_id, post_id], function(error, row_friendship, fields) {
                 if (error) {
                     console.log(error);
                     res.sendStatus(400);
                 } else {
-                    
+                    res.send(row_friendship);
                 }
             })
         }
