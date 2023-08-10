@@ -16,7 +16,7 @@
             <th>Delete</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="post-table-body">
         {{#each posts }}
         <tr data-value={{this.[Post ID]}}>
             <td>{{this.[Post ID]}}</td>
@@ -167,7 +167,6 @@
 
 <script type="application/javascript" src="./js/add_post.js"></script>
 <script>
-
 function renderFriends(userID) {
     document.getElementById('friendList').innerHTML = '<option value="">--Please select--</option>';
     
@@ -206,34 +205,99 @@ function renderPosts(pid) {
     input.setAttribute("id", "post-id");
     document.getElementById('showPostID').appendChild(input);
 
-    {{#each post_for_render}}
-    if ({{this.[Post ID]}} == pid) {
+    let table = document.getElementById("post-table");
 
-      // Dynamically show the User ID (but set display = "none" for User ID for better UI experience)
-      if (document.getElementById('showUserID').childNodes[1]) {               // If the input element exists, remove the old input element.
-      document.getElementById('showUserID').childNodes[1].remove();
-    }
-      const input2 = document.createElement("input");
-      input2.style.display = "inline";
-      input2.value = {{this.[User ID]}};
-      input2.innerHTML = '{{this.[User Name]}}';
-      input2.setAttribute("disabled", true);
-      input2.setAttribute("id", "input-user");
-      document.getElementById('showUserID').appendChild(input2);
+    for (let i = 1, row; row = table.rows[i]; i++) {
+      if (row.getAttribute("data-value") == pid) {
+        
+        // Dynamically show the User ID (but set display = "none" for User ID for better UI experience)
+        if (document.getElementById('showUserID').childNodes[1]) {               // If the input element exists, remove the old input element.
+        document.getElementById('showUserID').childNodes[1].remove();
+      }
+        const input2 = document.createElement("input");
+        input2.style.display = "inline";
+        {{#each users}}
+          if ('{{this.user_name}}' == row.getElementsByTagName("td")[3].textContent) {
+            input2.value = '{{this.user_id}}'
+            }
+        {{/each}}
+        input2.setAttribute("disabled", true);
+        input2.setAttribute("id", "input-user");
+        document.getElementById('showUserID').appendChild(input2);
 
-      // Dynamically show the User Name
-      if (document.getElementById('showUserName').childNodes[1]) {               // If the input element exists, remove the old input element.
-            document.getElementById('showUserName').childNodes[1].remove();
+        // Dynamically show the User Name
+        if (document.getElementById('showUserName').childNodes[1]) {               // If the input element exists, remove the old input element.
+              document.getElementById('showUserName').childNodes[1].remove();
+            }
+        const input3 = document.createElement("input");
+        input3.style.display = "inline";
+        input3.value = row.getElementsByTagName("td")[3].textContent;
+        input3.innerHTML = row.getElementsByTagName("td")[3].textContent;
+        input3.setAttribute("disabled", true);
+        input3.setAttribute("id", "input-users");
+        document.getElementById('showUserName').appendChild(input3);
+
+        if (document.getElementById('showPostContent').childNodes[1]) {               // If the input element exists, remove the old input element.
+            document.getElementById('showPostContent').childNodes[1].remove();
+            //document.getElementById('showPostContent').removeChild(document.getElementById('showPostContent').lastChild)
           }
-      const input3 = document.createElement("input");
-      input3.style.display = "inline";
-      input3.value = '{{this.[User Name]}}';
-      input3.innerHTML = '{{this.[User Name]}}';
-      input3.setAttribute("disabled", true);
-      input3.setAttribute("id", "input-users");
-      document.getElementById('showUserName').appendChild(input3);
+        const txt = document.createElement("textarea");
+        txt.innerHTML = row.getElementsByTagName("td")[1].textContent;
+        txt.setAttribute("name", "input-content");
+        txt.setAttribute("id", "input-content");
+        txt.style.display = "block";
+        document.getElementById('showPostContent').appendChild(txt);
 
-      // Dynamically show the post content
+        // Dynamically show the access options
+      if (document.getElementById('showAccess').hasChildNodes()) {               // If the input element exists, remove the old input element.
+            document.getElementById('showAccess').innerHTML = "";
+          }
+      const option = document.createElement("option");
+      option.setAttribute("value", row.getElementsByTagName("td")[2].textContent);
+      option.innerHTML = row.getElementsByTagName("td")[2].textContent;
+      document.getElementById('showAccess').appendChild(option);
+      const accessList = ["Public", "Public to friends", "Private"];
+      for (let i = 0; i < accessList.length; i++) {
+        if (accessList[i] != row.getElementsByTagName("td")[2].textContent) {
+          const option = document.createElement("option");
+          option.setAttribute("value", accessList[i]);
+          option.innerHTML = accessList[i];
+          document.getElementById("showAccess").appendChild(option);
+        }
+      }
+
+      // Dynamically show the Locations options
+      if (document.getElementById('input-location').hasChildNodes()) {               // If the input element exists, remove the old input element.
+            document.getElementById('input-location').innerHTML = "";
+            
+          }
+      const locationOption = document.createElement("option");
+      
+      locationOption.innerHTML = row.getElementsByTagName("td")[5].textContent;
+      let LocationsList = [];
+      {{#each locations}}
+        if ('{{this.[Locations]}}' == row.getElementsByTagName("td")[5].textContent) {
+          locationOption.setAttribute("value", "{{this.[location_id]}}");
+        }
+        else {
+        LocationsList.push(['{{this.[location_id]}}', '{{this.[Locations]}}']);}
+      {{/each}}
+      document.getElementById('input-location').appendChild(locationOption);
+      const noLocation = document.createElement("option");
+      noLocation.setAttribute("value", "");
+      noLocation.innerHTML = "No Location Pinned";
+      document.getElementById('input-location').appendChild(noLocation);
+      for (let i = 0; i < LocationsList.length; i++) {
+          const locationOption = document.createElement("option");
+          locationOption.setAttribute("value", LocationsList[i][0]);
+          locationOption.innerHTML = LocationsList[i][1];
+          document.getElementById("input-location").appendChild(locationOption);
+      }
+      }
+    }
+  }
+</script>
+      <!--// Dynamically show the post content
       while (document.getElementById('showPostContent').hasChildNodes()) {               // If the input element exists, remove the old input element.
             console.log(document.getElementById('showPostContent').lastChild);
             document.getElementById('showPostContent').removeChild(document.getElementById('showPostContent').lastChild)
@@ -246,55 +310,9 @@ function renderPosts(pid) {
       txt.style.display = "block";
       document.getElementById('showPostContent').appendChild(txt);
 
-      // Dynamically show the access options
-      if (document.getElementById('showAccess').hasChildNodes()) {               // If the input element exists, remove the old input element.
-            document.getElementById('showAccess').innerHTML = "";
-          }
-      const option = document.createElement("option");
-      option.setAttribute("value", "{{this.[Access]}}");
-      option.innerHTML = "{{this.[Access]}}";
-      document.getElementById('showAccess').appendChild(option);
-      const accessList = ["Public", "Public to friends", "Private"];
-      for (let i = 0; i < accessList.length; i++) {
-        if (accessList[i] != '{{this.[Access]}}') {
-          const option = document.createElement("option");
-          option.setAttribute("value", accessList[i]);
-          option.innerHTML = accessList[i];
-          document.getElementById("showAccess").appendChild(option);
-        }
-      }
-
-      // Dynamically show the Locations options
-      if (document.getElementById('input-location').hasChildNodes) {               // If the input element exists, remove the old input element.
-            document.getElementById('input-location').innerHTML = "";
-            
-          }
-      const locationOption = document.createElement("option");
-      locationOption.setAttribute("value", "{{this.[location_id]}}");
-      locationOption.innerHTML = "{{this.[Locations Pinned]}}";
-      document.getElementById('input-location').appendChild(locationOption);
-      const noLocation = document.createElement("option");
-      noLocation.setAttribute("value", "");
-      noLocation.innerHTML = "--Please select--";
-      document.getElementById('input-location').appendChild(noLocation);
-      let LocationsList = [];
-      {{#each ../locations}}
-        LocationsList.push(['{{this.[location_id]}}', '{{this.[Locations]}}']);
-      {{/each}}
-      console.log("Locations List is:", LocationsList)
-      for (let i = 0; i < LocationsList.length; i++) {
-        if (LocationsList[i][1] != '{{this.[Locations Pinned]}}') {
-          const locationOption = document.createElement("option");
-          locationOption.setAttribute("value", LocationsList[i][0]);
-          locationOption.innerHTML = LocationsList[i][1];
-          document.getElementById("input-location").appendChild(locationOption);
-        }
-      }
+      -->
       
-    }
-    {{/each}}
-    }
-</script>
+
 
 
 

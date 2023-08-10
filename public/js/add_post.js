@@ -86,6 +86,8 @@ addRowToTable = (data) => {
     let userNameCell = document.createElement("TD");
     let friendsMentionedCell = document.createElement("TD");
     let locationsPinnedCell = document.createElement("TD");
+    let editCell = document.createElement("TD");
+    let deleteCell = document.createElement("TD");
 
     // // Fill the cells with correct data
     postIDCell.innerText = newRow.post_id;
@@ -94,6 +96,19 @@ addRowToTable = (data) => {
     userNameCell.innerText = newRow.user_name;
     friendsMentionedCell.innerText = newRow.FriendsMentioned;
     locationsPinnedCell.innerHTML = newRow.LocationsPinned;
+    
+    let editA = document.createElement("a");
+    editA.innerHTML = "Edit";
+    //editA.setAttribute("onclick","updateItem(newRow.post_id); renderPosts('{{this.[Post ID]}}'); renderFriendsUpdate('{{this.[User Name]}}')");
+    editA.addEventListener("click", () => {updateItem(newRow.post_id); renderPosts(newRow.post_id); renderFriendsUpdate(newRow.user_name)});
+    editA.href = "#";
+    editCell.appendChild(editA);
+
+    let deleteA = document.createElement("a");
+    deleteA.innerHTML = "Delete";
+    deleteA.onclick = "deletePost('{{this.[Post ID]}}')";
+    deleteA.href = "#";
+    deleteCell.appendChild(deleteA);
 
     // // Add the cells to the row 
     row.appendChild(postIDCell);
@@ -102,14 +117,15 @@ addRowToTable = (data) => {
     row.appendChild(userNameCell);
     row.appendChild(friendsMentionedCell);
     row.appendChild(locationsPinnedCell);
-    
-    row.setAttribute('data-value', newRow.id);
+    row.appendChild(editCell);
+    row.appendChild(deleteCell);
+    row.setAttribute('data-value', newRow.post_id);
     // // Add the row to the table
-    currentTable.appendChild(row);
+    document.getElementById("post-table-body").appendChild(row);
 
-    let newContent = document.getElementById("input-content");
-    let txt = document.createElement("textarea");
-    txt.text = newRow.content;
-    txt.value = newRow.content;
-    newContent.add(txt);
+    // let newContent = document.getElementById("input-content");
+    // let txt = document.createElement("textarea");
+    // txt.text = newRow.content;
+    // txt.value = newRow.content;
+    // newContent.add(txt);
 }

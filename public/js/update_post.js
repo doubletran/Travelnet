@@ -85,11 +85,11 @@ updatePostForm.addEventListener("submit", function (e) {
 
  function updateRow(data, post_id){
      let parsedData = JSON.parse(data);
-     console.log(parsedData[0]);
+     
      let table = document.getElementById("post-table");
 
      for (let i = 1, row; row = table.rows[i]; i++) {
-        console.log(row)
+        
         //iterate through rows
         //rows would be accessed using the "row" variable assigned in the for loop
         if (row.getAttribute("data-value") == post_id) {
@@ -106,6 +106,8 @@ updatePostForm.addEventListener("submit", function (e) {
              access_td.innerHTML = parsedData[i-1].access;
              friends_td.innerHTML = parsedData[i-1].Friends;  
              location_td.innerHTML = parsedData[i-1].Locations;
+
+             content_td.v
         }
      }
 }
