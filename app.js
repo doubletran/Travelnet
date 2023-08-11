@@ -318,8 +318,6 @@ app.delete('/delete-post-ajax/', function(req,res,next){
             if (error.errno == 1062){
      
             }
-            
-
         }
         else{
             db.pool.query(readNewUserQuery, [data.username], function(error, row, fields){
@@ -341,8 +339,7 @@ app.delete('/delete-post-ajax/', function(req,res,next){
   FRIENDSHIP 
   */
  let readUserQuery = `SELECT * from Users`;
- let readFriendshipQuery = `SELECT Friendships.friendship_id AS "Friendship ID", Friendships.start_date AS "Start Date", 
- calMulCt(user.user_id, friend.user_id) AS "Mutual Friends Count", user.user_name AS "User 1 Name", 
+ let readFriendshipQuery = `SELECT Friendships.friendship_id AS "Friendship ID", LEFT(Friendships.start_date, 10) AS "Start Date", calMulCt(user.user_id, friend.user_id) AS "Mutual Friends Count", user.user_name AS "User 1 Name", 
  friend.user_name AS "User 2 Name" 
  FROM Friendships 
  INNER JOIN Users user ON Friendships.user_id = user.user_id
@@ -352,6 +349,7 @@ app.delete('/delete-post-ajax/', function(req,res,next){
      
       db.pool.query(readFriendshipQuery, function(error, friendship_rows, fields){  
         db.pool.query(readUserQuery, function(error, user_rows, fields){
+            console.log(friendship_rows);
             return res.render('friendships', {data: friendship_rows, users: user_rows})
 
         })
@@ -364,18 +362,16 @@ app.delete('/delete-post-ajax/', function(req,res,next){
   app.post('/add-friendship-ajax', function(req, res, next){
     
     let data = req.body;
-    console.log(data);
-    let addFriendshipQuery = `INSERT INTO Friendships (start_date, mutual_friend_ct, user_id, friend_user_id) VALUES ('${data.start_date}', 'calMuCt(${data.user_id}, ${data.friend_user_id})', '${data.user_id}' , '${data.friend_user_id}' );`;
+    let addFriendshipQuery = `INSERT INTO Friendships (start_date, mutual_friend_ct, user_id, friend_user_id) VALUES ('${data.start_date}', 'calMulCt(${data.user_id}, ${data.friend_user_id})', '${data.user_id}' , '${data.friend_user_id}' );`;
     let readNewFriendshipQuery = `${readFriendshipQuery} WHERE Friendships.user_id = ? AND Friendships.friend_user_id = ?;`;
     db.pool.query(addFriendshipQuery, function (error, row, fields){
         if (error){
-            console.log(error.errno);
             res.sendStatus(400);
-            if (error.errno == 1062){
+            res.send("There is an error wi")
+            // res.send()
+            // if (error.errno == 1062){
      
-            }
-            
-
+            // }
         }
         else{
             db.pool.query(readNewFriendshipQuery, [data.user_id, data.friend_user_id], function(error, row, fields){
@@ -384,7 +380,6 @@ app.delete('/delete-post-ajax/', function(req,res,next){
                     res.sendStatus(400);
                 }
                 else{
-                    console.log(row);
                     res.send(row);
                 }
             })

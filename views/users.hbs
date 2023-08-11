@@ -43,10 +43,18 @@
     <form method="POST" id="addUser">
         <legend><strong>Add A User</strong></legend>
           <fieldset class="fields">
-            
-            <label> User name </label> <input type="text" name="userName" id = "userName" > 
-            <label> Email </label> <input type="email" name="email" id = "email" >
-            <label> Password </label> <input type="password" name="password" id = "password">
+            <div>
+                <label> User name <span>*</span></label> <input type="text" name="userName" id = "userName" required> 
+            </div>
+            <div>
+                <label> Email <span>*</span></label> <input type="email" name="email" id = "email" required>
+            </div>
+            <div>
+                <label> Password <span>*</span></label> <input type="password" name="password" id = "password" required>
+            </div>
+            <div>
+              <span style="color: red;">*</span>Required field
+            </div>
       </fieldset>
           <input class="btn" type="submit" id="addAUser" value="Add User">
           <input class="btn" type="button" value="cancel" onClick="browseUsers()">

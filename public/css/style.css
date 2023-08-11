@@ -3,7 +3,7 @@
 a {font-size: 1.5em; color: darkgreen;}*/
 
 form div {
-    padding: 2vh;
+    padding: 1vh;
 }
 
 label {display: block; font-weight: bold;}
@@ -12,3 +12,5 @@ td, th, table {
     border: 1px solid gray;
     padding: 5px;
 }
+
+span {color: red;}

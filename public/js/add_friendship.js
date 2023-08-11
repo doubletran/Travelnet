@@ -24,7 +24,6 @@ addFriendshipForm.addEventListener("submit", function (e) {
         start_date : inputStartDate.value
 
     }
-
     // Setup our AJAX request
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", '/add-friendship-ajax', true);
@@ -43,6 +42,7 @@ addFriendshipForm.addEventListener("submit", function (e) {
           
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
+            alert("There was an error with the input, please try again!")
             console.log("There was an error with the input.")
         }
     }
@@ -65,7 +65,6 @@ addRowToTable = (data) => {
     // Get a reference to the new row from the database query (last object)
     let parsedData = JSON.parse(data);
     let newRow = parsedData[parsedData.length - 1]
-    console.log(newRow);
     // Create a row and 4 cells
     let row = document.createElement("TR");
     let friendshipIDCell = document.createElement("TD");
@@ -76,7 +75,7 @@ addRowToTable = (data) => {
 
     // // Fill the cells with correct data
     friendshipIDCell.innerText = newRow["Friendship ID"];
-    startDateCell.innerText = newRow["Start Date"];
+    startDateCell.innerText = newRow["Start Date"].slice(0, 10);
     mutualFriendCtCell.innerText = newRow['Mutual Friends Count'];
     username1Cell.innerHTML = newRow[ 'User 1 Name'];
     username2Cell.innerHTML = newRow['User 2 Name'];

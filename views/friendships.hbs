@@ -1,8 +1,9 @@
 <!-- Source: https://github.com/osu-cs340-ecampus/nodejs-starter-app/ -->
 <h1>Friendships</h1>
 [ <a href="/">Home</a> | <a href="/users">Users</a> | <a href="/friendships">Friendships</a> | <a href="/posts">Posts</a> | <a href="/locations">Locations</a> | <a href="/posts-friendships">Posts_has_Friendships</a>]
+<p></p>
 <div id="browse">
-<p><a href="#" onClick="showAll()">Display all forms</a> </p>
+<!--<p><a href="#" onClick="showAll()">Display all forms</a> </p>-->
 <table id="friendship-table">
 
     {{!-- Header section --}}
@@ -40,24 +41,33 @@
 
 <div id="insert">
     <form method="POST" id="addFriendship">
-        <legend><strong>Add Friendship</strong></legend>
+        <legend><strong>Add A Friendship</strong></legend>
           <fieldset class="fields">
-            <label> Start Date </label> <input type="date" name="start_date" id = "start_date">
-            <label> User 1 Name </label> <select name="user" id="username1" onChange="renderOtherUsers(this.value)" required>
-              <option value="">--Please select--</option>
-              {{#each users}}
-                <option value="{{this.user_id}}">{{this.user_name}}</option>
-              {{/each}}
+            <p>*Note: User 1 Name and User 2 Name are regarded interchangable.</p>
+            <div>
+                <label> Start Date <span>*</span></label> <input type="date" name="start_date" id = "start_date" required>
+            </div>
+            <div>
+                <label> User 1 Name <span>*</span></label> 
+                <select name="user" id="username1" onChange="renderOtherUsers(this.value)" required>
+                    <option value="">--Please select--</option>
+                    {{#each users}}
+                        <option value="{{this.user_id}}">{{this.user_name}}</option>
+                    {{/each}}
                 </select>
-            <label> User 2 Name </label> <select name="friend" id="username2" >
+            </div>
+            <div>
+                <label> User 2 Name <span>*</span></label> 
+                <select name="friend" id="username2" >
                 </select>
+            </div>
       </fieldset>
           <input class="btn" type="submit" id="addFriendship" value="Add Friendship">
           <input class="btn" type="button" value="cancel" onClick="browseFriendships()">
 	</form> 
 </div><!-- insert -->
 <script src="./js/add_friendship.js"></script>
-<p>&nbsp;</p>
+<!--<p>&nbsp;</p>
 <div id="update">
     <form method="POST" id="UpdateFriendship">
         <legend><strong>Update Friendship</strong></legend>
@@ -84,12 +94,12 @@
           <input class="btn" type="submit" id="UpdateSaveFriendship" value="Save Update Friendship">
           <input class="btn" type="button" value="cancel" onClick="browseFriendships()">
 	</form> 
-</div><!-- update -->
+</div>
 
 <p>&nbsp;</p>
 <div id="delete">
 
-</div><!-- delete --> 
+</div>-->
 <script>
 function renderOtherUsers(userID) {
   let otherUsersSelect = document.getElementById('username2');
