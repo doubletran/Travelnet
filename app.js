@@ -309,7 +309,6 @@ app.delete('/delete-post-ajax/', function(req,res,next){
   app.post('/add-user-ajax', function(req, res, next){
     
     let data = req.body;
-    console.log(data);
     let addUserQuery = `INSERT INTO Users (user_name, email, password) VALUES ('${data.username}', '${data.email}', '${data.password}');`;
     let readNewUserQuery = `SELECT * FROM Users WHERE user_name = ?;`;
     db.pool.query(addUserQuery, function (error, row, fields){

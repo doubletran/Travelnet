@@ -2,6 +2,8 @@
 <h1>Users</h1>
 
 [ <a href="/">Home</a> | <a href="/users">Users</a> | <a href="/friendships">Friendships</a> | <a href="/posts">Posts</a> | <a href="/locations">Locations</a> | <a href="/posts-friendships">Posts_has_Friendships</a>]
+<!--<p><a href="#" onClick="showAll()">Display all forms</a></p>-->
+<p></p>
 <table id="user-table">
 
     {{!-- Header section --}}
@@ -33,7 +35,7 @@
     </tbody>
 </table>
 <div id="browse">
-<p><a href="#" onClick="showAll()">Display all forms</a></p>
+
 
 <p>&nbsp;</p>
 </div> <!-- browse -->
@@ -46,13 +48,13 @@
             <label> Email </label> <input type="email" name="email" id = "email" >
             <label> Password </label> <input type="password" name="password" id = "password">
       </fieldset>
-          <input class="btn" type="submit" id="addUser" value="Add User">
+          <input class="btn" type="submit" id="addAUser" value="Add User">
           <input class="btn" type="button" value="cancel" onClick="browseUsers()">
 	</form> 
 </div><!-- insert -->
 <script src="./js/add_user.js"></script>
 <p>&nbsp;</p>
-<div id="update">
+<!--<div id="update">
     <form method="POST" id="UpdateUser">
         <legend><strong>Update A User</strong></legend>
           <fieldset class="fields">
@@ -65,10 +67,10 @@
           <input class="btn" type="submit" id="UpdateSaveUser" value="Save Update User">
           <input class="btn" type="button" value="cancel" onClick="browseUsers()">
 	</form> 
-</div><!-- update -->
+</div>
 <div id ="delete">
 
-</div>
+</div>-->
 
 
 
