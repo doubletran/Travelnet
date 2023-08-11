@@ -1,6 +1,9 @@
 <!-- Source: https://github.com/osu-cs340-ecampus/nodejs-starter-app/ -->
-<h1>Friendships</h1>
-[ <a href="/">Home</a> | <a href="/users">Users</a> | <a href="/friendships">Friendships</a> | <a href="/posts">Posts</a> | <a href="/locations">Locations</a> | <a href="/posts-friendships">Posts_has_Friendships</a>]
+<div id="content-wrap">
+<header>
+    <h1>Friendships</h1>
+    <div class="nav">[ <a href="/">Home</a> | <a href="/users">Users</a> | <a href="/friendships">Friendships</a> | <a href="/posts">Posts</a> | <a href="/locations">Locations</a> | <a href="/posts-friendships">Posts_has_Friendships</a>]</div>
+</header>
 <p></p>
 <div id="browse">
 <!--<p><a href="#" onClick="showAll()">Display all forms</a> </p>-->
@@ -44,10 +47,7 @@
         <legend><strong>Add A Friendship</strong></legend>
           <fieldset class="fields">
             <p>*Note: User 1 Name and User 2 Name are regarded interchangable.</p>
-            <div>
                 <label> Start Date <span>*</span></label> <input type="date" name="start_date" id = "start_date" required>
-            </div>
-            <div>
                 <label> User 1 Name <span>*</span></label> 
                 <select name="user" id="username1" onChange="renderOtherUsers(this.value)" required>
                     <option value="">--Please select--</option>
@@ -55,12 +55,10 @@
                         <option value="{{this.user_id}}">{{this.user_name}}</option>
                     {{/each}}
                 </select>
-            </div>
-            <div>
                 <label> User 2 Name <span>*</span></label> 
                 <select name="friend" id="username2" >
                 </select>
-            </div>
+            <p><span>*</span>Required field</p>
       </fieldset>
           <input class="btn" type="submit" id="addFriendship" value="Add Friendship">
           <input class="btn" type="button" value="cancel" onClick="browseFriendships()">
@@ -97,9 +95,9 @@
 </div>
 
 <p>&nbsp;</p>
-<div id="delete">
+<div id="delete">-->
 
-</div>-->
+</div>
 <script>
 function renderOtherUsers(userID) {
   let otherUsersSelect = document.getElementById('username2');

@@ -88,7 +88,7 @@ addRowToTable = (data) => {
     let locationsPinnedCell = document.createElement("TD");
     let editCell = document.createElement("TD");
     let deleteCell = document.createElement("TD");
-
+    console.log(newRow.FriendsMentioned)
     // // Fill the cells with correct data
     postIDCell.innerText = newRow.post_id;
     contentCell.innerText = newRow.Content;
@@ -100,7 +100,7 @@ addRowToTable = (data) => {
     let editA = document.createElement("a");
     editA.innerHTML = "Edit";
     //editA.setAttribute("onclick","updateItem(newRow.post_id); renderPosts('{{this.[Post ID]}}'); renderFriendsUpdate('{{this.[User Name]}}')");
-    editA.addEventListener("click", () => {updateItem(newRow.post_id); renderPosts(newRow.post_id); renderFriendsUpdate(newRow.user_name)});
+    editA.addEventListener("click", () => {updateItem(newRow.post_id); renderPosts(newRow.post_id); renderFriendsUpdate(newRow.user_name, newRow.post_id)});
     editA.href = "#";
     editCell.appendChild(editA);
 

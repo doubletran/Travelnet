@@ -11,7 +11,7 @@ updatePostForm.addEventListener("submit", function (e) {
     let inputPostID = document.getElementById("post-id");
     let inputUserID = document.getElementById("input-user");
     let inputLocation = document.getElementById("input-location");
-    let inputContent = document.getElementById("input-content");
+    let inputContent = document.getElementById("content");
     let inputFriends = document.getElementById("input-friends");
     let inputAccess = document.getElementById("showAccess");
     

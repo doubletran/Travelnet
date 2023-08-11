@@ -1,12 +1,15 @@
 <!-- Source: https://github.com/osu-cs340-ecampus/nodejs-starter-app/ -->
+<div id="content-wrap">
+<header>
 <h1>Locations</h1>
 
-[ <a href="/">Home</a> | <a href="/users">Users</a> | <a href="/friendships">Friendships</a> | <a href="/posts">Posts</a> | <a href="/locations">Locations</a> | <a href="/posts-friendships">Posts_has_Friendships</a>]
-<table>
-
+<div class="nav">[ <a href="/">Home</a> | <a href="/users">Users</a> | <a href="/friendships">Friendships</a> | <a href="/posts">Posts</a> | <a href="/locations">Locations</a> | <a href="/posts-friendships">Posts_has_Friendships</a>]</div>
+</header>
+<p></p>
+<div id="browse">
+<table id="location-table">
     {{!-- Header section --}}
     <thead>
-
         {{!-- For just the first row, we print each key of the row object as a header cell so we
         know what each column means when the page renders --}}
         <tr>
@@ -34,88 +37,25 @@
         {{/each}}
     </tbody>
 </table>
+</div>
 
-<div id="browse">
-<p><a href="#" onClick="showAll()">Display all forms</a> </p>
-<table border="1" cellpadding="5">
-  <tr>
-    <th>Edit</th>
-    <th>Delete</th>
-    <th>Location ID</th>
-    <th>Address Line</th>
-    <th>City</th>
-    <th>State</th>
-    <th>Zip Code</th>
-    <th>Country</th>
-  </tr>
-  <tr>
-    <td><a href="#" onClick="updateLocation('this.LocationID')">Edit</a></td>
-    <td><a href="#" onclick="deleteLocation('this.LocationID')">Delete</a></td>
-    <td align="right" >1</td>
-    <td >57434 Paucek Meadow, Suite 978</td>
-    <td >Efrainchester</td>
-    <td>Missouri</td>
-    <td>99566-5220</td>
-    <td>United States</td>
-  </tr>
-  <tr>
-    <td><a href="#" onClick="updateLocation('this.LocationID')">Edit</a></td>
-    <td><a href="#" onclick="deleteLocation('this.LocationID')">Delete</a></td>
-    <td align="right" >2</td>
-    <td >9088 Shanahan Groves, Suite 697</td>
-    <td >Pfannerstillhaven</td>
-    <td>Wisconsin</td>
-    <td>97929</td>
-    <td>United States</td>
-  </tr>
-  <tr>
-    <td><a href="#" onClick="updateLocation('this.LocationID')">Edit</a></td>
-    <td><a href="#" onclick="deleteLocation('this.LocationID')">Delete</a></td>
-    <td align="right" >3</td>
-    <td >Kpg Connor no 96, Apt 119</td>
-    <td >Batu</td>
-    <td>DKI Jakarta</td>
-    <td>11840</td>
-    <td>Indonesia</td>
-  </tr>
-  <tr>
-    <td><a href="#" onClick="updateLocation('this.LocationID')">Edit</a></td>
-    <td><a href="#" onclick="deleteLocation('this.LocationID')">Delete</a></td>
-    <td align="right" >4</td>
-    <td >Strada Caterina 779, Appartamento 61</td>
-    <td >Santarelli veneto</td>
-    <td>Lucca</td>
-    <td>43917</td>
-    <td>Italy</td>
-  </tr>
-  <tr>
-    <td><a href="#" onClick="updateLocation('this.LocationID')">Edit</a></td>
-    <td><a href="#" onclick="deleteLocation('this.LocationID')">Delete</a></td>
-    <td align="right" >5</td>
-    <td >76941 Vũ Inlet, Suite 164</td>
-    <td >Cao Bằng</td>
-    <td>Missouri</td>
-    <td>86668</td>
-    <td>Vietnam</td>
-  </tr>
-</table>
-<p>&nbsp;</p>
-</div> <!-- browse -->
 <div id="insert">
     <form method="Location" id="addLocation">
         <legend><strong>Add Location</strong></legend>
           <fieldset class="fields">
-            <label> Address Line </label> <input type="text" name="address">
-            <label> City </label> <input type="text" name="city">
-            <label> State </label> <input type="text" name="state">
-            <label> Zip Code </label> <input type="text" name = "zip_code">
-            <label> Country </label><input type="text" name="country">
+            <label> Address Line </label> <input type="text" name="address" id="address">
+            <label> City </label> <input type="text" name="city" id="city">
+            <label> State </label> <input type="text" name="state" id="state">
+            <label> Zip Code </label> <input type="text" name = "zip_code" id="zip_code">
+            <label> Country </label><input type="text" name="country" id="country">
       </fieldset>
           <input class="btn" type="submit" id="addLocation" value="Add Location">
           <input class="btn" type="button" value="cancel" onClick="browseLocations()">
 	</form> 
 </div><!-- insert -->
 <p>&nbsp;</p>
+<script src="./js/add_location.js"></script>
+{{!--
 <div id="update">
     <form method="Location" id="UpdateLocation">
         <legend><strong>Update Location</strong></legend>
@@ -150,4 +90,5 @@
     <input class="btn" type="submit" id="DeleteLocation" value="Delete Location">
     <input class="btn" type="button" value="cancel" onClick="browseLocations()">
   </form> 
-</div><!-- delete -->
+</div><!-- delete -->--}}
+</div>

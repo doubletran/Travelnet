@@ -1,7 +1,8 @@
 <!-- Source: https://github.com/osu-cs340-ecampus/nodejs-starter-app/ -->
+<header>
 <h1>Posts</h1>
-[ <a href="/">Home</a> | <a href="/users">Users</a> | <a href="/friendships">Friendships</a> | <a href="/posts">Posts</a> | <a href="/locations">Locations</a> | <a href="/posts-friendships">Posts_has_Friendships</a>]
-
+<div class="nav">[ <a href="/">Home</a> | <a href="/users">Users</a> | <a href="/friendships">Friendships</a> | <a href="/posts">Posts</a> | <a href="/locations">Locations</a> | <a href="/posts-friendships">Posts_has_Friendships</a>]</div>
+</header>
 <div id="browse">
 <p><a href="#" onClick="showAll()">Display all forms</a> </p>
 <table border="1" cellpadding="5" id="post-table">
@@ -25,7 +26,7 @@
             <td>{{this.[User Name]}}</td>
             <td>{{this.[Friends Mentioned]}}</td>
             <td>{{this.[Locations Pinned]}}</td>
-            <td><a href="#"  onClick="updateItem('{{this.[Post ID]}}'); renderPosts('{{this.[Post ID]}}'); renderFriendsUpdate('{{this.[User Name]}}')">Edit</a></td>
+            <td><a href="#"  onClick="updateItem('{{this.[Post ID]}}'); renderPosts('{{this.[Post ID]}}'); renderFriendsUpdate('{{this.[User Name]}}', '{{this.[Post ID]}}')">Edit</a></td>
             <td><a href="#" onclick="deletePost('{{this.[Post ID]}}')">Delete</a></td>
         </tr>
         {{/each}}
@@ -35,7 +36,6 @@
 <p>&nbsp;</p>
 </div> <!-- browse -->
 <div id="insert">
-<h2>Inserting a post</h2>
     <form method="POST" id="addPost">
         <legend><strong>Add A Post</strong></legend>
           <fieldset class="fields">
@@ -87,7 +87,6 @@
 </div><!-- insert -->
 <p>&nbsp;</p>
 <div id="update">
-<h2>Updating a post</h2>
 <p></p>
 <form id="update-post-form-ajax">
     <legend><strong>Update A Post</strong></legend>
@@ -180,7 +179,7 @@ function renderFriends(userID) {
     {{/each}}
 }
 
-function renderFriendsUpdate(userName) {
+function renderFriendsUpdate(userName, pid) {
     document.getElementById('input-friends').innerHTML = '<option value="">--Please select--</option>';
     
     {{#each friendships}}
@@ -243,9 +242,10 @@ function renderPosts(pid) {
           }
         const txt = document.createElement("textarea");
         txt.innerHTML = row.getElementsByTagName("td")[1].textContent;
-        txt.setAttribute("name", "input-content");
-        txt.setAttribute("id", "input-content");
+        txt.setAttribute("name", "content");
+        txt.setAttribute("id", "content");
         txt.style.display = "block";
+        txt.style.margin = "0 auto";
         document.getElementById('showPostContent').appendChild(txt);
 
         // Dynamically show the access options

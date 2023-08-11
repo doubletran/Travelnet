@@ -1,9 +1,12 @@
 <!-- Source: https://github.com/osu-cs340-ecampus/nodejs-starter-app/ -->
+<div id="content-wrap">
+<header>
 <h1>Users</h1>
-
-[ <a href="/">Home</a> | <a href="/users">Users</a> | <a href="/friendships">Friendships</a> | <a href="/posts">Posts</a> | <a href="/locations">Locations</a> | <a href="/posts-friendships">Posts_has_Friendships</a>]
+<div class="nav">[ <a href="/">Home</a> | <a href="/users">Users</a> | <a href="/friendships">Friendships</a> | <a href="/posts">Posts</a> | <a href="/locations">Locations</a> | <a href="/posts-friendships">Posts_has_Friendships</a>]</div>
+</header>
 <!--<p><a href="#" onClick="showAll()">Display all forms</a></p>-->
 <p></p>
+<div id="browse">
 <table id="user-table">
 
     {{!-- Header section --}}
@@ -34,30 +37,19 @@
         {{/each}}
     </tbody>
 </table>
-<div id="browse">
-
-
 <p>&nbsp;</p>
 </div> <!-- browse -->
 <div id="insert">
     <form method="POST" id="addUser">
         <legend><strong>Add A User</strong></legend>
-          <fieldset class="fields">
-            <div>
+            <fieldset class="fields">
                 <label> User name <span>*</span></label> <input type="text" name="userName" id = "userName" required> 
-            </div>
-            <div>
                 <label> Email <span>*</span></label> <input type="email" name="email" id = "email" required>
-            </div>
-            <div>
                 <label> Password <span>*</span></label> <input type="password" name="password" id = "password" required>
-            </div>
-            <div>
-              <span style="color: red;">*</span>Required field
-            </div>
-      </fieldset>
-          <input class="btn" type="submit" id="addAUser" value="Add User">
-          <input class="btn" type="button" value="cancel" onClick="browseUsers()">
+                <p><span>*</span>Required field</p>
+            </fieldset>
+            <input class="btn" type="submit" id="addAUser" value="Add User">
+            <input class="btn" type="button" value="cancel" onClick="browseUsers()">
 	</form> 
 </div><!-- insert -->
 <script src="./js/add_user.js"></script>
@@ -76,9 +68,9 @@
           <input class="btn" type="button" value="cancel" onClick="browseUsers()">
 	</form> 
 </div>
-<div id ="delete">
+<div id ="delete">-->
 
-</div>-->
+</div>
 
 
 

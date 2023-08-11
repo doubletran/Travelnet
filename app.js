@@ -108,7 +108,12 @@ app.get('/posts', function (req, res)
     });
 app.get('/locations', function (req, res)
     {
-        res.render('locations');
+        let query = `SELECT Locations.location_id AS "Location ID", Locations.address AS "Address Line", Locations.city
+        AS "City", Locations.state AS "State", Locations.zip_code AS "Zip Code", Locations.country AS "Country"
+        FROM Locations;`;
+        db.pool.query(query, function(error, rows, fields){
+        res.render('locations', {data: rows});
+    })
     });
 app.get('/posts-friendships', function (req, res)
     {
@@ -160,31 +165,32 @@ app.post('/posts-ajax', function(req, res)
                     if (error) {
                      console.log(error);
                         res.sendStatus(400);
-                    }
-            })
-            }
-            // Finally, send back the data to be used for appending a row to the Posts table in ajax. 
-            query3 = `SELECT Posts.post_id, Posts.content AS "Content", access AS "Access", 
-            user.user_name, GROUP_CONCAT(friend.user_name SEPARATOR', ') AS "FriendsMentioned", 
-            CONCAT(Locations.address, ' ', Locations.city, ' ', 
-            Locations.state, ' ', Locations.zip_code, ' ', Locations.country) AS 'LocationsPinned'
-            FROM Posts
-            LEFT JOIN Users user ON user.user_id = Posts.user_id
-            LEFT JOIN Posts_has_Friendships ON Posts_has_Friendships.post_id = Posts.post_id
-            LEFT JOIN Friendships ON Friendships.friendship_id = Posts_has_Friendships.friendship_id
-            LEFT JOIN Users friend ON (CASE WHEN Posts.user_id = Friendships.user_id THEN Friendships.friend_user_id ELSE Friendships.user_id END) = friend.user_id
-            LEFT JOIN Locations ON Locations.location_id = Posts.location_id
-            GROUP BY Posts.post_id`;
+                    } else if (i == data.friendList.length - 1) {
+                        // Finally, send back the data to be used for appending a row to the Posts table in ajax. 
+                        query3 = `SELECT Posts.post_id, Posts.content AS "Content", access AS "Access", 
+                        user.user_name, GROUP_CONCAT(friend.user_name SEPARATOR', ') AS "FriendsMentioned", 
+                        CONCAT(Locations.address, ' ', Locations.city, ' ', 
+                        Locations.state, ' ', Locations.zip_code, ' ', Locations.country) AS 'LocationsPinned'
+                        FROM Posts
+                        LEFT JOIN Users user ON user.user_id = Posts.user_id
+                        LEFT JOIN Posts_has_Friendships ON Posts_has_Friendships.post_id = Posts.post_id
+                        LEFT JOIN Friendships ON Friendships.friendship_id = Posts_has_Friendships.friendship_id
+                        LEFT JOIN Users friend ON (CASE WHEN Posts.user_id = Friendships.user_id THEN Friendships.friend_user_id ELSE Friendships.user_id END) = friend.user_id
+                        LEFT JOIN Locations ON Locations.location_id = Posts.location_id
+                        GROUP BY Posts.post_id`;
 
-            db.pool.query(query3, function(error, rows, fields){
-            if (error) {
-                console.log(error);
-                res.sendStatus(400);
+                        db.pool.query(query3, function(error, rows, fields){
+                            if (error) {
+                                console.log(error);
+                                res.sendStatus(400);
+                            }
+                            else{
+                                res.send(rows);
+                            }
+                        })
+                    }
+                })
             }
-            else{
-                res.send(rows);
-            }
-            })
         }});
     });
 
@@ -219,34 +225,37 @@ app.put('/put-post-ajax', function(req,res,next){
                     if (error) {
                         console.log(error);
                         res.sendStatus(400);
+                    } else if (i == friend_ids.length - 1) {
+                        update_post_content = `UPDATE Posts SET content = ?, access = ?, location_id = ? WHERE post_id = ?`;
+                        db.pool.query(update_post_content, [content, access, location_id, post_id], function(error, rows, fields) {
+                            if (error) {
+                                console.log(error);
+                                res.sendStatus(400);
+                            } else {
+                                show_updated = `SELECT Posts.post_id, Posts.content, access, 
+                                user.user_name, GROUP_CONCAT(friend.user_name SEPARATOR', ') AS "Friends", 
+                                CONCAT(Locations.address, ' ', Locations.city, ' ', 
+                                Locations.state, ' ', Locations.zip_code, ' ', Locations.country) AS 'Locations'
+                                FROM Posts
+                                LEFT JOIN Users user ON user.user_id = Posts.user_id
+                                LEFT JOIN Posts_has_Friendships ON Posts_has_Friendships.post_id = Posts.post_id
+                                LEFT JOIN Friendships ON Friendships.friendship_id = Posts_has_Friendships.friendship_id
+                                LEFT JOIN Users friend ON (CASE WHEN Posts.user_id = Friendships.user_id THEN Friendships.friend_user_id ELSE Friendships.user_id END) = friend.user_id
+                                LEFT JOIN Locations ON Locations.location_id = Posts.location_id
+                                GROUP BY Posts.post_id`;
+                                db.pool.query(show_updated, function(error, rows, fields) {
+                                    res.send(rows);
+                                })
+                            }
+                        })
                     }
-                })
-            }
-            update_post_content = `UPDATE Posts SET content = ?, access = ?, location_id = ? WHERE post_id = ?`;
-            db.pool.query(update_post_content, [content, access, location_id, post_id], function(error, rows, fields) {
-                if (error) {
-                    console.log(error);
-                    res.sendStatus(400);
-                } else {
-                    show_updated = `SELECT Posts.post_id, Posts.content, access, 
-                    user.user_name, GROUP_CONCAT(friend.user_name SEPARATOR', ') AS "Friends", 
-                    CONCAT(Locations.address, ' ', Locations.city, ' ', 
-                    Locations.state, ' ', Locations.zip_code, ' ', Locations.country) AS 'Locations'
-                    FROM Posts
-                    LEFT JOIN Users user ON user.user_id = Posts.user_id
-                    LEFT JOIN Posts_has_Friendships ON Posts_has_Friendships.post_id = Posts.post_id
-                    LEFT JOIN Friendships ON Friendships.friendship_id = Posts_has_Friendships.friendship_id
-                    LEFT JOIN Users friend ON (CASE WHEN Posts.user_id = Friendships.user_id THEN Friendships.friend_user_id ELSE Friendships.user_id END) = friend.user_id
-                    LEFT JOIN Locations ON Locations.location_id = Posts.location_id
-                    GROUP BY Posts.post_id`;
-                    db.pool.query(show_updated, function(error, rows, fields) {
-                        res.send(rows);
-                    })
-                }
             })
+            }
+            
         }
     })
-});
+        }
+    );
    // let select_friendship = `SELECT friendship_id FROM Friendships 
    // WHERE user_id = ? AND friend_user_id = ?`;
 //    for (let i = 0; i < friend_ids.length; i++) {
@@ -327,6 +336,38 @@ app.delete('/delete-post-ajax/', function(req,res,next){
                 }
                 else{
                     console.log(row);
+                    res.send(row);
+                }
+            })
+
+        }
+    })
+  })
+
+  /*Location*/
+  app.post('/add-location-ajax', function(req, res, next){
+    
+    let data = req.body;
+    
+    let addLocationQuery = `INSERT INTO Locations (address, city, state, zip_code, country) VALUES ('${data.address}', '${data.city}', 
+        '${data.state}', '${data.zipcode}', '${data.country}');`;
+    let readNewLocationQuery = `SELECT * FROM Locations;`;
+    db.pool.query(addLocationQuery, function (error, row, fields){
+        if (error){
+            console.log(error.errno);
+            res.sendStatus(400);
+            if (error.errno == 1062){
+     
+            }
+        }
+        else{
+            db.pool.query(readNewLocationQuery, function(error, row, fields){
+                if (error){
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                else{
+                    console.log(row)
                     res.send(row);
                 }
             })
