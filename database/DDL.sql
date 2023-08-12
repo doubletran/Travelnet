@@ -1,3 +1,4 @@
+-- DDL file for CS 340 Portfolio Project
 -- Team members: Tongxin Sun, Tran Tran
 -- Project Title: Travelnet
 
@@ -107,8 +108,10 @@ CREATE TABLE IF NOT EXISTS `Posts_has_Friendships` (
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
-
-
+-- -----------------------------------------------------
+-- Function calMulCt to calculate the number of mutual
+-- friends between user 1 with id1 and user 2 with id2.
+-- -----------------------------------------------------
 CREATE FUNCTION calMulCt (id1 int, id2 int)
     RETURNS int DETERMINISTIC
     RETURN (
@@ -160,7 +163,7 @@ SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
-
+-- Prevents duplicate entries to the Friendships table
 ALTER TABLE Friendships ADD LesserUser int AS (CASE WHEN Friendships.user_id < Friendships.friend_user_id THEN Friendships.user_id ELSE Friendships.friend_user_id END);
 ALTER TABLE Friendships ADD GreaterUser int AS 
   (CASE WHEN Friendships.user_id > Friendships.friend_user_id THEN Friendships.user_id ELSE Friendships.friend_user_id END);

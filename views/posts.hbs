@@ -112,7 +112,7 @@
     </div>
 
     <div>
-    <label for="input-content" id="showPostContent">Post Content</label>
+    <label for="input-content" id="showPostContent">Content<span style="color: red;">*</span></label>
     <!-- textarea will be added here by the function renderPosts -->
     </div>
     
@@ -163,7 +163,6 @@
 </div><!-- delete -->
 <script src="./js/update_post.js"></script>
 
-
 <script type="application/javascript" src="./js/add_post.js"></script>
 <script>
 function renderFriends(userID) {
@@ -180,13 +179,21 @@ function renderFriends(userID) {
 }
 
 function renderFriendsUpdate(userName, pid) {
+    let current_friends;
     document.getElementById('input-friends').innerHTML = '<option value="">--Please select--</option>';
-    
+    for (let i = 1, row; row = document.getElementById("post-table").rows[i]; i++) {
+      if (row.getAttribute("data-value") == pid) {
+        current_friends = row.getElementsByTagName("td")[4].textContent.split(", ");
+      }
+    }
     {{#each friendships}}
     if ('{{this.[User]}}' == userName) {
         const newOption = document.createElement("option");
         newOption.innerHTML = '{{this.[Friend]}}';
         newOption.value = {{this.[FriendID]}};
+        if (current_friends.includes('{{this.[Friend]}}')) {
+          newOption.setAttribute("selected", true)
+        }
         document.getElementById('input-friends').appendChild(newOption)
     }
     {{/each}}
@@ -236,16 +243,16 @@ function renderPosts(pid) {
         input3.setAttribute("id", "input-users");
         document.getElementById('showUserName').appendChild(input3);
 
-        if (document.getElementById('showPostContent').childNodes[1]) {               // If the input element exists, remove the old input element.
-            document.getElementById('showPostContent').childNodes[1].remove();
+        if (document.getElementById('showPostContent').childNodes[2]) {               // If the input element exists, remove the old input element.
+            document.getElementById('showPostContent').childNodes[2].remove();
             //document.getElementById('showPostContent').removeChild(document.getElementById('showPostContent').lastChild)
           }
         const txt = document.createElement("textarea");
         txt.innerHTML = row.getElementsByTagName("td")[1].textContent;
         txt.setAttribute("name", "content");
-        txt.setAttribute("id", "content");
+        txt.setAttribute("id", "input-content");
+        txt.setAttribute("required", true)
         txt.style.display = "block";
-        txt.style.margin = "0 auto";
         document.getElementById('showPostContent').appendChild(txt);
 
         // Dynamically show the access options

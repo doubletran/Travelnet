@@ -11,7 +11,7 @@ updatePostForm.addEventListener("submit", function (e) {
     let inputPostID = document.getElementById("post-id");
     let inputUserID = document.getElementById("input-user");
     let inputLocation = document.getElementById("input-location");
-    let inputContent = document.getElementById("content");
+    let inputContent = document.getElementById("input-content");
     let inputFriends = document.getElementById("input-friends");
     let inputAccess = document.getElementById("showAccess");
     
@@ -19,7 +19,9 @@ updatePostForm.addEventListener("submit", function (e) {
     let post_id = inputPostID.value;
     let user_id = inputUserID.value;
     let location_id = inputLocation.value;
+    
     let content = inputContent.value;
+    
     let access = inputAccess.value;
     
     var selected = [];
@@ -56,7 +58,6 @@ updatePostForm.addEventListener("submit", function (e) {
         friend_user_ids: friend_user_ids
     
     }
-
     // Setup our AJAX request
     var xhttp = new XMLHttpRequest();
     xhttp.open("PUT", "/put-post-ajax", true);
@@ -65,10 +66,9 @@ updatePostForm.addEventListener("submit", function (e) {
 // Tell our AJAX request how to resolve
     xhttp.onreadystatechange = () => {
          if (xhttp.readyState == 4 && xhttp.status == 200) {
-
              // Add the new data to the table
              updateRow(xhttp.response, post_id);
-
+             window.location.href = "/posts";
 
          }
          else if (xhttp.readyState == 4 && xhttp.status != 200) {
@@ -102,12 +102,11 @@ updatePostForm.addEventListener("submit", function (e) {
              let friends_td = updateRowIndex.getElementsByTagName("td")[4];
              let location_td = updateRowIndex.getElementsByTagName("td")[5]
              // Reassign location to our value we updated to
+             console.log(parsedData[i-1])
              content_td.innerHTML = parsedData[i-1].content;
              access_td.innerHTML = parsedData[i-1].access;
              friends_td.innerHTML = parsedData[i-1].Friends;  
              location_td.innerHTML = parsedData[i-1].Locations;
-
-             content_td.v
         }
      }
 }

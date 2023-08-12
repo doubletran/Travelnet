@@ -19,9 +19,10 @@ td, th, table {
     border: 1px solid gray;
     padding: 5px;
 }
+#post-table td {max-width: 15vw;}
 #browse {margin-top: 5vh;}
 span {color: red;}
-form {width: 500px; margin: 0 auto; text-align: center; padding: 20px;}
+form {width: 500px; margin: 0 auto; padding: 20px;}
 legend {text-align: left; margin-bottom: 1vh;}
 footer {
     position: fixed; 
