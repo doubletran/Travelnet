@@ -6,4 +6,7 @@ nvm install v16.15.0
 nvm use v16.15.0
 ```
 
-"Credit: All code is based on the CS 340 starter code."
+//Citation Scope: Node.js and database connection set up on flip and each CRUD operation. 
+//Date: 08/12/2023
+//Originality: Adapted
+//Source: https://github.com/osu-cs340-ecampus/nodejs-starter-app/ 

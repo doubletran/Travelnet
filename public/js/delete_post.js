@@ -1,3 +1,6 @@
+//Citation Scope: Node.js and database connection set up on flip and each CRUD operation. 
+//Date: 08/12/2023
+//Originality: Adapted
 //Source: https://github.com/osu-cs340-ecampus/nodejs-starter-app/ 
 function deletePost(post_id) {
     let data = {

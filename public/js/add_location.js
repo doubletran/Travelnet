@@ -1,4 +1,8 @@
-//Source: https://github.com/osu-cs340-ecampus/nodejs-starter-app/ 
+//Citation Scope: Node.js and database connection set up on flip and each CRUD operation. 
+//Date: 08/12/2023
+//Originality: Adapted
+//Source: https://github.com/osu-cs340-ecampus/nodejs-starter-app/
+ 
 let addLocationForm = document.getElementById('addLocation');
 console.log(addLocationForm);
 // Modify the objects we need
