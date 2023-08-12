@@ -101,7 +101,6 @@ app.post('/add-friendship-ajax', function(req, res, next){
     db.pool.query(addFriendshipQuery, function (error, row, fields){
         if (error){
             res.sendStatus(400);
-            res.send("There is an error wi")
         } else {
             db.pool.query(readNewFriendshipQuery, [data.user_id, data.friend_user_id], function(error, row, fields){
                 if (error){
