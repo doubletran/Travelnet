@@ -13,7 +13,10 @@ nvm use v16.15.0
 
 ##Demo
 
-https://github.com/Tongxin-Sun/group18-cs340-project/assets/37636358/392f0d75-c0b9-489b-a222-e5c412b07fa5
+
+
+https://github.com/Tongxin-Sun/group18-cs340-project/assets/37636358/1c51f861-ddbc-4a09-ac0c-d3aa53ae9292
+
 
 
 
