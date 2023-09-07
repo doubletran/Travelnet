@@ -10,3 +10,9 @@ nvm use v16.15.0
 //Date: 08/12/2023
 //Originality: Adapted
 //Source: https://github.com/osu-cs340-ecampus/nodejs-starter-app/ 
+
+##Demo
+
+
+https://github.com/Tongxin-Sun/group18-cs340-project/assets/37636358/962aab2f-bdf2-4645-b6b3-7b7292afa01f
+
